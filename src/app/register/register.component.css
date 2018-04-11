@@ -1,0 +1,28 @@
+.register p{
+  display: block;
+  font-size: 34%;
+  color: #ddfe00;
+  text-transform: none;
+  margin-top: -5px;
+  font-family: inherit;
+}
+.fold {
+  background: url("../../assets/images/map-header.jpg")  center;
+  background-size: cover;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.inscription{
+  background-color: #fff;
+}
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+.full-width {
+  width: 100%;
+}

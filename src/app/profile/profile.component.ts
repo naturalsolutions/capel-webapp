@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'user-profile',
@@ -16,19 +17,12 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
-    let token:string = localStorage.getItem('portcros.token');
-    if (!token)
-      this.login();
-    else {
-      this.http.get<any>('http://127.0.0.1:5000/api/users/me', {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      }).subscribe(user => {
+    this.userService.getProfile().then(user => {
         console.log(user);
         this.user = user;
         this.fg = this.fb.group({
@@ -37,12 +31,7 @@ export class ProfileComponent implements OnInit {
         });
       }, error => {
         console.log(error);
-        this.login();
-      })
+      });
     }
-  }
 
-  login() {
-    this.router.navigate(['/login']);
-  }
 }

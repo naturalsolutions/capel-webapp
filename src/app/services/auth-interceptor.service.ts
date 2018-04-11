@@ -1,0 +1,32 @@
+import { Injectable } from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+@Injectable()
+export class AuthInterceptorService  implements HttpInterceptor{
+
+
+  public static token: string;
+
+  constructor() {
+  }
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (AuthInterceptorService.token && req.withCredentials !== true) {
+      const cloned = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + AuthInterceptorService.token)
+      });
+      return next.handle(cloned).catch((error, caught) => {
+        return this.errorHandler(error, caught);
+      });
+    } else {
+      return next.handle(req).catch((error, caught) => {
+        return this.errorHandler(error, caught);
+      });
+    }
+  }
+
+  errorHandler(error, caught) {
+    console.log(error);
+    return Observable.throw(error);
+  }
+}

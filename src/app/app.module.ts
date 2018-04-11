@@ -10,8 +10,12 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {AuthGuard} from './services/auth-guard';
+import {UserService} from './services/user.service';
+import {AuthInterceptorService} from './services/auth-interceptor.service';
+import {StoreModule} from './models/store.module';
+import { NgReduxModule } from '@angular-redux/store';
 
 @NgModule({
   declarations: [
@@ -27,9 +31,15 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
     AppMaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule,
+    NgReduxModule
   ],
-  providers: [],
+  providers: [AuthGuard, UserService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

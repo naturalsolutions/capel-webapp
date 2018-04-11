@@ -1,3 +1,94 @@
-<p>
-  register works!
-</p>
+<main class="page container-fluid">
+      <div class="row align-items-center">
+        <div class="col-sm-3">
+          <h1 class="brand">LE CAPEL
+            <small>Carnet de Plongée En Ligne</small>
+          </h1>
+        </div>
+        <div class="col-sm-6 text-center example-container" style="">
+          <h1 class="brand">INSCRIPTION</h1>
+          <mat-card>
+            <form  class="register-form inscription" [formGroup]="options">
+              <div>
+                <mat-toolbar>
+                  <span>VOUS </span>
+                </mat-toolbar>
+                <div class="col-sm-12">
+                <label>vous êtes:  </label>
+                <mat-radio-group formControlName="type">
+                  <mat-radio-button value="particulier">JE SUIS UN PARTICULIER</mat-radio-button>
+                  <mat-radio-button value="structure">JE SUIS UNE STRUCTURE</mat-radio-button>
+                </mat-radio-group>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width">
+                  <input matInput type="text" placeholder="Nom" formControlName="lastname">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput type="text" placeholder="Prénom" formControlName="firstname">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput type="text" placeholder="email" formControlName="email">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput type="text" placeholder="téléphone" formControlName="phone">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput type="text" placeholder="adresse postale" formControlName="address">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput placeholder="mot de passe: " [type]="hide ? 'password' : 'text'">
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput placeholder="confirmation du mot de passe :" [type]="hide ? 'password' : 'text'">
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                </mat-form-field>
+              </div>
+              <mat-toolbar>
+                <span>LE BATEAU </span>
+              </mat-toolbar>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput type="text" placeholder="nom" formControlName="name">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field class="full-width" [color]="options.value.color">
+                  <input matInput type="text" placeholder="imatriculation" formControlName="immatriculation">
+                </mat-form-field>
+              </div>
+              <div class="row justify-content-md-center">
+                <div class="col-sm-6 col-sm-3 col-sm-6">
+                  <a href="#" class="btn btn-secondary btn-block"> AJOUTER UN BATEAU</a>
+                </div>
+              </div>
+              <div class="row justify-content-md-center" style="margin-top: 100px;">
+                <div class="col-sm-6 col-sm-3 col-sm-6">
+                  <a href="#" class="btn btn-primary btn-block"> S'INSCRIRE</a>
+                </div>
+              </div>
+            </form>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 text-left">
+          <div class="col-sm mt-2 mt-sm-0">
+            <p>VOUS AVEZ DÈJÀ UN COMPTE?</p>
+            <a href="#" class="btn btn-primary btn-block"> SE CONNECTER</a>
+          </div>
+        </div>
+      </div>
+</main>
