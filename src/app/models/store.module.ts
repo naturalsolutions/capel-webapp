@@ -6,14 +6,14 @@ import { createLogger } from 'redux-logger';
 import { NgRedux, DevToolsExtension } from '@angular-redux/store';
 import persistState from 'redux-localstorage';
 
-import {SessionModel} from './session.model';
+import {SessionModule} from './session.module';
 import {SessionActionsService} from '../store/session/session-actions.service';
 import {sessionReducer} from '../store/session/session-reducer.service';
 
 
 
 export class IAppState {
-  session?: SessionModel;
+  session?: SessionModule;
 }
 
 @NgModule({

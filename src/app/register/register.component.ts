@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {BoatModule} from '../models/boat.module';
 
 @Component({
   selector: 'app-register',
@@ -8,25 +9,37 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
-
-  options: FormGroup;
-
-  constructor(fb: FormBuilder) {
-    this.options = fb.group({
-      type: new FormControl(),
-      firstname: new FormControl(),
-      lastname: new FormControl(),
-      email: new FormControl(),
-      phone: new FormControl(),
-      address: new FormControl(),
-      password:  new FormControl(),
-      name: new FormControl(),
-      immatriculation:  new FormControl()
-
+  userForm: FormGroup;
+  boats: FormArray =  new FormArray([]);
+  constructor(private fb: FormBuilder) {
+    this.userForm = fb.group({
+      type: ['', Validators.required ],
+      firstname: ['', Validators.required ],
+      lastname: ['', Validators.required ],
+      email: ['', Validators.required ],
+      phone: ['', Validators.required ],
+      address: ['', Validators.required ],
+      password:  ['', Validators.required ],
+      boats: fb.array([])
     });
   }
-
-  ngOnInit() {
+  createBoat(): FormGroup {
+    return this.fb.group({
+      name: '',
+      immatriculation: ''
+    });
   }
+  ngOnInit() {
 
+  }
+  addBoat() {
+    this.boats = this.userForm.get('boats') as FormArray;
+    this.boats.push(this.createBoat());
+  }
+  removeBoat(indice: any) {
+    this.boats.removeAt(indice);
+  }
+  save() {
+    console.log(this.userForm.getRawValue());
+  }
 }

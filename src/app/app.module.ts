@@ -16,13 +16,15 @@ import {UserService} from './services/user.service';
 import {AuthInterceptorService} from './services/auth-interceptor.service';
 import {StoreModule} from './models/store.module';
 import { NgReduxModule } from '@angular-redux/store';
+import { BoatComponent } from './boat/boat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ProfileComponent,
-    RegisterComponent
+    RegisterComponent,
+    BoatComponent
   ],
   imports: [
     BrowserModule,

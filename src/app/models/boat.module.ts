@@ -8,14 +8,10 @@ import * as _ from 'lodash';
   ],
   declarations: []
 })
-export class UserModel {
+export class BoatModule {
   _id: string;
-  firstname:string;
-  lastname:string;
-  email:string;
-  phone:string;
-  address:string;
-  password: string;
+  name:string;
+  immatriculation:string;
   createdAt: Date;
   lastSurgeryAt: Date;
 

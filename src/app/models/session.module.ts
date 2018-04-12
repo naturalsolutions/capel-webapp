@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserModel } from './user.model';
+import { UserModule } from './user.module';
 import * as _ from 'lodash';
 
 @NgModule({
@@ -9,12 +9,12 @@ import * as _ from 'lodash';
   ],
   declarations: []
 })
-export class SessionModel {
+export class SessionModule {
   seanceId: string;
-  seance: UserModel;
+  seance: UserModule;
   token: string;
-  user: UserModel;
-  patient: UserModel;
+  user: UserModule;
+  patient: UserModule;
   isPatient: boolean;
   appVersion: string;
   constructor(data?: any) {
@@ -25,7 +25,7 @@ export class SessionModel {
   patch(data: any) {
     _.assign(this, data);
     if (_.isPlainObject(this.user)) {
-      this.user = new UserModel(this.user);
+      this.user = new UserModule(this.user);
     }
   }
 
