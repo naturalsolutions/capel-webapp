@@ -11,7 +11,6 @@ import {AuthInterceptorService} from './services/auth-interceptor.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'app';
   constructor(
     private ngRedux: NgRedux<any>,
     private router: Router
@@ -33,7 +32,6 @@ export class AppComponent implements OnInit{
         if (!this.isSessionValid(session)) {
             return false;
         }
-        console.log(session.token);
         AuthInterceptorService.token = session.token;
         return true;
       })

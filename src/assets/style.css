@@ -98,6 +98,7 @@ header nav {
 .page {
   padding: 0;
   padding-top: 80px;
+  background-color: #00accc;
 }
 @media (max-width: 575px) {
   .fold:nth-child(1) h2 {

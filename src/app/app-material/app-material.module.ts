@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatInputModule,
-  MAT_LABEL_GLOBAL_OPTIONS, MatRadioModule, MatOptionModule, MatSelectModule, MatIconModule, MatToolbarModule
+  MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule,
+  MAT_LABEL_GLOBAL_OPTIONS, MatRadioModule, MatOptionModule, MatSelectModule, MatIconModule, MatToolbarModule, MatInputModule
+  , MatSnackBarModule
 } from '@angular/material';
 
 
@@ -11,7 +12,7 @@ import {
     CommonModule,
     MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatInputModule
   ],
-  exports: [MatIconModule, MatToolbarModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatOptionModule],
+  exports: [MatIconModule, MatSnackBarModule, MatToolbarModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatRadioModule, MatOptionModule, MatInputModule],
   declarations: [],
   providers: [
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}}

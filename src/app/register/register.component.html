@@ -1,6 +1,6 @@
 <main class="page container-fluid">
-      <div class="row align-items-center">
-        <div class="col-sm-3">
+      <div class="row">
+        <div class="col-sm-3 align-items">
           <h1 class="brand">LE CAPEL
             <small>Carnet de Plongée En Ligne</small>
           </h1>
@@ -16,7 +16,7 @@
                 <div class="col-sm-12">
                 <label>vous êtes:  </label>
                 <mat-radio-group formControlName="type">
-                  <mat-radio-button value="particulier">JE SUIS UN PARTICULIER</mat-radio-button>
+                  <mat-radio-button value="particulier" >JE SUIS UN PARTICULIER</mat-radio-button>
                   <mat-radio-button value="structure">JE SUIS UNE STRUCTURE</mat-radio-button>
                 </mat-radio-group>
                 </div>
@@ -25,74 +25,114 @@
                 <mat-form-field class="full-width">
                   <input matInput type="text" placeholder="Nom" formControlName="lastname">
                 </mat-form-field>
+                <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)" class="alert alert-danger">
+                  <div *ngIf="lastname.errors.required">
+                    Le nom est obligatoire.
+                  </div>
+                </div>
               </div>
               <div class="col-sm-12">
                 <mat-form-field class="full-width" >
-                  <input matInput type="text" placeholder="Prénom" formControlName="firstname">
+                  <input matInput type="text" placeholder="Prénom" formControlName="firstname" required>
                 </mat-form-field>
+                <div *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)" class="alert alert-danger">
+                  <div *ngIf="firstname.errors.required">
+                    Le prénom est obligatoire.
+                  </div>
+                </div>
               </div>
               <div class="col-sm-12">
                 <mat-form-field class="full-width" >
-                  <input matInput type="text" placeholder="email" formControlName="email">
+                  <input matInput type="text" placeholder="email" formControlName="email" email>
                 </mat-form-field>
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                    Entrer un email valide.
+                </div>
               </div>
               <div class="col-sm-12">
                 <mat-form-field class="full-width">
                   <input matInput type="text" placeholder="téléphone" formControlName="phone">
                 </mat-form-field>
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+                  <div *ngIf="phone.errors.required">
+                    Le téléphone est obligatoire.
+                  </div>
+                </div>
               </div>
               <div class="col-sm-12">
                 <mat-form-field class="full-width">
                   <input matInput type="text" placeholder="adresse postale" formControlName="address">
                 </mat-form-field>
+                <div *ngIf="address.invalid && (address.dirty || address.touched)" class="alert alert-danger">
+                  <div *ngIf="address.errors.required">
+                    L'adresse est obligatoire.
+                  </div>
+                </div>
               </div>
               <div class="col-sm-12">
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="mot de passe: " [type]="hide ? 'password' : 'text'">
+                  <input matInput placeholder="mot de passe: " [type]="hide ? 'password' : 'text'" formControlName="password">
                   <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
                 </mat-form-field>
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+                  <div *ngIf="password.errors.required">
+                    le mot de passe est obligatoire.
+                  </div>
+                </div>
               </div>
               <div class="col-sm-12">
                 <mat-form-field class="full-width" >
-                  <input matInput placeholder="confirmation du mot de passe :" [type]="hide ? 'password' : 'text'">
+                  <input matInput placeholder="confirmation du mot de passe :" [type]="hide ? 'password' : 'text'" formControlName="repeat">
                   <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
                 </mat-form-field>
+                <div *ngIf="(repeat.dirty || repeat.touched)">
+                  <div *ngIf="userForm.get('password').value != userForm.get('repeat').value && userForm.get('repeat').value != null" class="alert alert-danger">
+                    Le mot de passe ne correspond pas</div>                </div>
               </div>
               <mat-toolbar>
                 <span>LE BATEAU </span>
               </mat-toolbar>
               <div formArrayName="boats" class="well well-lg">
                 <div class="boat" *ngFor="let boat of boats.controls; let i=index" [formGroupName]="i" >
-                  <div class="button-row">
-                    <button mat-button>Save</button>
-                    <button mat-button (click)="removeBoat(i)" color="warn">X</button>
+                  <div class="button-row text-right">
+                    <button mat-mini-fab color="warn" (click)="removeBoat(i)">X</button>
                   </div>
                   <div class="col-sm-12">
                     <mat-form-field class="full-width">
                       <input matInput type="text" placeholder="nom" formControlName="name">
                     </mat-form-field>
+                    <div *ngIf="boat.controls.name.invalid && (boat.controls.name.dirty || boat.controls.name.touched)" class="alert alert-danger">
+                      <div *ngIf="boat.controls.name.errors.required">
+                        le nom de bateau est obligatoire.
+                      </div>
+                    </div>
                   </div>
                   <div class="col-sm-12">
                     <mat-form-field class="full-width">
                       <input matInput type="text" placeholder="imatriculation" formControlName="immatriculation">
                     </mat-form-field>
+                    <div *ngIf="boat.controls.immatriculation.invalid && (boat.controls.immatriculation.dirty || boat.controls.immatriculation.touched)" class="alert alert-danger">
+                      <div *ngIf="boat.controls.immatriculation.errors.required">
+                        l'imatriculation de bateau est obligatoire.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="row justify-content-md-center">
               <div class="col-sm-6 col-sm-3 col-sm-6">
-                <a  class="btn btn-secondary btn-block" (click)="addBoat()"> AJOUTER UN BATEAU</a>
+                <button  class="btn btn-secondary btn-block" (click)="addBoat()"> AJOUTER UN BATEAU</button>
               </div>
             </div>
               <div class="row justify-content-md-center" style="margin-top: 100px;">
                 <div class="col-sm-6 col-sm-3 col-sm-6">
-                  <a (click)="save()" class="btn btn-primary btn-block"> S'INSCRIRE</a>
+                  <button (click)="save()" class="btn btn-primary btn-block"> S'INSCRIRE</button>
                 </div>
               </div>
             </form>
           </mat-card>
         </div>
-        <div class="col-sm-3 text-left">
+        <div class="col-sm-3 text-left align-items">
           <div class="col-sm mt-2 mt-sm-0">
             <p>VOUS AVEZ DÈJÀ UN COMPTE?</p>
             <a href="#" class="btn btn-primary btn-block"> SE CONNECTER</a>
