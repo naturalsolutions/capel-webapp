@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   createBoat(): FormGroup {
     return this.fb.group({
       name: new FormControl('', Validators.required),
-      immatriculation: new FormControl('', Validators.required),
+      matriculation: new FormControl('', Validators.required),
     });
   }
 
@@ -32,8 +32,8 @@ export class RegisterComponent implements OnInit {
       email: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
-      password:  new FormControl('', Validators.required),
-      repeat:  new FormControl('', Validators.required),
+      password:  new FormControl('', [Validators.required, Validators.minLength(6)]),
+      repeat:  new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
     }, {validator: this.passwordConfirming});
     this.addBoat();
@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
 
   // Boat Getters
   get name(){ return this.userForm.get('boats').get('name'); }
-  get immatriculation(){ return this.userForm.get('boats').get('immatriculation'); }
+  get matriculation(){ return this.userForm.get('boats').get('matriculation'); }
 
 }
 @Component({
