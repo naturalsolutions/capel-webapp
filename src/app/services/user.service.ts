@@ -22,6 +22,12 @@ export class UserService {
       .then(this.extractData)
       .catch(this.handleError);
   }
+  post(data: any): Promise<any> {
+    return this.http.post<any>(config.serverURL + '/api/users', data)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
 
   private extractData(res: Response) {
     console.log(res);
