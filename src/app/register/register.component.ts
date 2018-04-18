@@ -32,16 +32,16 @@ export class RegisterComponent implements OnInit {
   // component initialisation
   ngOnInit() {
     this.userForm = this.fb.group({
-      type: new FormControl('', Validators.required),
+      category: new FormControl('', Validators.required),
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required),
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
-    }, { validator: this.passwordConfirming });
+    }, { validator: this.passwordConfirming , updateOn: 'blur' });
     this.addBoat();
   }
   // Confirm password validation
@@ -70,8 +70,6 @@ export class RegisterComponent implements OnInit {
       });
     } else {
       const data: any = this.userForm.getRawValue();
-      data.category = data.type;
-      delete data.type;
       delete data.repeat;
       this.userService.post(data)
         .then(user => {
@@ -83,7 +81,7 @@ export class RegisterComponent implements OnInit {
   // User getters
   get lastname(){ return this.userForm.get('lastname'); }
   get firstname(){ return this.userForm.get('firstname'); }
-  get type(){ return this.userForm.get('type'); }
+  get category(){ return this.userForm.get('type'); }
   get email(){ return this.userForm.get('email'); }
   get phone(){ return this.userForm.get('phone'); }
   get address(){ return this.userForm.get('address'); }
