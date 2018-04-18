@@ -1,24 +1,34 @@
-.register {
-  p {
-    display: block;
-    font-size: 34%;
-    color: #ddfe00;
-    text-transform: none;
-    margin-top: -5px;
-    font-family: inherit;
+app-register {
+  .register {
+    p {
+      display: block;
+      font-size: 34%;
+      color: #ddfe00;
+      text-transform: none;
+      margin-top: -5px;
+      font-family: inherit;
+    }
+    .inscription {
+      background-color: #fff;
+    }
+    .boat {
+      padding: 10px 0px 10px 20px;
+    }
   }
-  .inscription{
-    background-color: #fff;
+  .align-items {
+    padding: 40px 10px 10px 20px;
   }
-  .boat{
-    padding: 10px 0px 10px 0px;
+  .full-width {
+    width: 100%;
   }
-}
-.align-items{
-  padding-top: 100px;
-}
-.full-width {
-  width: 100%;
+  @media (max-width: 768px) {
+    .align-items {
+      padding: 10px 10px 10px 10px;
+    }
+    .order-mobile{-webkit-box-ordinal-group:0;-ms-flex-order:-1;order:-1}
+
+  }
+
 }
 
 

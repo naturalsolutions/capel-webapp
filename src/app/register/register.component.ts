@@ -8,6 +8,7 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./register.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class RegisterComponent implements OnInit {
   userForm: FormGroup;
   boats: FormArray =  new FormArray([]);
@@ -58,7 +59,11 @@ export class RegisterComponent implements OnInit {
   // save User
   save() {
     if ( this.userForm.invalid ) {
-      this.snackBar.openFromComponent(ErrorComponent, {
+     /* this.snackBar.openFromComponent(ErrorComponent, {
+        duration: 1000,
+      });
+     */
+      this.snackBar.open('Merci de remplir les champs correctement', '' ,{
         duration: 1000,
       });
     }else {
@@ -79,7 +84,6 @@ export class RegisterComponent implements OnInit {
   // Boat Getters
   get name(){ return this.userForm.get('boats').get('name'); }
   get matriculation(){ return this.userForm.get('boats').get('matriculation'); }
-
 }
 @Component({
   selector: 'app-error-component',
