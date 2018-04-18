@@ -30,7 +30,6 @@ export class UserService {
   }
 
   private extractData(res: Response) {
-    console.log(res);
     return res || {};
   }
 
