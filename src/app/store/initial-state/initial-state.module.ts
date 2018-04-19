@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {SessionModule} from '../../models/session.module';
+import { AppModel } from '../../models/app.model';
+import { SessionModule } from '../../models/session.module';
 
 @NgModule({
   imports: [
@@ -8,10 +9,12 @@ import {SessionModule} from '../../models/session.module';
   ],
   declarations: []
 })
-  export class IAppState {
-    session?: SessionModule;
-  };
-  export const INITIAL_STATE: IAppState = {
-    session: new SessionModule()
-  };
+export class IAppState {
+  app?: AppModel;
+  session?: SessionModule;
+};
+export const INITIAL_STATE: IAppState = {
+  app: new AppModel(),
+  session: new SessionModule()
+};
 

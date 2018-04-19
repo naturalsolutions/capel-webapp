@@ -1,24 +1,35 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import * as _ from 'lodash';
-import {Router} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/first';
-import {AuthInterceptorService} from './services/auth-interceptor.service';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { config } from './settings';
+import { SessionActionsService } from './store/session/session-actions.service';
+import { UserService } from './services/user.service';
+import { MatSnackBar } from '@angular/material';
+import { AppActionsService } from './store/app/app-actions.service';
+import { AppModel } from './models/app.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   constructor(
     private ngRedux: NgRedux<any>,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private sessionActionsService: SessionActionsService,
+    private appActionsService: AppActionsService,
+    private userService: UserService,
+    private snackBar: MatSnackBar
+  ) { }
   ngOnInit() {
-    this.start();
   }
-  isSessionValid(session): boolean {
+
+  /* isSessionValid(session): boolean {
     if (!_.get(session, 'token')) {
       return false;
     }
@@ -30,7 +41,7 @@ export class AppComponent implements OnInit{
       .first((session: any) => {
         console.log('start first', session);
         if (!this.isSessionValid(session)) {
-            return false;
+          return false;
         }
         AuthInterceptorService.token = session.token;
         return true;
@@ -44,5 +55,5 @@ export class AppComponent implements OnInit{
             }
           });
       });
-  }
+  } */
 }

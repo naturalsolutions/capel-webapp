@@ -19,6 +19,7 @@ export class SessionActionsService {
 
   public open(data: any): void {
     data.appVersion = config.appVersion;
+    AuthInterceptorService.token = data.token;
     this.ngRedux.dispatch({ type: SessionActionsService.OPEN_SESSION, data: data });
   }
 
