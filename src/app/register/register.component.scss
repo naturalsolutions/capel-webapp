@@ -1,4 +1,8 @@
 app-register {
+  .page {
+    min-height: 100vh;
+    padding-top: 120px;
+  }
   .register {
     p {
       display: block;

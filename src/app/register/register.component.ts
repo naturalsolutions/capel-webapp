@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from '../services/user.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-register',
@@ -13,19 +14,22 @@ import { UserService } from '../services/user.service';
 export class RegisterComponent implements OnInit {
   userForm: FormGroup;
   boats: FormArray = new FormArray([]);
+  private status:string = '';
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog
   ) {
 
   }
 
   // create new Boat Form
   createBoat(): FormGroup {
+    //TODO manage required fields
     return this.fb.group({
-      name: new FormControl('', Validators.required),
-      matriculation: new FormControl('', Validators.required),
+      name: new FormControl(''),
+      matriculation: new FormControl(''),
     });
   }
 
@@ -35,7 +39,7 @@ export class RegisterComponent implements OnInit {
       category: new FormControl('', Validators.required),
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required),
+      email: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -63,7 +67,6 @@ export class RegisterComponent implements OnInit {
 
   // save User
   save() {
-
     if (this.userForm.invalid) {
       this.snackBar.openFromComponent(ErrorComponent, {
         duration: 1000
@@ -71,9 +74,28 @@ export class RegisterComponent implements OnInit {
     } else {
       const data: any = this.userForm.getRawValue();
       delete data.repeat;
+      data.boats = _.filter(data.boats, boat => {
+        if (_.get(boat, 'name') && _.get(boat, 'matriculation'))
+          return boat;
+      });
+      let dialogRef = this.dialog.open(LoaderDialogComponent, {
+        disableClose: true
+      });
+
       this.userService.post(data)
         .then(user => {
-          console.log(user);
+          setTimeout(() => {
+            dialogRef.close();
+            this.status = 'complete';
+          }, 500);
+        }, error => {
+          if (_.get(error, 'error.error.name') == 'invalid_model')
+            this.snackBar.open("Cet email exite déjà", "OK", {
+              duration: 5000
+            });
+          setTimeout(() => {
+            dialogRef.close();
+          }, 500);
         });
     }
   }
@@ -98,3 +120,9 @@ export class RegisterComponent implements OnInit {
   styles: [`.error { color: red; }`],
 })
 export class ErrorComponent { }
+
+@Component({
+  selector: 'app-loader-dialog-component',
+  template: `<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>`
+})
+export class LoaderDialogComponent { }

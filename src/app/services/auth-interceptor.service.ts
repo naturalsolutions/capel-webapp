@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+
 @Injectable()
 export class AuthInterceptorService  implements HttpInterceptor{
 
@@ -27,7 +29,6 @@ export class AuthInterceptorService  implements HttpInterceptor{
   }
 
   errorHandler(error, caught) {
-    console.log(error);
     return Observable.throw(error);
   }
 }

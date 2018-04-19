@@ -24,9 +24,7 @@ export class UserService {
   }
   post(data: any): Promise<any> {
     return this.http.post<any>(config.serverURL + '/api/users', data)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
+      .toPromise();
   }
 
   private extractData(res: Response) {

@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ErrorComponent, RegisterComponent } from './register/register.component';
+import { ErrorComponent, RegisterComponent, LoaderDialogComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,7 +26,8 @@ import { InitGuard } from './services/init-guard';
     ProfileComponent,
     RegisterComponent,
     BoatComponent,
-    ErrorComponent
+    ErrorComponent,
+    LoaderDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,7 @@ import { InitGuard } from './services/init-guard';
     StoreModule,
     NgReduxModule
   ],
-  entryComponents: [ErrorComponent],
+  entryComponents: [ErrorComponent, LoaderDialogComponent],
   providers: [InitGuard, AuthGuard, UserService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
