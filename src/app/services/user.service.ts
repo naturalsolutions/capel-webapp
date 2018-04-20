@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { config } from '../settings';
 import {HttpClient} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material';
 
 @Injectable()
 export class UserService {

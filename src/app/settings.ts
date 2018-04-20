@@ -1,5 +1,5 @@
 export var config = {
-  'serverURL' : 'http://127.0.0.1:5000',
+  'serverURL' : 'http://149.202.44.29/capel',
   'appName' : 'capel',
   'appVersion': '1.0'
 }

@@ -3,6 +3,11 @@ app-register {
     min-height: 100vh;
     padding-top: 120px;
   }
+  .complete{
+    mat-card{
+      display: inline-block;
+    }
+  }
   .register {
     p {
       display: block;
