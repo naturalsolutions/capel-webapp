@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -18,6 +18,9 @@ import { StoreModule } from './models/store.module';
 import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
+import { DiveComponent } from './dive/dive.component';
+import {BoatService} from './services/boat.service';
+import {DiveService} from './services/dive.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,8 @@ import { InitGuard } from './services/init-guard';
     RegisterComponent,
     BoatComponent,
     ErrorComponent,
-    LoaderDialogComponent
+    LoaderDialogComponent,
+    DiveComponent
   ],
   imports: [
     BrowserModule,
@@ -38,10 +42,17 @@ import { InitGuard } from './services/init-guard';
     AppMaterialModule,
     AppRoutingModule,
     StoreModule,
-    NgReduxModule
+    NgReduxModule,
+    LeafletModule.forRoot()
   ],
   entryComponents: [ErrorComponent, LoaderDialogComponent],
-  providers: [InitGuard, AuthGuard, UserService, {
+  providers: [
+    InitGuard,
+    AuthGuard,
+    UserService,
+    BoatService,
+    DiveService,
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true,

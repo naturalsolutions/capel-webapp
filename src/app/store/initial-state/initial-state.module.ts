@@ -12,7 +12,8 @@ import { SessionModule } from '../../models/session.module';
 export class IAppState {
   app?: AppModel;
   session?: SessionModule;
-};
+}
+
 export const INITIAL_STATE: IAppState = {
   app: new AppModel(),
   session: new SessionModule()

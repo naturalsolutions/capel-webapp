@@ -1,0 +1,25 @@
+
+  .page {
+    min-height: 100vh;
+    padding-top: 140px;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent{
+    background-color: #00accc;
+  }
+  mat-toolbar{
+    margin: 0px 0px 50px 0px;
+  }
+  h5{
+    color: #00accc;
+  }
+  .list-inline{
+    img{
+      width: 100px;
+      height: 100px;
+      margin: 20px 60px 20px 0px;
+    }
+
+  }

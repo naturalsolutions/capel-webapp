@@ -11,9 +11,7 @@ export class UserService {
 
   login(data: any): Promise<any> {
     return this.http.post<any>(config.serverURL + '/api/users/login', data)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
+      .toPromise();
   }
   getProfile(): Promise<any> {
     return this.http.get<any>(config.serverURL + '/api/users/me')

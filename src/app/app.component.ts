@@ -10,6 +10,7 @@ import { UserService } from './services/user.service';
 import { MatSnackBar } from '@angular/material';
 import { AppActionsService } from './store/app/app-actions.service';
 import { AppModel } from './models/app.model';
+import {SessionModule} from './models/session.module';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { AppModel } from './models/app.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  isConnected: any = false;
   constructor(
     private ngRedux: NgRedux<any>,
     private router: Router,
@@ -25,8 +27,19 @@ export class AppComponent implements OnInit {
     private appActionsService: AppActionsService,
     private userService: UserService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+
+  }
+  logOut() {
+    this.sessionActionsService.close();
+    this.isConnected = false;
+    this.router.navigateByUrl('/login');
+  }
   ngOnInit() {
+    const sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
+    if (sessionState.token) {
+      this.isConnected = true;
+    }
   }
 
   /* isSessionValid(session): boolean {

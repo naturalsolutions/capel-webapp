@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AuthInterceptorService} from '../services/auth-interceptor.service';
 import {SessionActionsService} from '../store/session/session-actions.service';
+import * as _ from 'lodash';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +21,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
+    private snackBar: MatSnackBar,
     private sessionActionsService: SessionActionsService
   ) { }
 
@@ -33,6 +36,14 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.fg.value).then(data => {
       this.sessionActionsService.open(data);
       this.router.navigate(['/profile']);
-    });
+    }, error => {
+      console.log(error);
+      if (_.get(error, 'error.error') == 'user_draft') {
+        this.snackBar.open("Veuillez valider votre email", "OK", {
+          duration: 5000
+        });
+      }
+      }
+    );
   }
 }

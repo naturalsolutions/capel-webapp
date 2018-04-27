@@ -16,7 +16,7 @@ import { appReducer } from '../store/app/app-reducer.service';
 
 
 export class IAppState {
-  app?: AppModel
+  app?: AppModel;
   session?: SessionModule;
 }
 

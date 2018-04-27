@@ -5,6 +5,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth-guard';
 import { InitGuard } from './services/init-guard';
+import {DiveComponent} from './dive/dive.component';
 const routes: Routes = [{
   path: '',
   canActivate: [InitGuard],
@@ -19,15 +20,20 @@ const routes: Routes = [{
     component: ProfileComponent,
     canActivate: [AuthGuard]
   }, {
+      path: 'dive',
+      component: DiveComponent,
+      canActivate: [AuthGuard]
+    }, {
     path: '',
     redirectTo: 'profile',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [AuthGuard]
   }]
 },
 { path: '**', redirectTo: '' }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
