@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
     }
 
   getPermit(id: number) {
-    if (this.user.id !== id /* || this.user.isAdmin() */) {
+    if (this.user.id !== id /* || !this.user.isAdmin() */) {
       return null
     }
     const permit$ = this.userService.getPermit(id)
@@ -57,7 +57,6 @@ export class ProfileComponent implements OnInit {
         this.openDialog(fileURL)
       },
       error => console.error('Permit download failed: ' + error))
-    // window.location.href = permit$
   }
 
   openDialog(blobUrl: string) {
