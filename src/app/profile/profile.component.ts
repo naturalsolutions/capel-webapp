@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -6,6 +6,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { UserService } from '../services/user.service';
 import { config } from '../settings';
+import { Subject } from 'rxjs';
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +16,7 @@ import { config } from '../settings';
 })
 export class ProfileComponent implements OnInit {
 
+  private onDestroy$ = new Subject();
   private fg: FormGroup;
   private user: any = {};
   private config;
@@ -43,18 +46,23 @@ export class ProfileComponent implements OnInit {
       });
     }
 
+  ngOnDestroy() {
+    this.onDestroy$.next()
+  }
+
   getPermit(id: number) {
     if (this.user.id !== id /* || !this.user.isAdmin() */) {
       return null
     }
-    const permit$ = this.userService.getPermit(id)
-    permit$.subscribe(
-      data => {
-        const file = new Blob([data.body], {type: 'application/pdf'})
-        const fileURL = window.URL.createObjectURL(file)
-        this.openDialog(fileURL)
-      },
-      error => console.error('Permit download failed: ' + error))
+    this.userService.getPermit(id)
+      .takeUntil(this.onDestroy$)
+      .subscribe(
+        data => {
+          const blob = new Blob([data.body], {type: 'application/pdf'})
+          const blobURL = window.URL.createObjectURL(blob)
+          this.openDialog(blobURL)
+        },
+        error => console.error('Permit download failed: ' + error))
   }
 
   openDialog(blobUrl: string) {
@@ -63,11 +71,13 @@ export class ProfileComponent implements OnInit {
       data: {permitBlobUrl: this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)}
     })
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.debug(result)
-      }
-    })
+    dialogRef.afterClosed()
+      .takeUntil(this.onDestroy$)
+      .subscribe(result => {
+        if (result) {
+          console.debug(result)
+        }
+      })
   }
 }
 
@@ -79,7 +89,7 @@ export class ProfileComponent implements OnInit {
   <iframe [src]="data.permitBlobUrl" class="dialog-full-width"></iframe>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">CANCEL</button>
+  <button mat-button (click)="onSaveClick()">SAVE</button>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>AGREED</button>
 </div>`,
   styles: [`
@@ -96,7 +106,18 @@ export class PermitViewDialog {
       console.debug('PermitBlob:', data.permitBlobUrl)
     }
 
-  onNoClick(): void {
+  onSaveClick(): void {
+    console.debug(this.data.permitBlobUrl)
+    // var a = document.createElement('a')
+    // a.setAttribute('href', this.data.permitBlobUrl);
+    // a.setAttribute('download', 'permit.pdf');
+    //
+    // var click = new MouseEvent("click", {
+    //     "view": window,
+    //     "bubbles": true,
+    //     "cancelable": false
+    // });
+    // a.dispatchEvent(click);
     this.dialogRef.close();
   }
 }
