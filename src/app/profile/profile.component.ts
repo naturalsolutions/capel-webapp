@@ -16,6 +16,7 @@ import 'rxjs/add/operator/takeUntil';
 })
 export class ProfileComponent implements OnInit {
 
+  permitBlobUrl: SafeResourceUrl;
   private onDestroy$ = new Subject();
   private fg: FormGroup;
   private user: any = {};
@@ -51,7 +52,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getPermit(id: number) {
-    if (this.user.id !== id /* || !this.user.isAdmin() */) {
+    if (this.user.id !== id /* && !this.user.isAdmin() */) {
       return null
     }
     this.userService.getPermit(id)
@@ -59,25 +60,33 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         data => {
           const blob = new Blob([data.body], {type: 'application/pdf'})
-          const blobURL = window.URL.createObjectURL(blob)
-          this.openDialog(blobURL)
+          let blobUrl = window.URL.createObjectURL(blob)
+          this.permitBlobUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
+          blobUrl = window.URL.createObjectURL(blob)
+          this.openDialog(blobUrl)
         },
         error => console.error('Permit download failed: ' + error))
   }
 
   openDialog(blobUrl: string) {
     let dialogRef = this.dialog.open(PermitViewDialog, {
-      width: "100vw",
+      width: "100vw", height: "80vh",
       data: {permitBlobUrl: this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)}
     })
 
     dialogRef.afterClosed()
       .takeUntil(this.onDestroy$)
-      .subscribe(result => {
-        if (result) {
-          console.debug(result)
-        }
-      })
+      .subscribe(data => {
+        const a = window.document.getElementById('downloadPermit')
+        a.setAttribute('download', 'permit.pdf')
+        let click = new MouseEvent("click", {
+            "view": window,
+            "bubbles": true,
+            "cancelable": false
+        });
+        a.dispatchEvent(click)
+      }
+    )
   }
 }
 
@@ -89,35 +98,22 @@ export class ProfileComponent implements OnInit {
   <iframe [src]="data.permitBlobUrl" class="dialog-full-width"></iframe>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button (click)="onSaveClick()">SAVE</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>AGREED</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>
 </div>`,
   styles: [`
   .dialog-full-width {
     width: 100%;
-    }
+    height: 50vh;  /* FIXME: dialog/dialog-content heights */
+  }
 `]
 })
 export class PermitViewDialog {
 
   constructor(
     public dialogRef: MatDialogRef<PermitViewDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.debug('PermitBlob:', data.permitBlobUrl)
-    }
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
 
-  onSaveClick(): void {
-    console.debug(this.data.permitBlobUrl)
-    // var a = document.createElement('a')
-    // a.setAttribute('href', this.data.permitBlobUrl);
-    // a.setAttribute('download', 'permit.pdf');
-    //
-    // var click = new MouseEvent("click", {
-    //     "view": window,
-    //     "bubbles": true,
-    //     "cancelable": false
-    // });
-    // a.dispatchEvent(click);
+  onClose(): void {
     this.dialogRef.close();
   }
 }

@@ -40,7 +40,7 @@ import {
     MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatFormFieldModule, 
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
