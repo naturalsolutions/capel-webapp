@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit {
 
   openDialog(blobUrl: string) {
     let dialogRef = this.dialog.open(PermitViewDialog, {
-      width: "100%",
+      width: "100vw",
       data: {permitBlobUrl: this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)}
     })
 
@@ -78,14 +78,14 @@ export class ProfileComponent implements OnInit {
 <div mat-dialog-content>
   <iframe [src]="data.permitBlobUrl" class="dialog-full-width"></iframe>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">CANCEL</button>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>AGREED</button>
 </div>`,
   styles: [`
   .dialog-full-width {
-  width: 100%;
-}
+    width: 100%;
+    }
 `]
 })
 export class PermitViewDialog {
