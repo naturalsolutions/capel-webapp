@@ -1,24 +1,61 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule,
-  MAT_LABEL_GLOBAL_OPTIONS, MatRadioModule, MatOptionModule, MatSelectModule, MatIconModule, MatToolbarModule, MatInputModule
-  , MatSnackBarModule,
-  MatProgressSpinnerModule,
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
   MatDialog,
-  MatDialogModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatSliderModule
+  MatDatepickerModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatListModule,
+  MatIconModule,
+  MatInputModule,
+  MAT_LABEL_GLOBAL_OPTIONS,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatSliderModule
 } from '@angular/material';
 
 
 @NgModule({
   imports: [
-    CommonModule, MatDialogModule,
-    MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatInputModule
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
-  exports: [MatIconModule, MatSnackBarModule, MatToolbarModule, MatAutocompleteModule, MatSliderModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatRadioModule, MatOptionModule, MatInputModule, MatProgressSpinnerModule, MatListModule, MatDialogModule],
+  exports: [
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatFormFieldModule, 
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatOptionModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatToolbarModule,
+  ],
   declarations: [],
   providers: [
-    {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}}
+    {provide: MAT_LABEL_GLOBAL_OPTIONS,
+      useValue: {float: 'always'}}
   ]
 })
 export class AppMaterialModule { }
