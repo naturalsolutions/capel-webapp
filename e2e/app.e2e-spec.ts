@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('portcros-wepapp App', () => {
+describe('capel-wepapp App', () => {
   let page: AppPage;
 
   beforeEach(() => {
