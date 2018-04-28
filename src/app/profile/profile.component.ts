@@ -50,10 +50,8 @@ export class ProfileComponent implements OnInit {
     const permit$ = this.userService.getPermit(id)
     permit$.subscribe(
       data => {
-        const file = new Blob(
-            [data.body], {type: 'application/pdf'})
+        const file = new Blob([data.body], {type: 'application/pdf'})
         const fileURL = window.URL.createObjectURL(file)
-        console.debug(typeof fileURL, fileURL)
         this.openDialog(fileURL)
       },
       error => console.error('Permit download failed: ' + error))
