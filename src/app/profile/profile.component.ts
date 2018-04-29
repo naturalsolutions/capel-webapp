@@ -16,7 +16,7 @@ import 'rxjs/add/operator/takeUntil';
 })
 export class ProfileComponent implements OnInit {
 
-  permitBlobUrl: SafeResourceUrl
+  private permitBlob: Blob
   private onDestroy$ = new Subject()
   private fg: FormGroup;
   private user: any = {};
@@ -59,35 +59,43 @@ export class ProfileComponent implements OnInit {
       .takeUntil(this.onDestroy$)
       .subscribe(
         (response: HttpResponse<Blob>) => {
-          console.debug(response.headers)
-          const blob = new Blob([response.body], {type: 'application/pdf'})
-          let blobUrl = window.URL.createObjectURL(blob)
-          this.permitBlobUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
+          // console.debug(response.headers)
+          this.permitBlob = new Blob([response.body], {type: 'application/pdf'})
           if ('application/pdf' in navigator.mimeTypes) {
-            this.openPermitDialog(window.URL.createObjectURL(blob))
+            this.openPermitDialog(this.permitBlobUrl())
           } else {
             this._fixmeSavePermit()
           }
         },
-        error => console.error('Permit download failed: ' + error))
+        error => console.error('Permit download failed: ', error))  // 401 -> /login
+  }
+
+  permitBlobUrl(): SafeResourceUrl|null {
+    if (this.permitBlob) {
+      let blob = window.URL.createObjectURL(this.permitBlob)
+      return this.sanitizer.bypassSecurityTrustResourceUrl(blob)
+    } else {
+      return null
+    }
   }
 
   _fixmeSavePermit() {
     const a = window.document.getElementById('downloadPermit')
-    a.setAttribute('download', 'permit.pdf')
-    let click = new MouseEvent("click", {
+    a.setAttribute('download', `permit_capel_${this.user.firstname}_${this.user.id}.pdf`)
+    let aclick = new MouseEvent("click", {
       "view": window,
       "bubbles": true,
       "cancelable": false
-    });
-    a.dispatchEvent(click)
+    })
+    a.dispatchEvent(aclick)
   }
 
-  openPermitDialog(blobUrl: string) {
+  openPermitDialog(blobUrl: SafeResourceUrl) {
     let dialogRef = this.dialog.open(PermitViewDialog, {
-      width: "100vw", height: "80vh",  /* FIXME: style, dialog/dialog-content heights */
+      width: '100vw',
+      disableClose: true,
       data: {
-          permitBlobUrl: this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
+          permitBlobUrl: blobUrl
         }
     })
 
@@ -105,7 +113,7 @@ export class ProfileComponent implements OnInit {
   template: `
 <h1 mat-dialog-title>Site</h1>
 <div mat-dialog-content>
-  <iframe [src]="data.permitBlobUrl" class="dialog-full-width"></iframe>
+  <embed [src]="data.permitBlobUrl" type="application/pdf" class="dialog-full-width"/>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>
@@ -113,7 +121,7 @@ export class ProfileComponent implements OnInit {
   styles: [`
   .dialog-full-width {
     width: 100%;
-    height: 50vh;  /* FIXME: dialog/dialog-content heights */
+    min-height: 400px;
   }
 `]
 })
