@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -16,8 +16,8 @@ import 'rxjs/add/operator/takeUntil';
 })
 export class ProfileComponent implements OnInit {
 
-  permitBlobUrl: SafeResourceUrl;
-  private onDestroy$ = new Subject();
+  permitBlobUrl: SafeResourceUrl
+  private onDestroy$ = new Subject()
   private fg: FormGroup;
   private user: any = {};
   private config;
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
       }, error => {
         console.log(error);
       });
-    }
+  }
 
   ngOnDestroy() {
     this.onDestroy$.next()
@@ -58,33 +58,43 @@ export class ProfileComponent implements OnInit {
     this.userService.getPermit(id)
       .takeUntil(this.onDestroy$)
       .subscribe(
-        data => {
-          const blob = new Blob([data.body], {type: 'application/pdf'})
+        (response: HttpResponse<Blob>) => {
+          console.debug(response.headers)
+          const blob = new Blob([response.body], {type: 'application/pdf'})
           let blobUrl = window.URL.createObjectURL(blob)
           this.permitBlobUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
-          blobUrl = window.URL.createObjectURL(blob)
-          this.openDialog(blobUrl)
+          if ('application/pdf' in navigator.mimeTypes) {
+            this.openPermitDialog(window.URL.createObjectURL(blob))
+          } else {
+            this._fixmeSavePermit()
+          }
         },
         error => console.error('Permit download failed: ' + error))
   }
 
-  openDialog(blobUrl: string) {
+  _fixmeSavePermit() {
+    const a = window.document.getElementById('downloadPermit')
+    a.setAttribute('download', 'permit.pdf')
+    let click = new MouseEvent("click", {
+      "view": window,
+      "bubbles": true,
+      "cancelable": false
+    });
+    a.dispatchEvent(click)
+  }
+
+  openPermitDialog(blobUrl: string) {
     let dialogRef = this.dialog.open(PermitViewDialog, {
-      width: "100vw", height: "80vh",
-      data: {permitBlobUrl: this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)}
+      width: "100vw", height: "80vh",  /* FIXME: style, dialog/dialog-content heights */
+      data: {
+          permitBlobUrl: this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
+        }
     })
 
     dialogRef.afterClosed()
       .takeUntil(this.onDestroy$)
       .subscribe(data => {
-        const a = window.document.getElementById('downloadPermit')
-        a.setAttribute('download', 'permit.pdf')
-        let click = new MouseEvent("click", {
-            "view": window,
-            "bubbles": true,
-            "cancelable": false
-        });
-        a.dispatchEvent(click)
+        this._fixmeSavePermit()
       }
     )
   }
