@@ -135,8 +135,4 @@ export class PermitViewDialog {
   constructor(
     public dialogRef: MatDialogRef<PermitViewDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
-
-  onClose(): void {
-    this.dialogRef.close();
-  }
 }
