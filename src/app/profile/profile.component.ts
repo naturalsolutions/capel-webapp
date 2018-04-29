@@ -55,13 +55,18 @@ export class ProfileComponent implements OnInit {
     if (this.user.id !== id /* && !this.user.isAdmin() */) {
       return null
     }
+    const isFirefoxWithPdfJs = () => {
+      // If firefox is >= 19, we assume pdf.js is installed (no way to check it)
+      let hits = navigator.userAgent.match(/Firefox\/([0-9]+).[0-9]+/)
+      return (hits && hits.length >= 2 && parseInt(hits[1]) >= 19)
+    }
     this.userService.getPermit(id)
       .takeUntil(this.onDestroy$)
       .subscribe(
         (response: HttpResponse<Blob>) => {
           // console.debug(response.headers)
           this.permitBlob = new Blob([response.body], {type: 'application/pdf'})
-          if ('application/pdf' in navigator.mimeTypes) {
+          if (('application/pdf' in navigator.mimeTypes) || isFirefoxWithPdfJs) {
             this.openPermitDialog(this.permitBlobUrl())
           } else {
             this._fixmeSavePermit()
@@ -113,7 +118,7 @@ export class ProfileComponent implements OnInit {
   template: `
 <h1 mat-dialog-title>Site</h1>
 <div mat-dialog-content>
-  <embed [src]="data.permitBlobUrl" type="application/pdf" class="dialog-full-width"/>
+  <object [data]="data.permitBlobUrl" class="dialog-full-width"></object>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>
