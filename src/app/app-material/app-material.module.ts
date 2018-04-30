@@ -6,7 +6,7 @@ import {
   , MatSnackBarModule,
   MatProgressSpinnerModule,
   MatDialog,
-  MatDialogModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatSliderModule
+  MatDialogModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatSliderModule, MatDividerModule, MatChipsModule
 } from '@angular/material';
 
 
@@ -15,7 +15,7 @@ import {
     CommonModule, MatDialogModule,
     MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatInputModule
   ],
-  exports: [MatIconModule, MatSnackBarModule, MatToolbarModule, MatAutocompleteModule, MatSliderModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatRadioModule, MatOptionModule, MatInputModule, MatProgressSpinnerModule, MatListModule, MatDialogModule],
+  exports: [MatIconModule, MatChipsModule, MatSnackBarModule, MatDividerModule, MatToolbarModule, MatAutocompleteModule, MatSliderModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatRadioModule, MatOptionModule, MatInputModule, MatProgressSpinnerModule, MatListModule, MatDialogModule],
   declarations: [],
   providers: [
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}}

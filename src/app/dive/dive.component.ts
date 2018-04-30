@@ -28,7 +28,7 @@ export class DiveComponent implements OnInit {
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
-  boatsFrm: FormArray = new FormArray([]);
+  boatsChsd: any[] = [];
   boats: any[] = [];
   diveTypes: any[] = [];
   boatCtrl: FormControl;
@@ -71,11 +71,12 @@ export class DiveComponent implements OnInit {
       referenced: new FormControl('', Validators.required),
       times: new FormArray([]),
       divetypes: new FormArray([]),
-      boats: new FormArray([]),
+      boat: new FormArray([]),
       wind: new FormControl('', Validators.required),
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
+      structure: new FormControl('', Validators.required),
     });
     this.addTime();
 
@@ -84,7 +85,7 @@ export class DiveComponent implements OnInit {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
     for (const divetype of this.diveTypes){
       this.divetypes.push(new FormGroup({
-        name: new FormControl({value: divetype.name, disabled: false}, Validators.required),
+        name: new FormControl(false, Validators.required),
         nbrDivers: new FormControl(''),
       }));
     }
@@ -96,8 +97,11 @@ export class DiveComponent implements OnInit {
       endTime: new FormControl(''),
     }));
   }
-  addBoat() {
-
+  addBoat () {
+    this.boatsChsd.push({'boat_id': this.boatCtrl.value, 'isStructure': this.diveForm.get('structure').value});
+  }
+  deleteBoat(i) {
+    this.boatsChsd.splice(i, 1);
   }
   removeTime(i) {
     this.times.removeAt(i);

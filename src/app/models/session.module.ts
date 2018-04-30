@@ -10,12 +10,12 @@ import * as _ from 'lodash';
   declarations: []
 })
 export class SessionModule {
-  seanceId: string;
-  seance: UserModule;
+  //seanceId: string;
+  //seance: UserModule;
   token: string;
   user: UserModule;
-  patient: UserModule;
-  isPatient: boolean;
+  //patient: UserModule;
+  //isPatient: boolean;
   appVersion: string;
   constructor(data?: any) {
     if (data) {
