@@ -8,6 +8,9 @@ import {map} from 'rxjs/operators/map';
 import {BoatService} from '../services/boat.service';
 import {DiveService} from '../services/dive.service';
 import * as L from 'leaflet';
+import * as _ from 'lodash';
+import {Router} from '@angular/router';
+import {MatSnackBar, MatSnackBar} from '@angular/material';
 @Component({
   selector: 'app-dive',
   templateUrl: './dive.component.html',
@@ -43,7 +46,9 @@ export class DiveComponent implements OnInit {
 
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
-              private diveService: DiveService
+              private diveService: DiveService,
+              private snackBar: MatSnackBar,
+              private router: Router
               ) {
     this.adapter.setLocale('fr');
     this.diveService.getDiveTypes().then(data => {
@@ -52,7 +57,13 @@ export class DiveComponent implements OnInit {
     });
     this.boatService.getBoats().then(data => {
       this.boats = data;
-      console.log(this.boats);
+    }, error => {
+      if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
+        this.snackBar.open("le Token est expiré", "OK", {
+          duration: 1000
+        });
+        this.router.navigate(['/login']);
+      }
     });
     this.boatCtrl = new FormControl();
     this.filteredBoats = this.boatCtrl.valueChanges

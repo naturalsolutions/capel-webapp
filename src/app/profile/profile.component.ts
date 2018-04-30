@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {UserService} from '../services/user.service';
 import { config } from '../settings';
-
+import { MatSnackBar} from '@angular/material';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private snackBar: MatSnackBar
   ) {
     this.config = config;
   }
@@ -35,7 +37,13 @@ export class ProfileComponent implements OnInit {
           passwordConfirm: ['']
         });
       }, error => {
-        console.log(error);
+      console.log(error);
+        if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
+          this.snackBar.open("le Token est expiré", "OK", {
+            duration: 1000
+          });
+          this.router.navigate(['/login']);
+        }
       });
     }
 
