@@ -18,7 +18,7 @@ export class UserModule {
   address:string;
   password: string;
   createdAt: Date;
-  // lastSurgeryAt: Date;
+  lastSurgeryAt: Date;
   boats: BoatModule[] = [];
 
   public addBoat(boat: BoatModule) {

@@ -24,28 +24,30 @@ export class ProfileComponent implements OnInit {
   private config;
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private http: HttpClient,
     private sanitizer: DomSanitizer,
-    private router: Router,
+    private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private userService: UserService,
-    private snackBar: MatSnackBar,
   ) {
     this.config = config;
   }
 
   ngOnInit() {
-    console.log('ProfileComponent ngOnInit');
+    if (!this.userService.isConnected()) {
+      this.router.navigate(['/login']);
+    }
+    console.debug('ProfileComponent ngOnInit');
     this.userService.getProfile().then(user => {
-        console.log(user);
         this.user = user;
         this.fg = this.fb.group({
           password: [''],
           passwordConfirm: ['']
         });
       }, error => {
-      console.log(error);
+      console.error(error);
         if (error.status && error.status === 401) {
           this.snackBar.open("Vous devez vous connecter", "OK", {
             duration: 3000

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { NgRedux } from '@angular-redux/store';
-import * as _ from 'lodash';
+import { Observable } from 'rxjs'
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/first';
-import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { config } from './settings';
-import { SessionActionsService } from './store/session/session-actions.service';
-import { UserService } from './services/user.service';
+import { NgRedux } from '@angular-redux/store';
 import { MatSnackBar } from '@angular/material';
-import { AppActionsService } from './store/app/app-actions.service';
+import 'rxjs/add/operator/first';
+import * as _ from 'lodash';
+
 import { AppModel } from './models/app.model';
-import {SessionModule} from './models/session.module';
+import { AppActionsService } from './store/app/app-actions.service';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { SessionModule } from './models/session.module';
+import { UserService } from './services/user.service';
+import { config } from './settings';
 
 @Component({
   selector: 'app-root',
@@ -18,35 +19,36 @@ import {SessionModule} from './models/session.module';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  //isConnected: any = false;
-  constructor(
-    private ngRedux: NgRedux<any>,
-    private router: Router,
-    private route: ActivatedRoute,
-    private sessionActionsService: SessionActionsService,
-    private appActionsService: AppActionsService,
-    private userService: UserService,
-    private snackBar: MatSnackBar
-  ) {
 
-  }
-  /*
+  isConnected: any = false;
+  isConnected$ : Observable<boolean> = null
+
+  constructor(
+      private ngRedux: NgRedux<any>,
+      private router: Router,
+      private route: ActivatedRoute,
+      private appActionsService: AppActionsService,
+      private userService: UserService,
+      private snackBar: MatSnackBar) {}
+
   logOut() {
-    this.sessionActionsService.close();
+    this.userService.logout()
     this.isConnected = false;
     this.router.navigateByUrl('/login');
-  }
-  */
-  ngOnInit() {
-    /*
-      const sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
-      if (sessionState.token) {
-        this.isConnected = true;
-      }
-    */
+
   }
 
-  /* isSessionValid(session): boolean {
+  ngOnInit() {
+    this.isConnected$ = this.userService.isConnected()
+
+    const sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
+    if (sessionState.token) {
+      this.isConnected = true;
+    }
+  }
+
+  /*
+  isSessionValid(session): boolean {
     if (!_.get(session, 'token')) {
       return false;
     }
@@ -56,7 +58,7 @@ export class AppComponent implements OnInit {
   start() {
     this.ngRedux.select('session')
       .first((session: any) => {
-        console.log('start first', session);
+        console.debug('start first', session);
         if (!this.isSessionValid(session)) {
           return false;
         }
