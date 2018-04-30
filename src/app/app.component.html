@@ -4,8 +4,8 @@
   </h1>
   <nav class="d-flex justify-content-end align-items-center">
     <a href="#" name="routing-strategies" class="btn btn-link btn-sm d-none d-md-block" routerLink="/dive" routerLinkActive="active"><u>Déclarer une plongée</u></a>
-    <a href="#" name="routing-strategies" class="btn btn-link btn-sm d-none d-md-block" *ngIf="isConnected == false" routerLink="/login" routerLinkActive="active"><i class="material-icons">person</i>Se connecter</a>
-    <a href="#" name="routing-strategies" class="btn btn-link btn-sm d-none d-md-block" *ngIf="isConnected == true"  (click)="logOut()"><i class="material-icons">person</i>Se déconnecter</a>
+    <a href="#" name="routing-strategies" class="btn btn-link btn-sm d-none d-md-block"  routerLink="/login" routerLinkActive="active"><i class="material-icons">person</i>Se connecter</a>
+    <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm d-none d-md-block"  (click)="logOut()"><i class="material-icons">person</i>Se déconnecter</a> -->
     <a href="#" name="routing-strategies" class="btn btn-link btn-sm d-none d-md-block" routerLink="/register" routerLinkActive="active"><i class="material-icons">person_outline</i>S'inscrire</a>
     <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a>
   </nav>

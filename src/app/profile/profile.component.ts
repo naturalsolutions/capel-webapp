@@ -3,11 +3,12 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { UserService } from '../services/user.service';
 import { config } from '../settings';
 import { Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +29,8 @@ export class ProfileComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router,
     public dialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    private snackBar: MatSnackBar,
   ) {
     this.config = config;
   }
@@ -43,7 +45,13 @@ export class ProfileComponent implements OnInit {
           passwordConfirm: ['']
         });
       }, error => {
-        console.log(error);
+      console.log(error);
+        if (error.status && error.status === 401) {
+          this.snackBar.open("Vous devez vous connecter", "OK", {
+            duration: 3000
+          });
+          this.router.navigate(['/login']);
+        }
       });
   }
 

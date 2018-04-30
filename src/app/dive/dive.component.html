@@ -2,7 +2,7 @@
   <mat-card>
       <form  class="register-form inscription" [formGroup]="diveForm">
         <mat-toolbar>
-          <span>Date ET HEURE </span>
+          <span>DATE ET HEURE </span>
         </mat-toolbar>
         <div class="row text-center">
           <div class="col-md-3">
@@ -13,7 +13,6 @@
             </mat-form-field>
           </div>
           <div class="col-md-6">
-
             <div formArrayName="times" class="well well-lg">
               <div class="boat" *ngFor="let time of times.controls; let i=index" [formGroupName]="i" >
                 <div class="button-row text-right" *ngIf="times.length > 1">
@@ -54,6 +53,14 @@
       <mat-toolbar>
         <span>Bateau </span>
       </mat-toolbar>
+        <div class="col-md-12"  *ngIf="boatsChsd.length > 0">
+          <h5>BATEAUX DECLAREE</h5>
+          <mat-chip-list>
+            <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat_id}} - avec structure: {{bt.isStructure }}
+                  <a mat-mini-fab color="warn" (click)="deleteBoat(i)">x</a>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
       <div class="row">
         <div class="col-md-6">
           <input matInput placeholder="Bateau" aria-label="Bateau" [matAutocomplete]="auto" [formControl]="boatCtrl">
@@ -65,7 +72,7 @@
           </mat-autocomplete>
         </div>
         <div class="col-md-6">
-          <mat-checkbox >Plonger avec une structure</mat-checkbox>
+          <mat-checkbox formControlName="structure">Plonger avec une structure</mat-checkbox>
         </div>
         <div class="col-md-12 text-center">
           <div class="button-row">
@@ -138,7 +145,7 @@
             <ul class="list-inline">
             <li class="list-inline-item" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
               <mat-checkbox class="example-margin" formControlName="name">{{diveTypes[i].name}}</mat-checkbox>
-              <mat-form-field class="full-width">
+              <mat-form-field class="full-width" *ngIf="divetypes.controls[i].controls.name.value">
                 <input matInput placeholder="Nombre de plongee" value="0" formControlName="nbrDivers">
               </mat-form-field>
             </li>
@@ -146,13 +153,12 @@
           </div>
         </div>
       </section>
-
       <mat-toolbar>
-        <span>Site DE PLONGÉE </span>
+        <span>SITE DE PLONGÉE </span>
       </mat-toolbar>
       <mat-radio-group formControlName="referenced">
-        <mat-radio-button value="particulier" >reference</mat-radio-button>
-        <mat-radio-button value="structure">nom reference</mat-radio-button>
+        <mat-radio-button value="particulier" color="secondary">reference</mat-radio-button>
+        <mat-radio-button value="structure" color="secondary">nom reference</mat-radio-button>
       </mat-radio-group>
       <div style="height: 400px;"
            leaflet

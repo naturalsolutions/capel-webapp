@@ -10,18 +10,17 @@ import * as _ from 'lodash';
   declarations: []
 })
 export class SessionModule {
-  seanceId: string;
-  seance: UserModule;
+
   token: string;
   user: UserModule;
-  patient: UserModule;
-  isPatient: boolean;
   appVersion: string;
+
   constructor(data?: any) {
     if (data) {
       this.patch(data);
     }
   }
+
   patch(data: any) {
     _.assign(this, data);
     if (_.isPlainObject(this.user)) {

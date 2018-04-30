@@ -8,6 +8,10 @@ import {map} from 'rxjs/operators/map';
 import {BoatService} from '../services/boat.service';
 import {DiveService} from '../services/dive.service';
 import * as L from 'leaflet';
+import * as _ from 'lodash';
+import {Router} from '@angular/router';
+import { MatChipsModule, MatSnackBar } from '@angular/material';
+
 @Component({
   selector: 'app-dive',
   templateUrl: './dive.component.html',
@@ -28,7 +32,7 @@ export class DiveComponent implements OnInit {
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
-  boatsFrm: FormArray = new FormArray([]);
+  boatsChsd: any[] = [];
   boats: any[] = [];
   diveTypes: any[] = [];
   boatCtrl: FormControl;
@@ -43,7 +47,9 @@ export class DiveComponent implements OnInit {
 
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
-              private diveService: DiveService
+              private diveService: DiveService,
+              private snackBar: MatSnackBar,
+              private router: Router
               ) {
     this.adapter.setLocale('fr');
     this.diveService.getDiveTypes().then(data => {
@@ -52,7 +58,13 @@ export class DiveComponent implements OnInit {
     });
     this.boatService.getBoats().then(data => {
       this.boats = data;
-      console.log(this.boats);
+    }, error => {
+      if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
+        this.snackBar.open("le Token est expiré", "OK", {
+          duration: 1000
+        });
+        this.router.navigate(['/login']);
+      }
     });
     this.boatCtrl = new FormControl();
     this.filteredBoats = this.boatCtrl.valueChanges
@@ -71,11 +83,12 @@ export class DiveComponent implements OnInit {
       referenced: new FormControl('', Validators.required),
       times: new FormArray([]),
       divetypes: new FormArray([]),
-      boats: new FormArray([]),
+      boat: new FormArray([]),
       wind: new FormControl('', Validators.required),
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
+      structure: new FormControl('', Validators.required),
     });
     this.addTime();
 
@@ -84,7 +97,7 @@ export class DiveComponent implements OnInit {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
     for (const divetype of this.diveTypes){
       this.divetypes.push(new FormGroup({
-        name: new FormControl({value: divetype.name, disabled: false}, Validators.required),
+        name: new FormControl(false, Validators.required),
         nbrDivers: new FormControl(''),
       }));
     }
@@ -96,8 +109,11 @@ export class DiveComponent implements OnInit {
       endTime: new FormControl(''),
     }));
   }
-  addBoat() {
-
+  addBoat () {
+    this.boatsChsd.push({'boat_id': this.boatCtrl.value, 'isStructure': this.diveForm.get('structure').value});
+  }
+  deleteBoat(i) {
+    this.boatsChsd.splice(i, 1);
   }
   removeTime(i) {
     this.times.removeAt(i);

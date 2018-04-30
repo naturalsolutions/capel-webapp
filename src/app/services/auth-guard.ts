@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate {
 
 
     const token: string = this.ngRedux.getState().session.token;
+    console.log(this.ngRedux.getState());
     if (!token) {
       this.router.navigate(['/login']);
       return false;

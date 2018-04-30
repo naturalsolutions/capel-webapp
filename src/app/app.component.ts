@@ -18,7 +18,7 @@ import {SessionModule} from './models/session.module';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  isConnected: any = false;
+  //isConnected: any = false;
   constructor(
     private ngRedux: NgRedux<any>,
     private router: Router,
@@ -30,16 +30,20 @@ export class AppComponent implements OnInit {
   ) {
 
   }
+  /*
   logOut() {
     this.sessionActionsService.close();
     this.isConnected = false;
     this.router.navigateByUrl('/login');
   }
+  */
   ngOnInit() {
-    const sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
-    if (sessionState.token) {
-      this.isConnected = true;
-    }
+    /*
+      const sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
+      if (sessionState.token) {
+        this.isConnected = true;
+      }
+    */
   }
 
   /* isSessionValid(session): boolean {
