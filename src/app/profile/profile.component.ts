@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
         });
       }, error => {
       console.error(error);
-        if (error.status && error.status === 401) {
+        if (error && error.status === 401) {
           this.snackBar.open("Vous devez vous connecter", "OK", {
             duration: 3000
           });
@@ -80,26 +80,33 @@ export class ProfileComponent implements OnInit {
         (response: HttpResponse<Blob>) => {
           // console.debug(response.headers)
           this.permitBlob = new Blob([response.body], {type: 'application/pdf'})
+
           if ('application/pdf' in navigator.mimeTypes || isFirefoxWithPdfJs && !isMobile) {
-            this.openPermitDialog(this.permitBlobUrl())
+            this.openPermitDialog(this.createBlobUrl())
           } else {
-            this._fixmeSavePermit()
+            this.saveBlobUrl()
           }
         },
         error => console.error('Permit download failed: ', error))  // 401 -> /login
   }
 
-  permitBlobUrl(): SafeResourceUrl|null {
+  createBlobUrl(): SafeResourceUrl|null {
     if (this.permitBlob) {
-      let blob = window.URL.createObjectURL(this.permitBlob)
-      return this.sanitizer.bypassSecurityTrustResourceUrl(blob)
+      console.debug('Gotta permit blob.')
+      let blobUrl = window.URL.createObjectURL(this.permitBlob)
+      return this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
     } else {
-      return null
+      console.debug('No permit blob.')
+      return '/dev/null'
     }
   }
 
-  _fixmeSavePermit() {
-    const a = window.document.getElementById('downloadPermit')
+  saveBlobUrl(blobUrl?: SafeResourceUrl) {
+    const a = window.document.getElementById('download')
+    console.debug('blobUrl: ', a.getAttribute('href'))
+    if (blobUrl) {
+      a.setAttribute('href', blobUrl.toString())
+    }
     a.setAttribute('download', `permit_capel_${this.user.firstname}_${this.user.id}.pdf`)
     let aclick = new MouseEvent("click", {
       "view": window,
@@ -107,21 +114,22 @@ export class ProfileComponent implements OnInit {
       "cancelable": false
     })
     a.dispatchEvent(aclick)
+    // window.URL.revokeObjectURL(url)
   }
 
   openPermitDialog(blobUrl: SafeResourceUrl) {
-    let dialogRef = this.dialog.open(PermitViewDialog, {
+    const dialogRef = this.dialog.open(PermitViewDialog, {
       width: '100vw',
       disableClose: true,
       data: {
-          permitBlobUrl: blobUrl
+          blobUrl: blobUrl
         }
     })
 
     dialogRef.afterClosed()
       .takeUntil(this.onDestroy$)
       .subscribe(data => {
-        this._fixmeSavePermit()
+        this.saveBlobUrl()
       }
     )
   }
@@ -132,7 +140,7 @@ export class ProfileComponent implements OnInit {
   template: `
 <h1 mat-dialog-title>Site</h1>
 <div mat-dialog-content>
-  <object [data]="data.permitBlobUrl" class="dialog-full-width"></object>
+  <object [data]="data.blobUrl" class="dialog-full-width"></object>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>

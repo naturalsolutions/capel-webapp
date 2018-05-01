@@ -4,8 +4,8 @@
        <mat-card>
          <mat-list>
            <mat-list-item>
-             <button id="confirmPermit" mat-raised-button (click)="getPermit(user.id)"> Télécharger l'autorisation </button>
-             <a id="downloadPermit" [href]="permitBlobUrl()" style="display: none;"></a>
+             <button id="confirm" mat-raised-button (click)="getPermit(user.id)"> Télécharger l'autorisation </button>
+             <a id="download" [href]="createBlobUrl()" style="display: none;"></a>
            </mat-list-item>
            <mat-list-item> ID: {{ user.id }} </mat-list-item>
            <mat-list-item> Email: {{ user.email }} </mat-list-item>
