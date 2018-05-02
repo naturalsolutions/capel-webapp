@@ -20,7 +20,6 @@ import { config } from './settings';
 })
 export class AppComponent implements OnInit {
 
-  isConnected: any = false;
   isConnected$ : Observable<boolean> = null
 
   constructor(
@@ -33,18 +32,11 @@ export class AppComponent implements OnInit {
 
   logOut() {
     this.userService.logout()
-    this.isConnected = false;
     this.router.navigateByUrl('/login');
-
   }
 
   ngOnInit() {
     this.isConnected$ = this.userService.isConnected()
-
-    const sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
-    if (sessionState.token) {
-      this.isConnected = true;
-    }
   }
 
   /*
