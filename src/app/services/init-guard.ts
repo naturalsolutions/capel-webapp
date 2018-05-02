@@ -29,11 +29,11 @@ export class InitGuard implements CanActivate {
       if (!token) {
         resolve();
       } else {
-        console.log('try userService.getProfile');
+        console.debug('try userService.getProfile');
         AuthInterceptorService.token = token;
         this.userService.getProfile()
           .then(profile => {
-            console.log('open session from init guard');
+            console.debug('open session from init guard');
             this.sessionActionsService.open({
               token: token,
               profile: profile
@@ -49,7 +49,7 @@ export class InitGuard implements CanActivate {
             }
             resolve();
           }, error => {
-            console.log(error);
+            console.error(error);
             AuthInterceptorService.token = null;
             resolve();
           });

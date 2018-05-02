@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {UserService} from '../services/user.service';
@@ -13,6 +14,7 @@ import {MatSnackBar} from '@angular/material';
 })
 export class LoginComponent implements OnInit {
 
+  isConnected$ : Observable<boolean>
   private fg:FormGroup;
 
   constructor(
@@ -21,7 +23,9 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private sessionActionsService: SessionActionsService
-  ) { }
+  ) {
+    this.userService.logout()
+  }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -35,7 +39,7 @@ export class LoginComponent implements OnInit {
       this.sessionActionsService.open(data);
       this.router.navigate(['/profile']);
     }, error => {
-      console.log(error);
+      console.error(error);
       if (_.get(error, 'error.error') == 'user_draft') {
         this.snackBar.open("Veuillez valider votre email", "OK", {
           duration: 5000

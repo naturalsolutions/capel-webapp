@@ -5,4 +5,3 @@ export var config = {
   'appName' : 'capel',
   'appVersion': '1.0'
 };
-

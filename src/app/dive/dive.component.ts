@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
+import { MatChipsModule, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-dive',

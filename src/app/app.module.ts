@@ -22,6 +22,8 @@ import { DiveComponent } from './dive/dive.component';
 import {BoatService} from './services/boat.service';
 import {DiveService} from './services/dive.service';
 
+import { PermitViewDialog } from './profile/profile.component'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +33,8 @@ import {DiveService} from './services/dive.service';
     BoatComponent,
     ErrorComponent,
     LoaderDialogComponent,
-    DiveComponent
+    DiveComponent,
+    PermitViewDialog,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,11 @@ import {DiveService} from './services/dive.service';
     NgReduxModule,
     LeafletModule.forRoot()
   ],
-  entryComponents: [ErrorComponent, LoaderDialogComponent],
+  entryComponents: [
+    ErrorComponent,
+    LoaderDialogComponent,
+    PermitViewDialog,
+  ],
   providers: [
     InitGuard,
     AuthGuard,

@@ -6,7 +6,7 @@ import { AppModel } from '../../models/app.model';
 
 export function appReducer(state: any = INITIAL_STATE.app, action: IAppAction): AppModel {
 
-  console.log(action.type, state);
+  console.debug(action.type, state);
   if (_.isPlainObject(state)) {
     state = new AppModel(state);
   }

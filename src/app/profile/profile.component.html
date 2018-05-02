@@ -3,7 +3,9 @@
      <div class="col-md-auto">
        <mat-card>
          <mat-list>
-           <mat-list-item> <a href="{{config.serverURL}}/api/users/{{ user.id }}/permit.pdf" target="_blank"  class="btn btn-sm btn-secondary btn-block"> Télécharger l'autorisation</a> </mat-list-item>
+           <mat-list-item>
+             <button id="confirm" mat-raised-button (click)="getPermit(user.id)"> Télécharger l'autorisation </button>
+           </mat-list-item>
            <mat-list-item> ID: {{ user.id }} </mat-list-item>
            <mat-list-item> Email: {{ user.email }} </mat-list-item>
          </mat-list>
@@ -11,4 +13,3 @@
      </div>
    </div>
   </div>
-

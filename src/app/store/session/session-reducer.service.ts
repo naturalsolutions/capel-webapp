@@ -6,7 +6,7 @@ import {INITIAL_STATE} from '../initial-state/initial-state.module';
 
 export function sessionReducer(state: any = INITIAL_STATE.session, action: ISessionAction): SessionModule {
 
-  console.log(action.type, state);
+  console.debug(action.type, state);
   if (_.isPlainObject(state)) {
     state = new SessionModule(state);
   }
