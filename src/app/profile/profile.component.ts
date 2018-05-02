@@ -7,6 +7,7 @@ import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/
 import { UserService } from '../services/user.service';
 import { config } from '../settings';
 import { Subject } from 'rxjs';
+import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 
 
@@ -17,7 +18,10 @@ import 'rxjs/add/operator/takeUntil';
 })
 export class ProfileComponent implements OnInit {
 
-  private permitBlob: Blob
+  private permit = {
+    blob: <Blob>null,
+    name:  ''
+  }
   private onDestroy$ = new Subject()
   private fg: FormGroup;
   private user: any = {};
@@ -46,6 +50,9 @@ export class ProfileComponent implements OnInit {
           password: [''],
           passwordConfirm: ['']
         });
+
+        this.permit.name = `permit_capel_${this.user.firstname}_${this.user.id}.pdf`
+
       }, error => {
       console.error(error);
         if (error && error.status === 401) {
@@ -62,7 +69,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getPermit(id: number) {
-    if (this.user.id !== id /* && !this.user.isAdmin() */) {
+    if (!this.user || this.user.id !== id /* && !this.user.isAdmin()) */) {
       return null
     }
 
@@ -71,65 +78,56 @@ export class ProfileComponent implements OnInit {
       let hits = navigator.userAgent.match(/Firefox\/([0-9]+).[0-9]+/)
       return (hits && hits.length >= 2 && parseInt(hits[1]) >= 19)
     }
-
     const isMobile = () => (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 
-    this.userService.getPermit(id)
-      .takeUntil(this.onDestroy$)
-      .subscribe(
-        (response: HttpResponse<Blob>) => {
-          // console.debug(response.headers)
-          this.permitBlob = new Blob([response.body], {type: 'application/pdf'})
-
-          if ('application/pdf' in navigator.mimeTypes || isFirefoxWithPdfJs && !isMobile) {
-            this.openPermitDialog(this.createBlobUrl())
-          } else {
-            this.saveBlobUrl()
-          }
-        },
-        error => console.error('Permit download failed: ', error))  // 401 -> /login
+    let permitSubscription = this.userService.getPermit(id)
+        .takeUntil(this.onDestroy$)
+        .subscribe(
+      (response: HttpResponse<Blob>) => {
+        console.debug('permit response: ', response)
+        this.permit.blob = new Blob([response.body], {type: 'application/pdf'})
+      },
+      error => {
+        console.error('Permit download failed: ', error)
+        this.snackBar.open("Le téléchargement de l'autorisation a échoué.", "OK", {duration: 1000})
+      },
+      () => {
+        if ('application/pdf' in navigator.mimeTypes || isFirefoxWithPdfJs && !isMobile)  {
+          let blob = window.URL.createObjectURL(this.permit.blob)
+          let blobUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blob)
+          this.openPermitDialog(blobUrl)
+        } else {
+          this.saveBlob(this.permit.blob, this.permit.name)
+        }
+      }
+    )
   }
 
-  createBlobUrl(): SafeResourceUrl|null {
-    if (this.permitBlob) {
-      console.debug('Gotta permit blob.')
-      let blobUrl = window.URL.createObjectURL(this.permitBlob)
-      return this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl)
-    } else {
-      console.debug('No permit blob.')
-      return '/dev/null'
-    }
+  saveBlob(blob, name) {
+    let link = document.createElement("a")
+    link.href = URL.createObjectURL(blob)
+    link.setAttribute('visibility','hidden')
+    link.download = name
+    link.onload = function() { window.URL.revokeObjectURL(link.href) }
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
-  saveBlobUrl(blobUrl?: SafeResourceUrl) {
-    const a = window.document.getElementById('download')
-    console.debug('blobUrl: ', a.getAttribute('href'))
-    if (blobUrl) {
-      a.setAttribute('href', blobUrl.toString())
-    }
-    a.setAttribute('download', `permit_capel_${this.user.firstname}_${this.user.id}.pdf`)
-    let aclick = new MouseEvent("click", {
-      "view": window,
-      "bubbles": true,
-      "cancelable": false
-    })
-    a.dispatchEvent(aclick)
-    // window.URL.revokeObjectURL(url)
-  }
-
-  openPermitDialog(blobUrl: SafeResourceUrl) {
+  openPermitDialog(blobUrl) {
     const dialogRef = this.dialog.open(PermitViewDialog, {
       width: '100vw',
       disableClose: true,
       data: {
-          blobUrl: blobUrl
+          blobUrl: blobUrl,
+          type: 'application/pdf'
         }
     })
-
     dialogRef.afterClosed()
-      .takeUntil(this.onDestroy$)
+      .take(1)
       .subscribe(data => {
-        this.saveBlobUrl()
+        window.URL.revokeObjectURL(data.blobUrl)
+        this.saveBlob(this.permit.blob, this.permit.name)
       }
     )
   }
@@ -139,12 +137,20 @@ export class ProfileComponent implements OnInit {
   selector: 'permit-view-dialog',
   template: `
 <h1 mat-dialog-title>Site</h1>
-<div mat-dialog-content>
-  <object [data]="data.blobUrl" class="dialog-full-width"></object>
-</div>
-<div mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>
-</div>`,
+<form id="agreement">
+  <div mat-dialog-content>
+    <object
+      [data]="data.blobUrl"
+      [type]="data.type"
+      form="agreement"
+      typemustmatch=true
+      class="dialog-full-width">
+    </object>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>
+  </div>
+</form>`,
   styles: [`
   .dialog-full-width {
     width: 100%;
