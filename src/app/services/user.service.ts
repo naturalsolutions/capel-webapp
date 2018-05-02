@@ -18,12 +18,12 @@ export class UserService {
       private sessionActionsService: SessionActionsService) {
 
     const sessionState = this.ngRedux.getState().session
-    this.connected$ = <BehaviorSubject<boolean>>new BehaviorSubject(sessionState.token)
+    this.connected$ = <BehaviorSubject<boolean>>new BehaviorSubject(sessionState.token);
 
   }
 
   isConnected(): Observable<boolean> {
-    return this.connected$.asObservable().share()
+    return this.connected$.asObservable().share();
   }
 
   login(data: any): Promise<any> {
@@ -34,7 +34,7 @@ export class UserService {
 
   logout() {
     this.sessionActionsService.close();
-    this.connected$.next(false)
+    this.connected$.next(false);
   }
 
   getProfile(): Promise<any> {

@@ -33,4 +33,5 @@ export class SessionModule {
     const data: any = _.toPlainObject(this);
     return data;
   }
+
 }
