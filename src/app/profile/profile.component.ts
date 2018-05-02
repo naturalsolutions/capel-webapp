@@ -65,12 +65,12 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.onDestroy$.next()
+    this.onDestroy$.next();
   }
 
   getPermit(id: number) {
     if (!this.user || this.user.id !== id /* && !this.user.isAdmin()) */) {
-      return null
+      return null;
     }
 
     const isFirefoxWithPdfJs = () => {
@@ -127,7 +127,7 @@ export class ProfileComponent implements OnInit {
       .take(1)
       .subscribe(data => {
         window.URL.revokeObjectURL(data.blobUrl)
-        this.saveBlob(this.permit.blob, this.permit.name)
+        this.saveBlob(this.permit.blob, this.permit.name);
       }
     )
   }
