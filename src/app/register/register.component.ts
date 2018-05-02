@@ -14,7 +14,7 @@ import * as _ from 'lodash';
 export class RegisterComponent implements OnInit {
   userForm: FormGroup;
   boats: FormArray = new FormArray([]);
-  private status:string = '';
+  public status:string = '';
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,

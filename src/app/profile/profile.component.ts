@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
   }
   private onDestroy$ = new Subject()
   private fg: FormGroup;
-  private user: any = {};
+  public user: any = {};
   private config;
 
   constructor(

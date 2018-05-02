@@ -1,15 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserModule } from './user.module';
 import * as _ from 'lodash';
 
 
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
-})
 export class SessionModule {
 
   token: string;

@@ -17,7 +17,7 @@ import {MatSnackBar} from '@angular/material';
 export class LoginComponent implements OnInit {
 
   isConnected$ : Observable<boolean>
-  private fg:FormGroup;
+  public fg:FormGroup;
 
   constructor(
     private fb: FormBuilder,
