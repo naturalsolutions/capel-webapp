@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NgRedux } from '@angular-redux/store';
+import 'rxjs/add/operator/share';
 
 import { SessionActionsService } from '../store/session/session-actions.service';
 import { config } from '../settings';
@@ -24,7 +25,7 @@ export class UserService {
   }
 
   isConnected(): Observable<boolean> {
-    return this.connected$.asObservable().share();
+    return this.connected$.asObservable().share()
   }
 
   login(data: any): Promise<any> {

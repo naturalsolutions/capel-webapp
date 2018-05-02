@@ -4,7 +4,7 @@ import { config } from '../settings';
 import { combineReducers } from 'redux';
 import { createLogger } from 'redux-logger';
 import { NgRedux, DevToolsExtension } from '@angular-redux/store';
-import persistState from 'redux-localstorage';
+import * as persistState from 'redux-localstorage';
 
 import { SessionModule } from './session.module';
 import { SessionActionsService } from '../store/session/session-actions.service';
