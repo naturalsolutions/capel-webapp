@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { UserService } from '../services/user.service';
 import { config } from '../settings';
 import { MatSnackBar} from '@angular/material';
@@ -56,17 +56,17 @@ export class ProfileComponent implements OnInit {
         this.permit.name = `permit_capel_${this.user.firstname}_${this.user.id}.pdf`
 
       }, error => {
-<<<<<<< HEAD
+
       console.log(error);
         if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
           this.snackBar.open("Le Token est expiré", "OK", {
             duration: 1000
-=======
+
       console.error(error);
         if (error && error.status === 401) {
           this.snackBar.open("Vous devez vous connecter", "OK", {
             duration: 3000
->>>>>>> origin/demo
+
           });
           this.router.navigate(['/login']);
         }

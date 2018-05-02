@@ -30,7 +30,7 @@ import { MatChipsModule, MatSnackBar } from '@angular/material';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ]
 })
-export class DiveComponent implements OnInit{
+export class DiveComponent implements OnInit {
 
 
   diveForm: FormGroup;
