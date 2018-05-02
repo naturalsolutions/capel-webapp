@@ -16,7 +16,7 @@ export class SessionModule {
   user: UserModule;
   appVersion: string;
 
-  constructor(data?: any) {
+  constructor(data: any = null) {
     if (data) {
       this.patch(data);
     }
