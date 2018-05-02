@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NgRedux } from '@angular-redux/store';
 
-import { config } from '../settings';
 import { SessionActionsService } from '../store/session/session-actions.service';
+import { config } from '../settings';
 
 
 @Injectable()
