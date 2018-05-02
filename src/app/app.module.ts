@@ -51,7 +51,7 @@ import { PermitViewDialog } from './profile/profile.component'
   entryComponents: [
     ErrorComponent,
     LoaderDialogComponent,
-    PermitViewDialog,
+    PermitViewDialog
   ],
   providers: [
     InitGuard,

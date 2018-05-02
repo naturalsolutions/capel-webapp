@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
+import {LoaderDialogComponent} from '../register/register.component';
 
 
 @Component({
@@ -56,13 +57,10 @@ export class ProfileComponent implements OnInit {
         this.permit.name = `permit_capel_${this.user.firstname}_${this.user.id}.pdf`
 
       }, error => {
-
-      console.log(error);
         if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
           this.snackBar.open("Le Token est expiré", "OK", {
             duration: 1000
-
-      console.error(error);
+        })
         if (error && error.status === 401) {
           this.snackBar.open("Vous devez vous connecter", "OK", {
             duration: 3000
@@ -78,6 +76,10 @@ export class ProfileComponent implements OnInit {
   }
 
   getPermit(id: number) {
+
+    let dialogRef = this.dialog.open(LoaderDialogComponent, {
+      disableClose: true
+    });
     if (!this.user || this.user.id !== id /* && !this.user.isAdmin()) */) {
       return null
     }
@@ -94,7 +96,8 @@ export class ProfileComponent implements OnInit {
         .subscribe(
       (response: HttpResponse<Blob>) => {
         console.debug('permit response: ', response)
-        this.permit.blob = new Blob([response.body], {type: 'application/pdf'})
+        this.permit.blob = new Blob([response.body], {type: 'application/pdf'});
+        dialogRef.close();
       },
       error => {
         console.error('Permit download failed: ', error)
