@@ -12,10 +12,35 @@ import {
 
 @NgModule({
   imports: [
-    CommonModule, MatDialogModule,
-    MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatInputModule
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
-  exports: [MatIconModule, MatChipsModule, MatSnackBarModule, MatDividerModule, MatToolbarModule, MatAutocompleteModule, MatSliderModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatFormFieldModule, MatRadioModule, MatOptionModule, MatInputModule, MatProgressSpinnerModule, MatListModule, MatDialogModule],
+  exports: [
+      MatIconModule,
+      MatChipsModule,
+      MatSnackBarModule,
+      MatDividerModule,
+      MatToolbarModule,
+      MatAutocompleteModule,
+      MatSliderModule,
+      MatDatepickerModule,
+      MatSelectModule,
+      MatButtonModule,
+      MatCheckboxModule,
+      MatCardModule,
+      MatFormFieldModule,
+      MatRadioModule,
+      MatOptionModule,
+      MatInputModule,
+      MatProgressSpinnerModule,
+      MatListModule,
+      MatDialogModule
+  ],
   declarations: [],
   providers: [
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}}

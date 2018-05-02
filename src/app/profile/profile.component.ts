@@ -6,6 +6,7 @@ import {UserService} from '../services/user.service';
 import { config } from '../settings';
 import { MatSnackBar} from '@angular/material';
 import * as _ from 'lodash';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -30,7 +31,6 @@ export class ProfileComponent implements OnInit {
 
     console.log('ProfileComponent ngOnInit');
     this.userService.getProfile().then(user => {
-        console.log(user);
         this.user = user;
         this.fg = this.fb.group({
           password: [''],
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
       }, error => {
       console.log(error);
         if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
-          this.snackBar.open("le Token est expiré", "OK", {
+          this.snackBar.open("Le Token est expiré", "OK", {
             duration: 1000
           });
           this.router.navigate(['/login']);

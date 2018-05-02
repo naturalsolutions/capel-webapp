@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {UserService} from '../services/user.service';
-import {AuthInterceptorService} from '../services/auth-interceptor.service';
 import {SessionActionsService} from '../store/session/session-actions.service';
 import * as _ from 'lodash';
 import {MatSnackBar} from '@angular/material';

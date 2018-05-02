@@ -157,12 +157,14 @@
         <span>SITE DE PLONGÉE </span>
       </mat-toolbar>
       <mat-radio-group formControlName="referenced">
-        <mat-radio-button value="particulier" color="secondary">reference</mat-radio-button>
-        <mat-radio-button value="structure" color="secondary">nom reference</mat-radio-button>
+        <mat-radio-button value="referenced">réferencé</mat-radio-button>
+        <mat-radio-button value="notreferenced">non réferencé</mat-radio-button>
       </mat-radio-group>
-      <div style="height: 400px;"
+      <div id="leafletmap" style="height: 400px;"
            leaflet
-           [leafletOptions]="options">
+           [leafletOptions]="options"
+           (leafletMapReady)="onMapReady($event)"
+      >
       </div>
         <button  class="btn btn-secondary btn-block"> ENVOYER LA DÉCLARATION</button>
       </form>

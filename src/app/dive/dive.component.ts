@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
@@ -10,7 +10,9 @@ import {DiveService} from '../services/dive.service';
 import * as L from 'leaflet';
 import * as _ from 'lodash';
 import {Router} from '@angular/router';
-import {MatSnackBar, MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
+import {HttpClient} from '@angular/common/http';
+
 @Component({
   selector: 'app-dive',
   templateUrl: './dive.component.html',
@@ -27,7 +29,9 @@ import {MatSnackBar, MatSnackBar} from '@angular/material';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ]
 })
-export class DiveComponent implements OnInit {
+export class DiveComponent implements OnInit{
+
+
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
@@ -48,7 +52,8 @@ export class DiveComponent implements OnInit {
               private boatService: BoatService,
               private diveService: DiveService,
               private snackBar: MatSnackBar,
-              private router: Router
+              private router: Router,
+              private http: HttpClient
               ) {
     this.adapter.setLocale('fr');
     this.diveService.getDiveTypes().then(data => {
@@ -79,7 +84,7 @@ export class DiveComponent implements OnInit {
   ngOnInit() {
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
-      referenced: new FormControl('', Validators.required),
+      referenced: new FormControl(true, Validators.required),
       times: new FormArray([]),
       divetypes: new FormArray([]),
       boat: new FormArray([]),
@@ -116,6 +121,9 @@ export class DiveComponent implements OnInit {
   }
   removeTime(i) {
     this.times.removeAt(i);
+  }
+  onMapReady(map: Map) {
+    L.marker([50.6311634, 3.0599573]).addTo(map);
   }
 
 }
