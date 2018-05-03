@@ -89,9 +89,6 @@ export class DiveComponent implements OnInit {
     return this.boats.filter(state =>
       state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
-  onMapReady(map: Map<number, number>){
-    L.marker([39.61, -105.02]).addTo(map);
-  }
   ngOnInit() {
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),

@@ -8,7 +8,7 @@
             <div class="row text-center">
               <div class="col-md-3">
                 <mat-form-field class="full-width">
-                  <input matInput [matDatepicker]="dp" placeholder="La date de plongée" formControlName="divingDate">
+                  <input matInput [matDatepicker]="dp" placeholder="Date de plongée" formControlName="divingDate">
                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                   <mat-datepicker #dp></mat-datepicker>
                 </mat-form-field>
@@ -22,7 +22,7 @@
                     <ul class="list-inline">
                       <li class="list-inline-item">
                         <mat-form-field class="full-width">
-                          <input matInput placeholder="Heure de début de plongée" value="00:00" formControlName="startTime">
+                          <input matInput placeholder="Heure de début" value="00:00" formControlName="startTime">
                         </mat-form-field>
                         <div *ngIf="time.controls.startTime.invalid && (time.controls.startTime.dirty || time.controls.startTime.touched)" class="alert alert-danger">
                           <div *ngIf="time.controls.startTime.errors.required">
@@ -32,7 +32,7 @@
                       </li>
                       <li class="list-inline-item">
                         <mat-form-field class="full-width">
-                          <input matInput placeholder="Heure de fin de plongée" value="00:00" formControlName="endTime">
+                          <input matInput placeholder="Heure de fin" value="00:00" formControlName="endTime">
                         </mat-form-field>
                         <div *ngIf="time.controls.endTime.invalid && (boat.controls.endTime.dirty || time.controls.endTime.touched)" class="alert alert-danger">
                           <div *ngIf="time.controls.endTime.errors.required">
@@ -59,7 +59,7 @@
             </mat-card-header>
           <div class="row">
           <div class="col-md-12">
-            <mat-checkbox labelPosition='before'>J'ai plongé avec une structure</mat-checkbox>
+            <mat-checkbox labelPosition='before' formControlName="isWithStructure">J'ai plongé avec une structure</mat-checkbox>
           </div>
           <div class="col-md-12" *ngIf="isWithStructure.value">
             <mat-form-field>
