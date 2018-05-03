@@ -72,7 +72,9 @@
           </mat-autocomplete>
         </div>
         <div class="col-md-6">
-          <mat-radio-button formControlName="structure" labelPosition='before'>J'ai plongé avec une structure</mat-radio-button>
+          <mat-radio-group formControlName="structure">
+            <mat-radio-button labelPosition='before'>J'ai plongé avec une structure</mat-radio-button>
+          </mat-radio-group>
         </div>
         <div class="col-md-12 text-center">
           <div class="button-row">
@@ -88,7 +90,6 @@
           <h5 class="example-h2">VENT</h5>
           <mat-slider
             class="full-width"
-            [disabled]="false"
             [invert]="false"
             [max]="20"
             [min]="1"
