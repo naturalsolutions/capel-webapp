@@ -59,9 +59,7 @@
             </mat-card-header>
           <div class="row">
           <div class="col-md-12">
-            <mat-radio-group formControlName="structure">
-              <mat-radio-button labelPosition='before'>J'ai plongé avec une structure</mat-radio-button>
-            </mat-radio-group>
+            <mat-checkbox labelPosition='before'>J'ai plongé avec une structure</mat-checkbox>
           </div>
           <div class="col-md-12" *ngIf="isWithStructure.value">
             <mat-form-field>
@@ -155,6 +153,23 @@
             </div>
           </div>
         </section>
+        <section name="typedives">
+          <mat-toolbar>
+            <span>TYPE DE PLONGÉE </span>
+          </mat-toolbar>
+            <div formArrayName="divetypes" class="well well-lg">
+              <div class="boat">
+                <ul class="list-inline">
+                <li class="list-inline-item" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
+                  <mat-checkbox class="example-margin" formControlName="name">{{diveTypes[i].name}}</mat-checkbox>
+                  <mat-form-field class="full-width" *ngIf="divetypes.controls[i].controls.name.value">
+                    <input matInput placeholder="Nombre de plongeur" value="0" formControlName="nbrDivers">
+                  </mat-form-field>
+                </li>
+              </ul>
+              </div>
+            </div>
+        </section>
         <section name="sitedives">
           <mat-toolbar>
             <span>SITE DE PLONGÉE </span>
@@ -178,23 +193,6 @@
         </div>
         <button  class="btn btn-secondary btn-block" (click)="save()"> ENVOYER LA DÉCLARATION</button>
       </section>
-      <section name="typedives">
-        <mat-toolbar>
-          <span>TYPE DE PLONGÉE </span>
-        </mat-toolbar>
-          <div formArrayName="divetypes" class="well well-lg">
-            <div class="boat">
-              <ul class="list-inline">
-              <li class="list-inline-item" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
-                <mat-checkbox class="example-margin" formControlName="name">{{diveTypes[i].name}}</mat-checkbox>
-                <mat-form-field class="full-width" *ngIf="divetypes.controls[i].controls.name.value">
-                  <input matInput placeholder="Nombre de plongeur" value="0" formControlName="nbrDivers">
-                </mat-form-field>
-              </li>
-            </ul>
-            </div>
-          </div>
-      </section>
-    </form>
+      </form>
   </mat-card>
 </main>
