@@ -30,6 +30,7 @@
 .pg-card{
   margin: 30px 0px 30px 0px;
 }
+
 .page:before {
     content: '';
     width: 100%;
@@ -40,9 +41,9 @@
     top: 80px;
     left: 0;
   }
-mat-radio-button, mat-checkbox[name~='Site *référencé'] {
+
+mat-radio-button, mat-radio-group[name='referenced'] {
    text-transform: uppercase;
    font-weight: bolder;
-   color: #00accc;
 }
 
