@@ -117,10 +117,12 @@ header nav {
 }
 
 header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block,
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active,
-div.mat-input-infix.mat-form-field-infix > span > label {
+.inscription div.mat-input-infix.mat-form-field-infix > span > label {
   font-weight: bolder;
   text-transform: uppercase;
+}
+
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active {
   color: #00accc !important;
 }
 
