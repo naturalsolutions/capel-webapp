@@ -6,8 +6,8 @@
         </mat-toolbar>
         <div class="row text-center">
           <div class="col-md-3">
-            <mat-form-field class="full-width">
-              <input matInput [matDatepicker]="dp" placeholder="Different locale" formControlName="divingDate">
+            <mat-form-field class="full-width angel_heading">
+              <input matInput [matDatepicker]="dp" placeholder="La date de vôtre plongée" formControlName="divingDate">
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp></mat-datepicker>
             </mat-form-field>
@@ -21,7 +21,7 @@
                 <ul class="list-inline">
                 <li class="list-inline-item">
                   <mat-form-field class="full-width">
-                    <input matInput placeholder="Start Time" value="00:00" formControlName="startTime">
+                    <input matInput placeholder="Heure de début de plongée" value="00:00" formControlName="startTime">
                   </mat-form-field>
                   <div *ngIf="time.controls.startTime.invalid && (time.controls.startTime.dirty || time.controls.startTime.touched)" class="alert alert-danger">
                     <div *ngIf="time.controls.startTime.errors.required">
@@ -31,7 +31,7 @@
                 </li>
                 <li class="list-inline-item">
                   <mat-form-field class="full-width">
-                    <input matInput placeholder="End Time" value="00:00" formControlName="endTime">
+                    <input matInput placeholder="Heure de fin de plongée" value="00:00" formControlName="endTime">
                   </mat-form-field>
                   <div *ngIf="time.controls.endTime.invalid && (boat.controls.endTime.dirty || time.controls.endTime.touched)" class="alert alert-danger">
                     <div *ngIf="time.controls.endTime.errors.required">
