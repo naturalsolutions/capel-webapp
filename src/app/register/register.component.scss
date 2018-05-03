@@ -9,14 +9,7 @@ app-register {
     }
   }
   .register {
-    p {
-      display: block;
-      font-size: 34%;
-      color: #ddfe00;
-      text-transform: none;
-      margin-top: -5px;
-      font-family: inherit;
-    }
+
     .inscription {
       background-color: #fff;
     }
@@ -40,4 +33,21 @@ app-register {
 
 }
 
-
+p {
+  font-family: 'Hind', sans-serif;
+  display: block;
+  font-size: 34%;
+  color: #ddfe00;
+  text-transform: none;
+  margin-top: -5px;
+}
+app-register .page:before {
+  content: '';
+  width: 100%;
+  height: calc(100vh - 80px);
+  background-size: cover;
+  background: url('/assets/fold.jpg') no-repeat;
+  position: fixed;
+  top: 80px;
+  left: 0;
+}

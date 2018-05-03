@@ -55,7 +55,7 @@
           <mat-card class="pg-card">
             <mat-card-header>
               <mat-card-title>Plongée & Bateaux</mat-card-title>
-              <mat-card-subtitle>selectionner une structure si vous avez plongée avec une sturture ou selectioner votre bateau</mat-card-subtitle>
+              <mat-card-subtitle>Sélectionner une structure si vous avez plongé avec une structure ou sélectionner votre bateau.</mat-card-subtitle>
             </mat-card-header>
           <div class="row">
           <div class="col-md-12">
@@ -73,7 +73,7 @@
         </div>
         <div class="row" *ngIf="!isWithStructure.value">
           <div class="col-md-12"  *ngIf="boatsChsd.length > 0">
-            <h5>BATEAUX DECLAREE</h5>
+            <h5>BATEAUX DECLARÉE</h5>
             <mat-chip-list>
               <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
                     <a mat-mini-fab color="warn" (click)="deleteBoat(i)">x</a>
@@ -81,7 +81,7 @@
             </mat-chip-list>
           </div>
           <div class="col-md-12">
-            <input matInput placeholder="Bateau" aria-label="Bateau" [matAutocomplete]="auto" [formControl]="boatCtrl">
+            <input matInput placeholder="Sélectionner un Bateau" aria-label="Bateau" [matAutocomplete]="auto" [formControl]="boatCtrl">
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let boat of filteredBoats | async" [value]="boat.name">
                 <span>Nom: {{ boat.name }}</span> |
