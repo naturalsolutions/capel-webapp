@@ -11,6 +11,7 @@ import * as L from 'leaflet';
 import * as _ from 'lodash';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
+import {UserService} from '../services/user.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class DiveComponent implements OnInit {
   diveTypes: any[] = [];
   boatCtrl: FormControl;
   filteredBoats: Observable<any[]>;
+  users: any[] = [];
   map: L.Map;
   options = {
     layers: [
@@ -47,12 +49,13 @@ export class DiveComponent implements OnInit {
     ],
     zoom: 12,
     center: L.latLng(43, 6.3833),
-    dragging: false
+    dragging: true
   };
 
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
               private diveService: DiveService,
+              private userService: UserService,
               private snackBar: MatSnackBar,
               private router: Router
               ) {
@@ -71,6 +74,9 @@ export class DiveComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
+    this.userService.getUsers().then(users => {
+      this.users = users;
+    })
     this.boatCtrl = new FormControl();
     this.filteredBoats = this.boatCtrl.valueChanges
       .pipe(
@@ -94,6 +100,7 @@ export class DiveComponent implements OnInit {
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
       structure: new FormControl('', Validators.required),
+      isWithStructure:  new FormControl(false),
       latlng: new FormControl('', Validators.required),
     });
     this.addTime();
@@ -104,6 +111,7 @@ export class DiveComponent implements OnInit {
     for (const divetype of this.diveTypes){
       this.divetypes.push(new FormGroup({
         name: new FormControl(false, Validators.required),
+        name_mat: new FormControl(divetype.name),
         nbrDivers: new FormControl(''),
       }));
     }
@@ -116,7 +124,7 @@ export class DiveComponent implements OnInit {
     }));
   }
   addBoat () {
-    this.boatsChsd.push({'boat_id': this.boatCtrl.value, 'isStructure': this.diveForm.get('structure').value});
+    this.boatsChsd.push({'boat': this.boatCtrl.value});
   }
   deleteBoat(i) {
     this.boatsChsd.splice(i, 1);
@@ -135,7 +143,11 @@ export class DiveComponent implements OnInit {
   save() {
     const data = this.diveForm.getRawValue();
     data.boats = this.boatsChsd;
+    console.log(this.isWithStructure);
     console.log(data);
   }
+  //Getters
+  get isWithStructure(){ return this.diveForm.get('isWithStructure'); }
+
 
 }

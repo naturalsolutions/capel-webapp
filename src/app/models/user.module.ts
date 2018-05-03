@@ -1,5 +1,3 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import * as _ from 'lodash';
 import {BoatModule} from './boat.module';
 

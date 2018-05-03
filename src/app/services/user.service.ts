@@ -34,11 +34,15 @@ export class UserService {
 
   logout() {
     this.sessionActionsService.close();
-    this.connected$.next(false)
+    this.connected$.next(false);
   }
 
   getProfile(): Promise<any> {
     return this.http.get<any>(config.serverURL + '/api/users/me')
+      .toPromise();
+  }
+  getUsers(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users')
       .toPromise();
   }
 
