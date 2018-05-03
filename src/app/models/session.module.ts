@@ -4,12 +4,6 @@ import { UserModule } from './user.module';
 import * as _ from 'lodash';
 
 
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
-})
 export class SessionModule {
 
   token: string;
@@ -33,4 +27,5 @@ export class SessionModule {
     const data: any = _.toPlainObject(this);
     return data;
   }
+
 }

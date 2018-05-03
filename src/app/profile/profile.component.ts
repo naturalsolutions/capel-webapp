@@ -6,7 +6,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { UserService } from '../services/user.service';
 import { config } from '../settings';
-import { MatSnackBar} from '@angular/material';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import 'rxjs/add/operator/take';
@@ -25,10 +24,10 @@ export class ProfileComponent implements OnInit {
     blob: <Blob>null,
     name:  ''
   }
-  private onDestroy$ = new Subject()
-  private fg: FormGroup;
-  private user: any = {};
-  private config;
+  onDestroy$ = new Subject()
+  fg: FormGroup;
+  user: any = {};
+  config;
 
   constructor(
     private router: Router,
@@ -60,11 +59,11 @@ export class ProfileComponent implements OnInit {
         if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
           this.snackBar.open("Le Token est expiré", "OK", {
             duration: 1000
-        })
+          })
+        }
         if (error && error.status === 401) {
           this.snackBar.open("Vous devez vous connecter", "OK", {
             duration: 3000
-
           });
           this.router.navigate(['/login']);
         }
@@ -72,7 +71,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.onDestroy$.next()
+    this.onDestroy$.next();
   }
 
   getPermit(id: number) {

@@ -1,13 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import * as _ from 'lodash';
 
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
-})
 export class BoatModule {
   _id: string;
   name:string;

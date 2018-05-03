@@ -103,19 +103,19 @@
       <div class="col-md-12">
           <h5 class="example-h2">CIEL</h5>
           <ul class="list-inline">
-            <li class="list-inline-item"><img src="../../assets/icons/weather_soleil.svg" /></li>
-            <li class="list-inline-item"><img src="../../assets/icons/weather_nuage.svg" /></li>
-            <li class="list-inline-item"><img src="../../assets/icons/weather_pluie.svg" /></li>
-            <li class="list-inline-item"><img src="../../assets/icons/weather_orage.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_soleil.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_nuage.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_pluie.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_orage.svg" /></li>
           </ul>
       </div>
       <div class="col-md-12">
           <h5 class="example-h2">ETAT DE LA MER</h5>
           <ul class="list-inline">
-            <li class="list-inline-item"><img src="../../assets/icons/weather_calme.svg" /></li>
-            <li class="list-inline-item"><img src="../../assets/icons/weather_mouvemente.svg" /></li>
-            <li class="list-inline-item"><img src="../../assets/icons/weather_agite.svg" /></li>
-            <li class="list-inline-item"><img src="../../assets/icons/weather_tempete.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_calme.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_mouvemente.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_agite.svg" /></li>
+            <li class="list-inline-item"><img src="./assets/icons/weather_tempete.svg" /></li>
           </ul>
       </div>
       <div class="row">
@@ -156,17 +156,24 @@
       <mat-toolbar>
         <span>SITE DE PLONGÉE </span>
       </mat-toolbar>
-      <mat-radio-group formControlName="referenced">
-        <mat-radio-button value="referenced">réferencé</mat-radio-button>
-        <mat-radio-button value="notreferenced">non réferencé</mat-radio-button>
-      </mat-radio-group>
+        <div class="row">
+          <div class="col-md-3">
+          <mat-radio-group formControlName="referenced">
+            <mat-radio-button value="referenced">réferencé</mat-radio-button>
+            <mat-radio-button value="notreferenced">non réferencé</mat-radio-button>
+          </mat-radio-group>
+          </div>
+          <div class="col-md-6">
+            <input matInput placeholder="coordonnes de plongée(cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
+          </div>
+        </div>
       <div id="leafletmap" style="height: 400px;"
            leaflet
            [leafletOptions]="options"
            (leafletMapReady)="onMapReady($event)"
       >
       </div>
-        <button  class="btn btn-secondary btn-block"> ENVOYER LA DÉCLARATION</button>
+        <button  class="btn btn-secondary btn-block" (click)="save()"> ENVOYER LA DÉCLARATION</button>
       </form>
   </mat-card>
 </main>

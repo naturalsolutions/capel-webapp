@@ -3,12 +3,7 @@ import { CommonModule } from '@angular/common';
 import * as _ from 'lodash';
 import {BoatModule} from './boat.module';
 
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
-})
+
 export class UserModule {
   _id: string;
   firstname:string;

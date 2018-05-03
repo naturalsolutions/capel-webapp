@@ -11,8 +11,7 @@ import * as L from 'leaflet';
 import * as _ from 'lodash';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
-import {HttpClient} from '@angular/common/http';
-import { MatChipsModule, MatSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'app-dive',
@@ -41,20 +40,21 @@ export class DiveComponent implements OnInit {
   diveTypes: any[] = [];
   boatCtrl: FormControl;
   filteredBoats: Observable<any[]>;
+  map: L.Map;
   options = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
-    zoom: 5,
-    center: L.latLng(43.3, 5.4)
+    zoom: 12,
+    center: L.latLng(43, 6.3833),
+    dragging: false
   };
 
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
               private diveService: DiveService,
               private snackBar: MatSnackBar,
-              private router: Router,
-              private http: HttpClient
+              private router: Router
               ) {
     this.adapter.setLocale('fr');
     this.diveService.getDiveTypes().then(data => {
@@ -88,12 +88,13 @@ export class DiveComponent implements OnInit {
       referenced: new FormControl(true, Validators.required),
       times: new FormArray([]),
       divetypes: new FormArray([]),
-      boat: new FormArray([]),
+      boats: new FormArray([]),
       wind: new FormControl('', Validators.required),
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
       structure: new FormControl('', Validators.required),
+      latlng: new FormControl('', Validators.required),
     });
     this.addTime();
 
@@ -123,8 +124,18 @@ export class DiveComponent implements OnInit {
   removeTime(i) {
     this.times.removeAt(i);
   }
-  onMapReady(map: Map) {
+  onMapReady(map: L.Map) {
     L.marker([50.6311634, 3.0599573]).addTo(map);
+    map.on('click', (e) => {
+      console.log(e.latlng);
+      this.diveForm.controls['latlng'].setValue(e.latlng);
+    });
+
+  }
+  save() {
+    const data = this.diveForm.getRawValue();
+    data.boats = this.boatsChsd;
+    console.log(data);
   }
 
 }
