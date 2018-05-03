@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { config } from '../settings';
 
 import { combineReducers } from 'redux';
-import { createLogger } from 'redux-logger';
 import { NgRedux, DevToolsExtension } from '@angular-redux/store';
+import { createLogger } from 'redux-logger';
 import * as persistState from 'redux-localstorage';
 
 import { SessionModule } from './session.module';
