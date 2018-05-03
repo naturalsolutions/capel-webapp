@@ -26,7 +26,7 @@
                         </mat-form-field>
                         <div *ngIf="time.controls.startTime.invalid && (time.controls.startTime.dirty || time.controls.startTime.touched)" class="alert alert-danger">
                           <div *ngIf="time.controls.startTime.errors.required">
-                            le nom de bateau est obligatoire.
+                            Le nom de bateau est obligatoire.
                           </div>
                         </div>
                       </li>
@@ -36,7 +36,7 @@
                         </mat-form-field>
                         <div *ngIf="time.controls.endTime.invalid && (boat.controls.endTime.dirty || time.controls.endTime.touched)" class="alert alert-danger">
                           <div *ngIf="time.controls.endTime.errors.required">
-                            l'imatriculation de bateau est obligatoire.
+                            L'imatriculation de bateau est obligatoire.
                           </div>
                         </div>
                       </li>
@@ -87,7 +87,7 @@
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let boat of filteredBoats | async" [value]="boat.name">
                 <span>Nom: {{ boat.name }}</span> |
-                <small>matriculation: {{boat.matriculation}}</small>
+                <small>Immatriculation: {{boat.matriculation}}</small>
               </mat-option>
             </mat-autocomplete>
           </div>
@@ -167,7 +167,7 @@
               </mat-radio-group>
             </div>
             <div class="col-md-6">
-              <input matInput placeholder="coordonnes de plongé(cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
+              <input matInput placeholder="coordonnées de plongée(cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
             </div>
           </div>
           <div id="leafletmap" style="height: 400px;"
