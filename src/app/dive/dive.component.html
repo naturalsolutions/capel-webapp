@@ -177,12 +177,12 @@
           <div class="row">
             <div class="col-md-3">
               <mat-radio-group formControlName="referenced">
-                <mat-radio-button value="referenced">réferencé</mat-radio-button>
-                <mat-radio-button value="notreferenced">non réferencé</mat-radio-button>
+                <mat-radio-button value="referenced">Site réferencé</mat-radio-button>
+                <mat-radio-button value="notreferenced">Site non réferencé</mat-radio-button>
               </mat-radio-group>
             </div>
             <div class="col-md-6">
-              <input matInput placeholder="coordonnées de plongée(cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
+              <input matInput placeholder="coordonnées de plongée (cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
             </div>
           </div>
           <div id="leafletmap" style="height: 400px;"
@@ -191,7 +191,7 @@
           (leafletMapReady)="onMapReady($event)"
           >
         </div>
-        <button  class="btn btn-secondary btn-block" (click)="save()"> ENVOYER LA DÉCLARATION</button>
+        <button class="btn btn-secondary btn-block" (click)="save()">ENVOYER LA DÉCLARATION</button>
       </section>
       </form>
   </mat-card>
