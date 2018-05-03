@@ -126,11 +126,15 @@ header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block {
   font-weight: bolder;
   text-transform: uppercase;
 }
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active {
+
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active,
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.visited,
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block:hover {
   color: #00accc !important;
 }
 
 .nav_profile, .nav_profile.active, .nav_profile:hover {
+  font-weight: normal;
   text-decoration: none;
   text-transform: capitalize !important;
   color: #000 !important;
