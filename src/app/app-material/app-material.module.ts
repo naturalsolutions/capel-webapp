@@ -6,14 +6,12 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatChipsModule,
-  MatDialog,
   MatDatepickerModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatListModule,
   MatIconModule,
   MatInputModule,
-  MAT_LABEL_GLOBAL_OPTIONS,
+  MatListModule,
   MatOptionModule,
   MatProgressSpinnerModule,
   MatRadioModule,
@@ -22,6 +20,7 @@ import {
   MatToolbarModule,
   MatSliderModule
 } from '@angular/material';
+import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material/core';
 
 
 @NgModule({
@@ -31,9 +30,19 @@ import {
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
+    MatListModule,
+    MatOptionModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatToolbarModule,
   ],
   exports: [
     MatAutocompleteModule,
@@ -50,9 +59,9 @@ import {
     MatOptionModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MatSnackBarModule,
     MatSelectModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatToolbarModule,
   ],
   declarations: [],

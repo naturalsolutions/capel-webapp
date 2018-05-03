@@ -7,7 +7,7 @@
         <div class="row text-center">
           <div class="col-md-3">
             <mat-form-field class="full-width angel_heading">
-              <input matInput [matDatepicker]="dp" placeholder="La date de vôtre plongée" formControlName="divingDate">
+              <input matInput [matDatepicker]="dp" placeholder="La date de votre plongée" formControlName="divingDate">
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp></mat-datepicker>
             </mat-form-field>
@@ -54,7 +54,7 @@
         <span>Bateau </span>
       </mat-toolbar>
         <div class="col-md-12"  *ngIf="boatsChsd.length > 0">
-          <h5>BATEAUX DECLAREE</h5>
+          <h5>BATEAUX DECLARES</h5>
           <mat-chip-list>
             <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat_id}} - avec structure: {{bt.isStructure }}
                   <a mat-mini-fab color="warn" (click)="deleteBoat(i)">x</a>
@@ -72,7 +72,7 @@
           </mat-autocomplete>
         </div>
         <div class="col-md-6">
-          <mat-checkbox formControlName="structure">Plonger avec une structure</mat-checkbox>
+          <mat-radio-button formControlName="structure" labelPosition='before'>J'ai plongé avec une structure</mat-radio-button>
         </div>
         <div class="col-md-12 text-center">
           <div class="button-row">
