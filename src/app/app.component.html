@@ -3,19 +3,19 @@
     <img src="assets/images/logo.png" alt="Parc national de Port-Cros" />
   </h1>
   <nav class="d-flex justify-content-end align-items-center">
-    <a href="#" name="routing-strategies" routerLink="/dive" routerLinkActive="active" class="btn btn-link btn-sm d-none d-md-block" ><u>Déclarer une plongée</u></a>
-    <div *ngIf="isConnected$ | async; then disconnect; else connect"></div>
-    <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a>
+    <a href="#" name="routing-strategies" routerLink="/dive" routerLinkActive="active" class="btn btn-link btn-sm d-none d-md-block nav_declare_dive"><u>déclarer une plongée</u></a>
+    <div *ngIf="isConnected$ | async; then profile; else connect"></div>
+    <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a> -->
   </nav>
 </header>
 <router-outlet></router-outlet>
 
-<ng-template #disconnect>
-  <a (click)="logOut()"
+<ng-template #profile>
+  <a routerLink="/profile" routerLinkActive="active"
     href="#" name="routing-strategies"
-    class="btn btn-link btn-sm d-none d-md-block">
+    class="btn btn-link btn-sm d-none d-md-block nav_my_profile">
       <i class="material-icons">person</i>
-      Se déconnecter
+      Mon profil
   </a>
 </ng-template>
 <ng-template #connect>
