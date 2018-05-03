@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
   logOut() {
     this.userService.logout()
-    this.router.navigateByUrl('/login');
+    this.router.navigate(['/login']);
   }
 
   ngOnInit() {

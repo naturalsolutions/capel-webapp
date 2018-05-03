@@ -10,7 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ErrorComponent, RegisterComponent, LoaderDialogComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './services/auth-guard';
 import { UserService } from './services/user.service';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
@@ -51,7 +51,7 @@ import { PermitViewDialog } from './profile/profile.component'
   entryComponents: [
     ErrorComponent,
     LoaderDialogComponent,
-    PermitViewDialog,
+    PermitViewDialog
   ],
   providers: [
     InitGuard,

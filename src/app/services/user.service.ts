@@ -43,6 +43,10 @@ export class UserService {
     return this.http.get<any>(config.serverURL + '/api/users/me')
       .toPromise();
   }
+  getUsers(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users')
+      .toPromise();
+  }
 
   post(data: any): Promise<any> {
     return this.http.post<any>(config.serverURL + '/api/users', data)

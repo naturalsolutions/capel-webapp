@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatChipsModule, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { MatRadioModule } from '@angular/material/radio';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -10,6 +10,8 @@ import { map } from 'rxjs/operators/map';
 import { startWith } from 'rxjs/operators/startWith';
 import * as _ from 'lodash';
 import * as L from 'leaflet';
+
+import { UserService } from '../services/user.service';
 import { BoatService } from '../services/boat.service';
 import { DiveService } from '../services/dive.service';
 
@@ -30,6 +32,8 @@ import { DiveService } from '../services/dive.service';
   ]
 })
 export class DiveComponent implements OnInit {
+
+
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
@@ -38,17 +42,21 @@ export class DiveComponent implements OnInit {
   diveTypes: any[] = [];
   boatCtrl: FormControl;
   filteredBoats: Observable<any[]>;
+  users: any[] = [];
+  map: L.Map;
   options = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
-    zoom: 5,
-    center: L.latLng(43.3, 5.4)
+    zoom: 12,
+    center: L.latLng(43, 6.3833),
+    dragging: true
   };
 
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
               private diveService: DiveService,
+              private userService: UserService,
               private snackBar: MatSnackBar,
               private router: Router
               ) {
@@ -67,6 +75,9 @@ export class DiveComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
+    this.userService.getUsers().then(users => {
+      this.users = users;
+    })
     this.boatCtrl = new FormControl();
     this.filteredBoats = this.boatCtrl.valueChanges
       .pipe(
@@ -84,15 +95,17 @@ export class DiveComponent implements OnInit {
   ngOnInit() {
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
-      referenced: new FormControl('', Validators.required),
+      referenced: new FormControl(true, Validators.required),
       times: new FormArray([]),
       divetypes: new FormArray([]),
-      boat: new FormArray([]),
+      boats: new FormArray([]),
       wind: new FormControl('', Validators.required),
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
       structure: new FormControl('', Validators.required),
+      isWithStructure:  new FormControl(false),
+      latlng: new FormControl('', Validators.required),
     });
     this.addTime();
 
@@ -102,6 +115,7 @@ export class DiveComponent implements OnInit {
     for (const divetype of this.diveTypes){
       this.divetypes.push(new FormGroup({
         name: new FormControl(false, Validators.required),
+        name_mat: new FormControl(divetype.name),
         nbrDivers: new FormControl(''),
       }));
     }
@@ -114,7 +128,7 @@ export class DiveComponent implements OnInit {
     }));
   }
   addBoat () {
-    this.boatsChsd.push({'boat_id': this.boatCtrl.value, 'isStructure': this.diveForm.get('structure').value});
+    this.boatsChsd.push({'boat': this.boatCtrl.value});
   }
   deleteBoat(i) {
     this.boatsChsd.splice(i, 1);
@@ -122,5 +136,22 @@ export class DiveComponent implements OnInit {
   removeTime(i) {
     this.times.removeAt(i);
   }
+  onMapReady(map: L.Map) {
+    L.marker([50.6311634, 3.0599573]).addTo(map);
+    map.on('click', (e) => {
+      console.log(e.latlng);
+      this.diveForm.controls['latlng'].setValue(e.latlng);
+    });
+
+  }
+  save() {
+    const data = this.diveForm.getRawValue();
+    data.boats = this.boatsChsd;
+    console.log(this.isWithStructure);
+    console.log(data);
+  }
+  //Getters
+  get isWithStructure(){ return this.diveForm.get('isWithStructure'); }
+
 
 }

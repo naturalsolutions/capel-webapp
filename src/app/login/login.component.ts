@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {UserService} from '../services/user.service';
-import {AuthInterceptorService} from '../services/auth-interceptor.service';
 import {SessionActionsService} from '../store/session/session-actions.service';
 import * as _ from 'lodash';
 import {MatSnackBar} from '@angular/material';
@@ -17,7 +15,7 @@ import {MatSnackBar} from '@angular/material';
 export class LoginComponent implements OnInit {
 
   isConnected$ : Observable<boolean>
-  public fg:FormGroup;
+  fg:FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +24,7 @@ export class LoginComponent implements OnInit {
     private snackBar: MatSnackBar,
     private sessionActionsService: SessionActionsService
   ) {
-    this.userService.logout()
+    this.userService.logout();
   }
 
   ngOnInit() {

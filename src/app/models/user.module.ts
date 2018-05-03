@@ -1,7 +1,7 @@
-// import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {BoatModule} from './boat.module';
 import * as _ from 'lodash';
+
+import {BoatModule} from './boat.module';
+
 
 export class UserModule {
   _id: string;

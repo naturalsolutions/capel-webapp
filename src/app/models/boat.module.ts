@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import * as _ from 'lodash';
 
 export class BoatModule {
