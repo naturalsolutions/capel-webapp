@@ -57,44 +57,44 @@
               <mat-card-title>BATEAU</mat-card-title>
               <mat-card-subtitle>Sélectionner si vous avez plongé en structure</mat-card-subtitle>
             </mat-card-header>
-          <div class="row">
-          <div class="col-md-12">
-            <mat-checkbox labelPosition='before' formControlName="isWithStructure">J'ai plongé avec une structure</mat-checkbox>
-          </div>
-          <div class="col-md-12" *ngIf="isWithStructure.value">
-            <mat-form-field>
-              <mat-select placeholder="Selectionner une structure" formControlName="structure">
-                <mat-option *ngFor="let user of users" [value]="user">
-                  {{ user.firstname }} {{ user.lastname }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row" *ngIf="!isWithStructure.value">
-          <div class="col-md-12"  *ngIf="boatsChsd.length > 0">
-            <h5>BATEAUX DECLARES</h5>
-            <mat-chip-list>
-              <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
-                    <a mat-mini-fab color="warn" (click)="deleteBoat(i)">x</a>
-              </mat-chip>
-            </mat-chip-list>
-          </div>
-          <div class="col-md-12">
-            <input matInput placeholder="Sélectionner un Bateau" aria-label="Bateau" [matAutocomplete]="auto" [formControl]="boatCtrl">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let boat of filteredBoats | async" [value]="boat.name">
-                <span>Nom: {{ boat.name }}</span> |
-                <small>Immatriculation: {{boat.matriculation}}</small>
-              </mat-option>
-            </mat-autocomplete>
-          </div>
-          <div class="col-md-12">
-            <div class="button-row">
-              <a mat-mini-fab (click)="addBoat()">+</a>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-checkbox labelPosition='before' formControlName="isWithStructure">J'ai plongé avec une structure</mat-checkbox>
+              </div>
+              <div class="col-md-12" *ngIf="isWithStructure.value">
+                <mat-form-field>
+                  <mat-select placeholder="Selectionner une structure" formControlName="structure">
+                    <mat-option *ngFor="let user of users" [value]="user">
+                      {{ user.firstname }} {{ user.lastname }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </div>
-          </div>
-        </div>
+            <div class="row" *ngIf="!isWithStructure.value">
+              <div class="col-md-12"  *ngIf="boatsChsd.length > 0">
+                <h5>BATEAUX DECLARES</h5>
+                <mat-chip-list>
+                  <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
+                        <a mat-mini-fab color="warn" (click)="deleteBoat(i)">x</a>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+              <div class="col-md-12">
+                <input matInput placeholder="Sélectionner un Bateau" aria-label="Bateau" [matAutocomplete]="auto" [formControl]="boatCtrl">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let boat of filteredBoats | async" [value]="boat.name">
+                    <span>Nom: {{ boat.name }}</span> |
+                    <small>Immatriculation: {{boat.matriculation}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+              <div class="col-md-12 text-center">
+                <div class="button-row">
+                  <a mat-mini-fab (click)="addBoat()">+</a>
+                </div>
+              </div>
+            </div>
           </mat-card>
         </section>
         <section name="wather">
