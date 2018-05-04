@@ -119,21 +119,49 @@
           </div>
           <div class="col-md-12">
               <h5 class="example-h2">CIEL</h5>
-              <ul class="list-inline">
-                <li class="list-inline-item"><img src="./assets/icons/weather_soleil.svg" /></li>
-                <li class="list-inline-item"><img src="./assets/icons/weather_nuage.svg" /></li>
-                <li class="list-inline-item"><img src="./assets/icons/weather_pluie.svg" /></li>
-                <li class="list-inline-item"><img src="./assets/icons/weather_orage.svg" /></li>
-              </ul>
+            <ul class="list-inline">
+            <mat-radio-group class="wather-radio" formControlName="sky">
+              <mat-radio-button class="example-radio-button" value='weather_soleil'>
+                <li *ngIf="sky.value != 'weather_soleil' " class="list-inline-item"><img src="./assets/icons/f_weather_soleil.svg" /></li>
+                <li *ngIf="sky.value == 'weather_soleil' " class="list-inline-item"><img src="./assets/icons/weather_soleil-on.svg" /></li>
+              </mat-radio-button>
+              <mat-radio-button class="wather-radio" value='weather_nuage'>
+                <li *ngIf="sky.value != 'weather_nuage' " class="list-inline-item"><img src="./assets/icons/f_weather_nuage.svg" /></li>
+                <li *ngIf="sky.value == 'weather_nuage' " class="list-inline-item"><img src="./assets/icons/weather_nuage-on.svg" /></li>
+              </mat-radio-button>
+              <mat-radio-button class="wather-radio" value='weather_pluie'>
+                <li *ngIf="sky.value != 'weather_pluie' " class="list-inline-item"><img src="./assets/icons/f_weather_pluie.svg" /></li>
+                <li *ngIf="sky.value == 'weather_pluie' " class="list-inline-item"><img src="./assets/icons/weather_pluie-on.svg" /></li>
+              </mat-radio-button>
+              <mat-radio-button class="wather-radio" value='weather_orage'>
+                <li *ngIf="sky.value != 'weather_orage' " class="list-inline-item"><img src="./assets/icons/f_weather_orage.svg" /></li>
+                <li *ngIf="sky.value == 'weather_orage' " class="list-inline-item"><img src="./assets/icons/weather_orage-on.svg" /></li>
+              </mat-radio-button>
+            </mat-radio-group>
+            </ul>
           </div>
           <div class="col-md-12">
               <h5 class="example-h2">ETAT DE LA MER</h5>
               <ul class="list-inline">
-                <li class="list-inline-item"><img src="./assets/icons/weather_calme.svg" /></li>
-                <li class="list-inline-item"><img src="./assets/icons/weather_mouvemente.svg" /></li>
-                <li class="list-inline-item"><img src="./assets/icons/weather_agite.svg" /></li>
-                <li class="list-inline-item"><img src="./assets/icons/weather_tempete.svg" /></li>
-              </ul>
+            <mat-radio-group class="example-radio-group" formControlName="seaState">
+              <mat-radio-button class="wather-radio" value='weather_calme'>
+                <li *ngIf="seaState.value != 'weather_calme' " class="list-inline-item"><img src="./assets/icons/f_weather_calme.svg" /></li>
+                <li *ngIf="seaState.value == 'weather_calme' " class="list-inline-item"><img src="./assets/icons/weather_soleil-on.svg" /></li>
+              </mat-radio-button>
+              <mat-radio-button class="wather-radio" value='weather_mouvemente'>
+                <li *ngIf="seaState.value != 'weather_mouvemente' " class="list-inline-item"><img src="./assets/icons/f_weather_mouvemente.svg" /></li>
+                <li *ngIf="seaState.value == 'weather_mouvemente' " class="list-inline-item"><img src="./assets/icons/weather_mouvemente-on.svg" /></li>
+              </mat-radio-button>
+              <mat-radio-button class="wather-radio" value='weather_agite'>
+                <li *ngIf="seaState.value != 'weather_agite' " class="list-inline-item"><img src="./assets/icons/f_weather_agite.svg" /></li>
+                <li *ngIf="seaState.value == 'weather_agite' " class="list-inline-item"><img src="./assets/icons/weather_agite-on.svg" /></li>
+              </mat-radio-button>
+              <mat-radio-button class="wather-radio" value='weather_tempete'>
+                <li *ngIf="seaState.value != 'weather_tempete' " class="list-inline-item"><img src="./assets/icons/f_weather_tempete.svg" /></li>
+                <li *ngIf="seaState.value == 'weather_tempete' " class="list-inline-item"><img src="./assets/icons/weather_tempete-on.svg" /></li>
+              </mat-radio-button>
+            </mat-radio-group>
+            </ul>
           </div>
           <div class="row">
             <div class="col-md-4">
@@ -177,8 +205,8 @@
           <div class="row">
             <div class="col-md-3">
               <mat-radio-group formControlName="referenced">
-                <mat-radio-button value="referenced">Site réferencé</mat-radio-button>
-                <mat-radio-button value="notreferenced">Site non réferencé</mat-radio-button>
+                <mat-radio-button value="referenced" class="ref-radio">Site réferencé</mat-radio-button>
+                <mat-radio-button value="notreferenced" class="ref-radio">Site non réferencé</mat-radio-button>
               </mat-radio-group>
             </div>
             <div class="col-md-6">

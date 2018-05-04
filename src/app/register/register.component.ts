@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
     }, { validator: this.passwordConfirming , updateOn: 'blur' });
-    this.addBoat();
+
   }
   // Confirm password validation
   passwordConfirming(c: AbstractControl): { invalid: boolean } {

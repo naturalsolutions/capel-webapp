@@ -10,26 +10,24 @@
     </div>
     <div *ngIf="status != 'complete'" class="row">
       <div class="col-sm-3 align-items">
-        <h1 class="brand">LE CAPEL
+        <h1 class="brand">CAPEL
           <small>Carnet de Plongée En Ligne</small>
         </h1>
       </div>
-      <div class="col-sm-6 text-center">
-        <h1 class="brand">INSCRIPTION</h1>
+      <div class="col-sm-6">
+        <h1 class="brand text-center">INSCRIPTION</h1>
         <mat-card>
           <form  class="register-form inscription" [formGroup]="userForm">
-            <div>
               <mat-toolbar>
                 <span>VOUS </span>
               </mat-toolbar>
               <div class="col-sm-12">
-              <label>VOUS ĖTES:  </label>
+              <label class="youare">VOUS ĖTES:  </label>
               <mat-radio-group formControlName="category">
-                <mat-radio-button value="particulier" >JE SUIS UN PARTICULIER</mat-radio-button>
-                <mat-radio-button value="structure">JE SUIS UNE STRUCTURE</mat-radio-button>
+                <mat-radio-button value="particulier" >UN PARTICULIER</mat-radio-button>
+                <mat-radio-button value="structure">UNE STRUCTURE</mat-radio-button>
               </mat-radio-group>
               </div>
-            </div>
             <div class="col-sm-12">
               <mat-form-field class="full-width">
                 <input matInput type="text" placeholder="Nom" formControlName="lastname">
@@ -146,7 +144,9 @@
       </div>
       <div class="col-sm-3 order-mobile align-items">
         <div class="col-sm mt-2 mt-sm-0">
-          <p>VOUS AVEZ DÈJÀ UN COMPTE?</p>
+          <h1 class="brand">
+            <small>VOUS AVEZ DÈJÀ UN COMPTE ?</small>
+          </h1>
           <a href="#" routerLink="/login" class="btn btn-primary btn-block"> SE CONNECTER</a>
         </div>
       </div>

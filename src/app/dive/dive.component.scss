@@ -44,3 +44,14 @@ mat-radio-button, mat-checkbox[name~='Site *référencé'] {
    text-transform: uppercase;
    font-weight: bolder
 }
+  .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: rgb(66, 134, 244);
+  }
+
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: rgb(66, 134, 244);
+  }
+
+  .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color:rgba(66, 134, 244,.26);
+  }

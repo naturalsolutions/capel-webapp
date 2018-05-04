@@ -100,6 +100,8 @@ export class DiveComponent implements OnInit {
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
+      sky: new FormControl('', Validators.required),
+      seaState: new FormControl('', Validators.required),
       structure: new FormControl('', Validators.required),
       isWithStructure:  new FormControl(false),
       latlng: new FormControl('', Validators.required),
@@ -149,6 +151,12 @@ export class DiveComponent implements OnInit {
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }
+  get sky() {
+    return this.diveForm.get('sky');
+  }
+  get seaState() {
+    return this.diveForm.get('seaState');
+  }
 
 
 }
