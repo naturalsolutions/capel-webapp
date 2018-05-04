@@ -119,7 +119,7 @@
           </div>
           <div class="col-md-12">
               <h5 class="example-h2">CIEL</h5>
-            <ul class="list-inline">
+            <ul class="list-inline weather">
             <mat-radio-group class="wather-radio" formControlName="sky">
               <mat-radio-button class="example-radio-button" value='weather_soleil'>
                 <li *ngIf="sky.value != 'weather_soleil' " class="list-inline-item"><img src="./assets/icons/f_weather_soleil.svg" /></li>
@@ -142,11 +142,11 @@
           </div>
           <div class="col-md-12">
               <h5 class="example-h2">ETAT DE LA MER</h5>
-              <ul class="list-inline">
+              <ul class="list-inline weather">
             <mat-radio-group class="example-radio-group" formControlName="seaState">
               <mat-radio-button class="wather-radio" value='weather_calme'>
                 <li *ngIf="seaState.value != 'weather_calme' " class="list-inline-item"><img src="./assets/icons/f_weather_calme.svg" /></li>
-                <li *ngIf="seaState.value == 'weather_calme' " class="list-inline-item"><img src="./assets/icons/weather_soleil-on.svg" /></li>
+                <li *ngIf="seaState.value == 'weather_calme' " class="list-inline-item"><img src="./assets/icons/weather_calme-on.svg" /></li>
               </mat-radio-button>
               <mat-radio-button class="wather-radio" value='weather_mouvemente'>
                 <li *ngIf="seaState.value != 'weather_mouvemente' " class="list-inline-item"><img src="./assets/icons/f_weather_mouvemente.svg" /></li>
