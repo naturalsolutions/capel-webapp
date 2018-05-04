@@ -116,19 +116,26 @@ header nav {
   background-color: #00accc;
 }
 
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block,
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active,
-div.mat-input-infix.mat-form-field-infix > span > label {
+.inscription div.mat-input-infix.mat-form-field-infix > span > label {
   font-weight: bolder;
   text-transform: uppercase;
   color: #00accc !important;
 }
 
-.nav_profile,
-.nav_profile.active,
-.nav_profile:hover {
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block {
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active,
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.visited,
+header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block:hover {
+  color: #00accc !important;
+}
+
+.navProfile, .navProfile.active, .navProfile:hover {
+  font-weight: normal;
   text-decoration: none;
   text-transform: capitalize !important;
   color: #000 !important;
-  cursor: pointer;
 }

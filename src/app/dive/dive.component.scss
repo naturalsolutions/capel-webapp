@@ -40,3 +40,7 @@
     top: 80px;
     left: 0;
   }
+mat-radio-button, mat-checkbox[name~='Site *référencé'] {
+   text-transform: uppercase;
+   font-weight: bolder
+}
