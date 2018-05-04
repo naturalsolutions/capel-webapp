@@ -167,6 +167,7 @@ export class ProfileComponent implements OnInit {
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button [mat-dialog-close]="data" cdkFocusInitial>TELECHARGER LE PDF</button>
+    <button mat-button (click)="close()">Annuler</button>
   </div>
 </form>`,
   styles: [`
@@ -192,5 +193,8 @@ export class PermitViewDialog {
 
   onLoad(event: Event) {
     this.loading = false;
+  }
+  close(): void {
+    this.dialogRef.close();
   }
 }

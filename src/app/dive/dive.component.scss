@@ -30,3 +30,13 @@
 .pg-card{
   margin: 30px 0px 30px 0px;
 }
+.page:before {
+    content: '';
+    width: 100%;
+    height: calc(100vh - 80px);
+    background-size: cover;
+    background: url('../../assets/fold.jpg') no-repeat;
+    position: fixed;
+    top: 80px;
+    left: 0;
+  }
