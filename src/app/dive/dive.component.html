@@ -1,6 +1,6 @@
 <main class="page container">
   <mat-card>
-      <form  class="register-form inscription" [formGroup]="diveForm">
+      <form  class="register-form register-dive" [formGroup]="diveForm">
         <section name="timeAndStruture">
             <mat-toolbar>
               <span>DATE ET HEURE </span>
@@ -22,7 +22,7 @@
                     <ul class="list-inline">
                       <li class="list-inline-item">
                         <mat-form-field class="full-width">
-                          <input matInput placeholder="Heure de début" value="00:00" formControlName="startTime">
+                          <input type="time" matInput placeholder="Heure de début" value="00:00" formControlName="startTime">
                         </mat-form-field>
                         <div *ngIf="time.controls.startTime.invalid && (time.controls.startTime.dirty || time.controls.startTime.touched)" class="alert alert-danger">
                           <div *ngIf="time.controls.startTime.errors.required">
@@ -32,7 +32,7 @@
                       </li>
                       <li class="list-inline-item">
                         <mat-form-field class="full-width">
-                          <input matInput placeholder="Heure de fin" value="00:00" formControlName="endTime">
+                          <input type="time" matInput placeholder="Heure de fin" value="00:00" formControlName="endTime">
                         </mat-form-field>
                         <div *ngIf="time.controls.endTime.invalid && (boat.controls.endTime.dirty || time.controls.endTime.touched)" class="alert alert-danger">
                           <div *ngIf="time.controls.endTime.errors.required">

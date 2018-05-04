@@ -97,13 +97,11 @@ header nav {
   background-color: #fff;
 }
 @media (min-height: 960px) {
-  /* .fold:nth-child(2) .cols img {
-    margin: 80px 0;
-  } */
   .fold:nth-child(2) p {
     font-size: 1.2rem;
   }
 }
+
 .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background: #00accc; /* Old browsers */
 }
@@ -116,11 +114,12 @@ header nav {
   background-color: #00accc;
 }
 
-.inscription div.mat-input-infix.mat-form-field-infix > span > label {
-   font-weight: bolder;
-   text-transform: uppercase;
-   color: #00accc !important;
- }
+.register-dive .div.mat-input-infix.mat-form-field-infix > span > label {
+  font-weight: bolder;
+  text-transform: uppercase;
+  color: #00accc !important;
+}
+
 .inscription .youare {
   font-weight: bolder;
   text-transform: uppercase;
