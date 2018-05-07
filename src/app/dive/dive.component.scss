@@ -1,48 +1,54 @@
+.page {
+  min-height: 100vh;
+  padding-top: 140px;
+}
 
-  .page {
-    min-height: 100vh;
-    padding-top: 140px;
-  }
-  .full-width {
-    width: 100%;
-  }
-  .mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent{
-    background-color: #00accc;
-  }
-  mat-toolbar{
-    margin: 0px 0px 50px 0px;
-  }
-  h5{
-    color: #00accc;
-    font-size: 14px;
-  }
-  .list-inline{
-    img{
-      width: 100px;
-      height: 100px;
-      margin: 20px 60px 20px 0px;
-    }
+.full-width {
+  width: 100%;
+}
 
+.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+  background-color: #00accc;
+}
+
+mat-toolbar {
+  margin: 0px 0px 50px 0px;
+}
+
+h5 {
+  color: #00accc;
+  font-size: 14px;
+}
+
+.list-inline {
+  img {
+    width: 100px;
+    height: 100px;
+    margin: 20px 60px 20px 0px;
   }
-  mat-chip{
-    margin:30px;
-  }
-.pg-card{
+
+}
+mat-chip {
+  margin:30px;
+}
+
+.pg-card {
   margin: 30px 0px 30px 0px;
 }
+
 .page:before {
-    content: '';
-    width: 100%;
-    height: calc(100vh - 80px);
-    background-size: cover;
-    background: url('../../assets/fold.jpg') no-repeat;
-    position: fixed;
-    top: 80px;
-    left: 0;
-  }
-mat-radio-button, mat-checkbox[name~='Site *référencé'] {
-   text-transform: uppercase;
-   font-weight: bolder;
-   color: #00accc;
+  content: '';
+  width: 100%;
+  height: calc(100vh - 80px);
+  background-size: cover;
+  background: url('../../assets/fold.jpg') no-repeat;
+  position: fixed;
+  top: 80px;
+  left: 0;
 }
 
+mat-radio-group[name='referenced'] {
+  text-transform: uppercase;
+  font-weight: bolder;
+  // color: #00accc;
+}
