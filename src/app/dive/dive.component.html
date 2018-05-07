@@ -76,7 +76,10 @@
             <h5>BATEAUX DECLARES</h5>
             <mat-chip-list>
               <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
-                    <a mat-mini-fab color="warn" (click)="deleteBoat(i)">x</a>
+                 <!-- <a mat-mini-fab color="warn" >x</a> -->
+                <button mat-icon-button>
+                  <mat-icon class="material-icons md-18"  color="warn" (click)="deleteBoat(i)">clear</mat-icon>
+                </button>
               </mat-chip>
             </mat-chip-list>
           </div>

@@ -113,8 +113,9 @@ export class DiveComponent implements OnInit {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
     for (const divetype of this.diveTypes){
       this.divetypes.push(new FormGroup({
+        id: new FormControl(divetype.id),
         name: new FormControl(false, Validators.required),
-        name_mat: new FormControl(divetype.name),
+        nameMat: new FormControl(divetype.name),
         nbrDivers: new FormControl(''),
       }));
     }

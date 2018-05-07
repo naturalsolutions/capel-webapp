@@ -1,18 +1,39 @@
-<form [formGroup]="fg" (submit)="onSubmit()">
-  <mat-card class="text-center">
-    <mat-card-header>
-      <mat-card-title>Connexion</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field>
-        <input matInput placeholder="Email" formControlName="username">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Mot de passe" formControlName="password">
-      </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button>SE CONNECTER</button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+<main class="page container-fluid">
+  <div class="row">
+    <div class="col-sm-3 align-items">
+      <h1 class="brand">CAPEL
+        <small>Carnet de Plongée En Ligne</small>
+      </h1>
+    </div>
+    <div class="col-sm-6 text-center">
+      <h1 class="brand">Connexion</h1>
+    </div>
+    <div class="col-sm-3 order-mobile align-items">
+      <div class="col-sm mt-2 mt-sm-0">
+        <h1 class="brand">
+          <small>VOUS N'AVEZ PAS DE COMPTE ?</small>
+        </h1>
+        <a href="#" routerLink="/register" class="btn btn-primary"> S'INSCRIRE</a>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center login-card">
+    <div class="col-sm-4 offset-md-4">
+      <form [formGroup]="fg" (submit)="onSubmit()">
+        <mat-card class="text-center">
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput placeholder="Email" formControlName="username">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="password" placeholder="Mot de passe" formControlName="password">
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <button class="btn btn-primary btn-login">SE CONNECTER</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</main>
