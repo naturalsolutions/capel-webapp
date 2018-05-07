@@ -142,8 +142,10 @@ export class ProfileComponent implements OnInit {
     dialogRef.afterClosed()
       .take(1)
       .subscribe(data => {
+        if (data) {
         window.URL.revokeObjectURL(data.blobUrl)
         this.saveBlob(this.permit.blob, this.permit.name);
+        }
       }
     )
   }
