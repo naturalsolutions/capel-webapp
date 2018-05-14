@@ -9,7 +9,7 @@ export class DiveService {
   ) {
   }
   getDiveTypes(): Promise<any> {
-    return this.http.get<any>(config.serverURL + '/api/devies/typedives')
+    return this.http.get<any>(config.serverURL + '/api/dives/typedives')
       .toPromise();
   }
   save(data: any): Promise<any> {
