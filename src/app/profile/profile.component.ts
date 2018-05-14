@@ -104,6 +104,7 @@ export class ProfileComponent implements OnInit {
         dialogRef.close();
       },
       error => {
+        dialogRef.close();
         console.error('Permit download failed: ', error)
         this.snackBar.open("Le téléchargement de l'autorisation a échoué.", "OK", {duration: 1000})
       },

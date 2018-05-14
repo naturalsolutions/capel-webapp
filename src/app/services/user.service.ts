@@ -63,9 +63,10 @@ export class UserService {
   }
 
   getPermit(uid: number): Observable<HttpResponse<Blob>> {
+    console.log('req permit');
     let headers = new HttpHeaders(
       {'Content-Type': 'application/pdf', 'Accept': 'application/pdf'})
-    return this.http.get(`${config.serverURL}api/users/${uid}/permit.pdf`,
+    return this.http.get(`${config.serverURL}/api/users/${uid}/permit.pdf`,
                          {headers, observe: 'response', responseType: 'blob'})
   }
 }

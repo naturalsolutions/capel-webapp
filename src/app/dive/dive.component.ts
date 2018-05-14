@@ -149,6 +149,17 @@ export class DiveComponent implements OnInit {
     data.boats = this.boatsChsd;
     console.log(this.isWithStructure);
     console.log(data);
+    this.diveService.getDives().then(data=>{
+      console.log(data);
+    })
+    /*
+    this.diveService.save(data).then(data => {
+
+
+    }, error => {
+      console.log(error);
+    })
+    */
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }

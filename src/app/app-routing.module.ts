@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth-guard';
 import { InitGuard } from './services/init-guard';
 import {DiveComponent} from './dive/dive.component';
+import {DivesComponent} from './dives/dives.component';
 const routes: Routes = [{
   path: '',
   canActivate: [InitGuard],
@@ -23,7 +24,13 @@ const routes: Routes = [{
       path: 'dive',
       component: DiveComponent,
       canActivate: [AuthGuard]
-    }, {
+    },
+    {
+      path: 'dives',
+      component: DivesComponent,
+      canActivate: [AuthGuard]
+    },
+    {
     path: '',
     redirectTo: 'profile',
     pathMatch: 'full',

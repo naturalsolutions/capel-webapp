@@ -12,4 +12,12 @@ export class DiveService {
     return this.http.get<any>(config.serverURL + '/api/devies/typedives')
       .toPromise();
   }
+  save(data: any): Promise<any> {
+    return this.http.post<any>(config.serverURL + '/api/users/1/dive', data)
+      .toPromise();
+  }
+  getDives(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/dives')
+      .toPromise();
+  }
 }

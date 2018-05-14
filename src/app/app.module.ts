@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
+import 'rxjs/add/observable/of';
 import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
@@ -22,7 +22,8 @@ import { DiveComponent } from './dive/dive.component';
 import {BoatService} from './services/boat.service';
 import {DiveService} from './services/dive.service';
 
-import { PermitViewDialog } from './profile/profile.component'
+import { PermitViewDialog } from './profile/profile.component';
+import {DivesComponent} from './dives/dives.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { PermitViewDialog } from './profile/profile.component'
     LoaderDialogComponent,
     DiveComponent,
     PermitViewDialog,
+    DivesComponent,
   ],
   imports: [
     BrowserModule,
