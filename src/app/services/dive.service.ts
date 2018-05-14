@@ -13,7 +13,7 @@ export class DiveService {
       .toPromise();
   }
   save(data: any): Promise<any> {
-    return this.http.post<any>(config.serverURL + '/api/users/1/dive', data)
+    return this.http.post<any>(config.serverURL + '/api/users/1/dives', data)
       .toPromise();
   }
   getDives(): Promise<any> {
