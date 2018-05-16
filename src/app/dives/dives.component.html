@@ -1,9 +1,25 @@
-<div class="container-fluid page-profile">
+<div class="container-fluid page-dives">
   <div class="row">
     <div class="col-md-3">
+      <a routerLinkActive="true" routerLink="/dive" class="btn btn-primary btn-block"> DECLARER UNE PLONGEE </a>
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let dive of dives">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ formatDate(dive.divingDate) }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-panel-description *ngFor="let timeElem of dive.times">
+            {{timeElem[0]}} - {{timeElem[1]}}
+          </mat-panel-description>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
     <div class="col-md-9">
+      <div id="leafletmap" style="height: 600px;"
+           leaflet
+           [leafletOptions]="options"
+      >
     </div>
   </div>
-
 </div>

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatTreeModule} from '@angular/material/tree';
 import { MAT_LABEL_GLOBAL_OPTIONS } from '@angular/material/core';
 import {
   MatAutocompleteModule,
@@ -20,7 +19,8 @@ import {
   MatSelectModule,
   MatSnackBarModule,
   MatToolbarModule,
-  MatSliderModule
+  MatSliderModule,
+  MatExpansionModule
 } from '@angular/material';
 
 @NgModule({
@@ -43,7 +43,7 @@ import {
     MatSliderModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatTreeModule
+    MatExpansionModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -64,7 +64,7 @@ import {
     MatSliderModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatTreeModule
+    MatExpansionModule
   ],
   declarations: [],
   providers: [
