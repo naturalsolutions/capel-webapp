@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { MatRadioModule } from '@angular/material/radio';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Observable } from 'rxjs/Observable';
@@ -147,28 +146,17 @@ export class DiveComponent implements OnInit {
   save() {
     const data = this.diveForm.getRawValue();
     data.boats = this.boatsChsd;
-    console.log(this.isWithStructure);
-    console.log(data);
-    this.diveService.getDives().then(data=>{
-      console.log(data);
-    })
-    /*
+
     this.diveService.save(data).then(data => {
-
-
+      this.router.navigate(['/dives']);
     }, error => {
       console.log(error);
     })
-    */
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }
-  get sky() {
-    return this.diveForm.get('sky');
-  }
-  get seaState() {
-    return this.diveForm.get('seaState');
-  }
+  get sky() { return this.diveForm.get('sky'); }
+  get seaState() { return this.diveForm.get('seaState'); }
 
 
 }
