@@ -6,14 +6,18 @@
     font-weight: bolder;
     // color: #00accc;
   }
+
+  .mat-form-field-infix {
+    border: none;
+  }
   
   .form-group-visibility {
     .mat-radio-group {
       display: inline-block;
       margin-top: 15px;
     }
-    .mat-radio-button:not(:first-child) {
-      margin-left: 15px;
+    .mat-radio-button:not(:last-child) {
+      margin-right: 15px;
     }
     .mat-radio-label-content {
       padding-right: 5px !important;
@@ -33,9 +37,12 @@ mat-toolbar {
   margin: 0px 0px 50px 0px;
 }
 
-h5 {
-  color: #00accc;
-  font-size: 14px;
+h5, .mat-form-field-label {
+  color: #00accc !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  font-family: 'Hind', sans-serif !important;
 }
 
 .list-inline {

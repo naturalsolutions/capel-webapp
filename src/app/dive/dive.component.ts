@@ -79,11 +79,14 @@ export class DiveComponent implements OnInit {
       this.users = users;
     })
     this.boatCtrl = new FormControl();
-    this.filteredBoats = this.boatCtrl.valueChanges
+    this.boatCtrl.valueChanges.subscribe(value => {
+      console.log(value);
+    })
+   /*  this.filteredBoats = this.boatCtrl.valueChanges
       .pipe(
         startWith(''),
         map(boat => boat ? this.filterBoats(boat) : this.boats.slice())
-      );
+      ); */
   }
   filterBoats(name: string) {
     return this.boats.filter(state =>
@@ -92,7 +95,7 @@ export class DiveComponent implements OnInit {
   ngOnInit() {
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
-      referenced: new FormControl(true, Validators.required),
+      referenced: new FormControl('referenced'),
       times: new FormArray([]),
       divetypes: new FormArray([]),
       boats: new FormArray([]),
@@ -103,7 +106,7 @@ export class DiveComponent implements OnInit {
       sky: new FormControl('', Validators.required),
       seaState: new FormControl('', Validators.required),
       structure: new FormControl('', Validators.required),
-      isWithStructure:  new FormControl(false),
+      isWithStructure:  new FormControl('', Validators.required),
       latlng: new FormControl('', Validators.required),
     });
     this.addTime();
@@ -146,15 +149,15 @@ export class DiveComponent implements OnInit {
   }
   save() {
     this.hasSubmit = true;
-    console.log(this.diveForm.get('structure').valid);
+    console.log(this.diveForm.valid);
     const data = this.diveForm.getRawValue();
     data.boats = this.boatsChsd;
 
-    this.diveService.save(data).then(data => {
+    /* this.diveService.save(data).then(data => {
       this.router.navigate(['/dives']);
     }, error => {
       console.log(error);
-    })
+    }) */
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }
