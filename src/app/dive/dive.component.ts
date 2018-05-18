@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -18,6 +18,7 @@ import { DiveService } from '../services/dive.service';
   selector: 'app-dive',
   templateUrl: './dive.component.html',
   styleUrls: ['./dive.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     // The locale would typically be provided on the root module of your application. We do it at
     // the component level here, due to limitations of our example generation script.
@@ -32,7 +33,7 @@ import { DiveService } from '../services/dive.service';
 })
 export class DiveComponent implements OnInit {
 
-
+  hasSubmit: boolean;
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
@@ -115,7 +116,7 @@ export class DiveComponent implements OnInit {
         id: new FormControl(divetype.id),
         name: new FormControl(false, Validators.required),
         nameMat: new FormControl(divetype.name),
-        nbrDivers: new FormControl(''),
+        nbrDivers: new FormControl('1'),
       }));
     }
   }
@@ -144,6 +145,8 @@ export class DiveComponent implements OnInit {
 
   }
   save() {
+    this.hasSubmit = true;
+    console.log(this.diveForm.get('structure').valid);
     const data = this.diveForm.getRawValue();
     data.boats = this.boatsChsd;
 
