@@ -77,16 +77,15 @@
             </mat-chip-list>
           </div> -->
           <mat-form-field class="mat-form-field-lg">
-            <mat-select [formControl]="boatCtrl" placeholder="Sélectionnez les bateaux" [attr.multiple]="boats.length > 1">
-              <mat-select-trigger *ngIf="boats.length > 1">
-                {{boatCtrl.value ? boatCtrl.value[0].name : ''}}
-                <span *ngIf="boatCtrl.value?.length > 1">
-                  (+{{boatCtrl.value.length - 1}})
+            <mat-select formControlName="boats" placeholder="Sélectionnez les bateaux" multiple>
+              <!-- <mat-select-trigger *ngIf="boats.length > 1">
+                {{diveForm.get('boats').value[0] ? diveForm.get('boats').value[0].name : ''}}
+                <span *ngIf="diveForm.get('boats').value?.length > 1">
+                  (+{{diveForm.get('boats').value.length - 1}})
                 </span>
-              </mat-select-trigger>
+              </mat-select-trigger> -->
               <mat-option *ngFor="let boat of boats" [value]="boat">
-                Nom: {{ boat.name }} |
-                <small>Immatriculation: {{boat.matriculation}}</small>
+                {{ boat.name }} <small>{{boat.matriculation}}</small>
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -96,15 +95,15 @@
             <span>CONDITION CLIMATIQUES </span>
           </mat-toolbar>
           <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('wind').invalid}">
-            <h5 class="form-group-title with-required">VENT <small>(Bft)</small></h5>
+            <h5 class="form-group-title with-required">Vent <small>(Bft)</small></h5>
             <mat-slider
               class="full-width"
-              [invert]="false"
               [max]="20"
               [min]="1"
-              [step]="true"
+              [step]="1"
+              [thumbLabel]="true"
               formControlName="wind"
-              [vertical]="false">
+            >
             </mat-slider>
           </div>
           <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('sky').invalid}">
@@ -194,9 +193,9 @@
           </mat-toolbar>
           <div class="row" formArrayName="divetypes">
             <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
-              <mat-checkbox class="checkbox-btn" formControlName="name">{{diveTypes[i].name}}</mat-checkbox>
-              <mat-form-field *ngIf="divetypes.controls[i].controls.name.value">
-                <input class="text-right" matInput type="number" formControlName="nbrDivers">
+              <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
+              <mat-form-field *ngIf="typedive.controls.selected.value">
+                <input class="text-right" matInput type="number" min="1" formControlName="nbrDivers">
                 <span matPrefix>Nombre de plongeur</span>
               </mat-form-field>
             </div>

@@ -39,7 +39,6 @@ export class DiveComponent implements OnInit {
   divetypes: FormArray = new FormArray([]);
   boatsChsd: any[] = [];
   boats: any[] = [];
-  diveTypes: any[] = [];
   boatCtrl: FormControl;
   filteredBoats: Observable<any[]>;
   users: any[] = [];
@@ -62,9 +61,6 @@ export class DiveComponent implements OnInit {
               private router: Router
               ) {
     this.adapter.setLocale('fr');
-    this.diveService.getDiveTypes().then(data => {
-      this.diveTypes = data;
-    });
     this.boatService.getBoats().then(data => {
       this.boats = data;
     }, error => {
@@ -78,10 +74,10 @@ export class DiveComponent implements OnInit {
     this.userService.getUsers().then(users => {
       this.users = users;
     })
-    this.boatCtrl = new FormControl();
+    /* this.boatCtrl = new FormControl();
     this.boatCtrl.valueChanges.subscribe(value => {
       console.log(value);
-    });
+    }); */
    /*  this.filteredBoats = this.boatCtrl.valueChanges
       .pipe(
         startWith(''),
@@ -98,7 +94,7 @@ export class DiveComponent implements OnInit {
       referenced: new FormControl('referenced'),
       times: new FormArray([]),
       divetypes: new FormArray([]),
-      boats: new FormArray([]),
+      boats: new FormControl([]),
       wind: new FormControl('', Validators.required),
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
@@ -110,7 +106,9 @@ export class DiveComponent implements OnInit {
       latlng: new FormControl('', Validators.required),
     });
     this.addTime();
-    this.initDiveTypeForm();
+    this.diveService.getDiveTypes().then(data => {
+      this.initDiveTypeForm(data);
+    });
     this.diveForm.get('isWithStructure').valueChanges
       .subscribe(value => {
         this.diveForm.get('structure').setValidators(value ? Validators.required : null);
@@ -121,22 +119,23 @@ export class DiveComponent implements OnInit {
         console.log(value);
       });
   }
-  initDiveTypeForm() {
+  initDiveTypeForm(data) {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
-    for (const divetype of this.diveTypes){
+    for (const divetype of data){
       this.divetypes.push(new FormGroup({
         id: new FormControl(divetype.id),
-        name: new FormControl(false, Validators.required),
+        selected: new FormControl(false),
+        name: new FormControl(divetype.name),
         nameMat: new FormControl(divetype.name),
-        nbrDivers: new FormControl('1'),
+        nbrDivers: new FormControl(1),
       }));
     }
   }
   addTime() {
     this.times = this.diveForm.get('times') as FormArray;
     this.times.push(new FormGroup({
-      startTime: new FormControl(''),
-      endTime: new FormControl(''),
+      startTime: new FormControl('00:00'),
+      endTime: new FormControl('00:00'),
     }));
   }
   addBoat () {
@@ -158,9 +157,12 @@ export class DiveComponent implements OnInit {
   }
   save() {
     this.hasSubmit = true;
-    console.log(this.diveForm.get('structure').valid);
     const data = this.diveForm.getRawValue();
-    data.boats = this.boatsChsd;
+    if (data.divingDate)
+      data.divingDate = data.divingDate.format();
+    //data.boats = this.boatsChsd;
+    data.structure = _.get(data.structure, 'id');
+    console.log(data);
 
     /* this.diveService.save(data).then(data => {
       this.router.navigate(['/dives']);
