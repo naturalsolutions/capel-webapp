@@ -44,13 +44,14 @@ export class DiveComponent implements OnInit {
   filteredBoats: Observable<any[]>;
   users: any[] = [];
   map: L.Map;
-  options = {
+  leafletOptions = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
     zoom: 12,
     center: L.latLng(43, 6.3833),
-    dragging: true
+    dragging: true,
+    scrollWheelZoom: false
   };
 
   constructor(private adapter: DateAdapter<any>,
@@ -63,7 +64,6 @@ export class DiveComponent implements OnInit {
     this.adapter.setLocale('fr');
     this.diveService.getDiveTypes().then(data => {
       this.diveTypes = data;
-      this.initDiveTypeForm();
     });
     this.boatService.getBoats().then(data => {
       this.boats = data;
@@ -81,7 +81,7 @@ export class DiveComponent implements OnInit {
     this.boatCtrl = new FormControl();
     this.boatCtrl.valueChanges.subscribe(value => {
       console.log(value);
-    })
+    });
    /*  this.filteredBoats = this.boatCtrl.valueChanges
       .pipe(
         startWith(''),
@@ -105,12 +105,21 @@ export class DiveComponent implements OnInit {
       visibility: new FormControl('', Validators.required),
       sky: new FormControl('', Validators.required),
       seaState: new FormControl('', Validators.required),
-      structure: new FormControl('', Validators.required),
+      structure: new FormControl(),
       isWithStructure:  new FormControl('', Validators.required),
       latlng: new FormControl('', Validators.required),
     });
     this.addTime();
-
+    this.initDiveTypeForm();
+    this.diveForm.get('isWithStructure').valueChanges
+      .subscribe(value => {
+        this.diveForm.get('structure').setValidators(value ? Validators.required : null);
+        this.diveForm.get('structure').reset();
+      });
+    this.diveForm.get('times').valueChanges
+      .subscribe(value => {
+        console.log(value);
+      });
   }
   initDiveTypeForm() {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
@@ -149,7 +158,7 @@ export class DiveComponent implements OnInit {
   }
   save() {
     this.hasSubmit = true;
-    console.log(this.diveForm.valid);
+    console.log(this.diveForm.get('structure').valid);
     const data = this.diveForm.getRawValue();
     data.boats = this.boatsChsd;
 

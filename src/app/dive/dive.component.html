@@ -1,77 +1,71 @@
 <main class="page container page-form-dive">
   <mat-card>
       <form  class="register-form inscription" [formGroup]="diveForm">
-        <section class="time">
+        <section class="calendar">
             <mat-toolbar>
-              <span>DATE ET HEURE </span>
+              Date et heure
             </mat-toolbar>
-            <div class="row text-center">
-              <div class="col-md-3">
-                <mat-form-field class="full-width">
-                  <input matInput [matDatepicker]="dp" placeholder="Date de plongée" formControlName="divingDate">
+            <div class="row">
+              <div class="col-md-4">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="dp" formControlName="divingDate" required>
                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                   <mat-datepicker #dp></mat-datepicker>
+                  <mat-label>Date de plongée</mat-label>
                 </mat-form-field>
               </div>
-              <div class="col-md-6">
-                <div formArrayName="times" class="well well-lg">
-                  <div class="boat" *ngFor="let time of times.controls; let i=index" [formGroupName]="i" >
-                    <div class="button-row text-right" *ngIf="times.length > 1">
-                      <button mat-mini-fab color="warn" (click)="removeTime(i)">X</button>
-                    </div>
-                    <ul class="list-inline">
-                      <li class="list-inline-item">
-                        <mat-form-field class="full-width">
-                          <input matInput placeholder="Heure de début" value="00:00" formControlName="startTime">
-                        </mat-form-field>
-                        <div *ngIf="time.controls.startTime.invalid && (time.controls.startTime.dirty || time.controls.startTime.touched)" class="alert alert-danger">
-                          <div *ngIf="time.controls.startTime.errors.required">
-                            Le nom de bateau est obligatoire.
-                          </div>
-                        </div>
-                      </li>
-                      <li class="list-inline-item">
-                        <mat-form-field class="full-width">
-                          <input matInput placeholder="Heure de fin" value="00:00" formControlName="endTime">
-                        </mat-form-field>
-                        <div *ngIf="time.controls.endTime.invalid && (boat.controls.endTime.dirty || time.controls.endTime.touched)" class="alert alert-danger">
-                          <div *ngIf="time.controls.endTime.errors.required">
-                            L'imatriculation de bateau est obligatoire.
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
+              <div class="col-md-8">
+                <div class="times" formArrayName="times">
+                  <div class="time row" *ngFor="let time of times.controls; let i=index" [formGroupName]="i" >
+                    <button mat-icon-button color="warn" 
+                      class="btn-remove"
+                      *ngIf="times.length > 1 && i"
+                      (click)="removeTime(i)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                    <mat-form-field class="col-md-6">
+                      <input matInput type="time" placeholder="Heure de début" formControlName="startTime">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6">
+                      <input matInput type="time" placeholder="Heure de fin" formControlName="endTime">
+                    </mat-form-field>
                   </div>
                 </div>
-                <div class="col-md-12 text-center">
-                  <div class="button-row">
-                    <a mat-mini-fab (click)="addTime()">+</a>
-                  </div>
+                <div class="text-center">
+                  <button mat-raised-button color="accent" (click)="addTime()">
+                    <mat-icon>add</mat-icon> Ajouter une tranche horaire
+                  </button>
                 </div>
               </div>
           </div>
         </section>
         <section class="structure">
-          <h6>Avez-vous plongé en structure ? *</h6>
-          <mat-radio-group formControlName="isWithStructure">
-            <mat-radio-button value="true">Oui</mat-radio-button>
-            <mat-radio-button value="false">Non</mat-radio-button>
-          </mat-radio-group>
-          <mat-error *ngIf="hasSubmit && diveForm.get('isWithStructure').invalid">Ce champs est obligatoire</mat-error>
-          <div class="col-md-12" *ngIf="isWithStructure.value == 'true'">
-            <h5>Selectionner une structure *</h5>
-            <mat-form-field>
+          <mat-toolbar>
+            Structure
+          </mat-toolbar>
+          <div [ngClass]="{
+            'form-group': true,
+            'has-error': hasSubmit && diveForm.get('isWithStructure').invalid
+          }">
+            <h5 class="form-group-title with-required">Avez-vous plongé en structure ?</h5>
+            <mat-radio-group formControlName="isWithStructure">
+              <mat-radio-button [value]="true">Oui</mat-radio-button>
+              <mat-radio-button [value]="false">Non</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div *ngIf="isWithStructure.value === true" [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('structure').invalid}">
+            <h5 class="form-group-title with-required">Sélectionner une structure</h5>
+            <mat-form-field class="mat-form-field-lg">
               <mat-select formControlName="structure">
                 <mat-option *ngFor="let user of users" [value]="user">
                   {{ user.firstname }} {{ user.lastname }}
                 </mat-option>
               </mat-select>
-              <mat-error>Ce champs est obligatoire</mat-error>
             </mat-form-field>
           </div>
         </section>
-        <section class="boats container-fluid" *ngIf="isWithStructure.value == 'false' && boats.length">
-          <h4 class="title row">BATEAUX</h4>
+        <section class="boats" *ngIf="isWithStructure.value === false && boats.length">
+          <mat-toolbar>Bateaux</mat-toolbar>
           <!-- <div *ngIf="boatsChsd.length > 0">
             <h5>BATEAUX DECLARES</h5>
             <mat-chip-list>
@@ -82,9 +76,9 @@
               </mat-chip>
             </mat-chip-list>
           </div> -->
-          <mat-form-field>
-            <mat-select [formControl]="boatCtrl" multiple>
-              <mat-select-trigger>
+          <mat-form-field class="mat-form-field-lg">
+            <mat-select [formControl]="boatCtrl" placeholder="Sélectionnez les bateaux" [attr.multiple]="boats.length > 1">
+              <mat-select-trigger *ngIf="boats.length > 1">
                 {{boatCtrl.value ? boatCtrl.value[0].name : ''}}
                 <span *ngIf="boatCtrl.value?.length > 1">
                   (+{{boatCtrl.value.length - 1}})
@@ -101,8 +95,8 @@
           <mat-toolbar>
             <span>CONDITION CLIMATIQUES </span>
           </mat-toolbar>
-          <div [ngClass]="{'has-error': hasSubmit && diveForm.get('wind').invalid}">
-            <h5 class="title with-required">VENT(km/h)</h5>
+          <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('wind').invalid}">
+            <h5 class="form-group-title with-required">VENT <small>(Bft)</small></h5>
             <mat-slider
               class="full-width"
               [invert]="false"
@@ -113,68 +107,79 @@
               [vertical]="false">
             </mat-slider>
           </div>
-          <div [ngClass]="{'has-error': hasSubmit && diveForm.get('sky').invalid}">
-            <h5 class="title with-required">CIEL</h5>
-            <ul class="list-inline weather">
-            <mat-radio-group class="wather-radio no-radio" formControlName="sky">
-              <mat-radio-button class="example-radio-button" value='weather_soleil'>
-                <li *ngIf="sky.value != 'weather_soleil' " class="list-inline-item"><img src="./assets/icons/f_weather_soleil.svg" /></li>
-                <li *ngIf="sky.value == 'weather_soleil' " class="list-inline-item"><img src="./assets/icons/weather_soleil-on.svg" /></li>
+          <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('sky').invalid}">
+            <h5 class="form-group-title with-required">Ciel</h5>
+            <mat-radio-group class="d-flex no-radio radio-weather" formControlName="sky">
+              <mat-radio-button value='weather_soleil'>
+                <img *ngIf="sky.value != 'weather_soleil'" src="./assets/icons/f_weather_soleil.svg" />
+                <img *ngIf="sky.value == 'weather_soleil'" src="./assets/icons/weather_soleil-on.svg" />
               </mat-radio-button>
-              <mat-radio-button class="wather-radio" value='weather_nuage'>
-                <li *ngIf="sky.value != 'weather_nuage' " class="list-inline-item"><img src="./assets/icons/f_weather_nuage.svg" /></li>
-                <li *ngIf="sky.value == 'weather_nuage' " class="list-inline-item"><img src="./assets/icons/weather_nuage-on.svg" /></li>
+              <mat-radio-button value='weather_nuage'>
+                <img *ngIf="sky.value != 'weather_nuage'" src="./assets/icons/f_weather_nuage.svg" />
+                <img *ngIf="sky.value == 'weather_nuage'" src="./assets/icons/weather_nuage-on.svg" />
               </mat-radio-button>
-              <mat-radio-button class="wather-radio" value='weather_pluie'>
-                <li *ngIf="sky.value != 'weather_pluie' " class="list-inline-item"><img src="./assets/icons/f_weather_pluie.svg" /></li>
-                <li *ngIf="sky.value == 'weather_pluie' " class="list-inline-item"><img src="./assets/icons/weather_pluie-on.svg" /></li>
+              <mat-radio-button value='weather_pluie'>
+                <img *ngIf="sky.value != 'weather_pluie'" src="./assets/icons/f_weather_pluie.svg" />
+                <img *ngIf="sky.value == 'weather_pluie'" src="./assets/icons/weather_pluie-on.svg" />
               </mat-radio-button>
-              <mat-radio-button class="wather-radio" value='weather_orage'>
-                <li *ngIf="sky.value != 'weather_orage' " class="list-inline-item"><img src="./assets/icons/f_weather_orage.svg" /></li>
-                <li *ngIf="sky.value == 'weather_orage' " class="list-inline-item"><img src="./assets/icons/weather_orage-on.svg" /></li>
+              <mat-radio-button value='weather_orage'>
+                <img *ngIf="sky.value != 'weather_orage'" src="./assets/icons/f_weather_orage.svg" />
+                <img *ngIf="sky.value == 'weather_orage'" src="./assets/icons/weather_orage-on.svg" />
               </mat-radio-button>
             </mat-radio-group>
-            </ul>
           </div>
-          <div [ngClass]="{'has-error': hasSubmit && diveForm.get('seaState').invalid}">
-              <h5 class="title with-required">ETAT DE LA MER</h5>
-              <ul class="list-inline weather">
-            <mat-radio-group class="example-radio-group no-radio" formControlName="seaState">
-              <mat-radio-button class="wather-radio" value='weather_calme'>
-                <li *ngIf="seaState.value != 'weather_calme' " class="list-inline-item"><img src="./assets/icons/f_weather_calme.svg" /></li>
-                <li *ngIf="seaState.value == 'weather_calme' " class="list-inline-item"><img src="./assets/icons/weather_calme-on.svg" /></li>
+          <div [ngClass]="{
+            'form-group': true,
+            'form-group-sea-state': true,
+            'has-error': hasSubmit && diveForm.get('seaState').invalid
+          }">
+            <h5 class="form-group-title with-required">Etat de la mer</h5>
+            <mat-radio-group class="d-flex no-radio radio-weather" formControlName="seaState">
+              <mat-radio-button value='weather_calme'>
+                <img *ngIf="seaState.value != 'weather_calme'" src="./assets/icons/f_weather_calme.svg" />
+                <img *ngIf="seaState.value == 'weather_calme'" src="./assets/icons/weather_calme-on.svg" />
               </mat-radio-button>
-              <mat-radio-button class="wather-radio" value='weather_mouvemente'>
-                <li *ngIf="seaState.value != 'weather_mouvemente' " class="list-inline-item"><img src="./assets/icons/f_weather_mouvemente.svg" /></li>
-                <li *ngIf="seaState.value == 'weather_mouvemente' " class="list-inline-item"><img src="./assets/icons/weather_mouvemente-on.svg" /></li>
+              <mat-radio-button value='weather_mouvemente'>
+                <img *ngIf="seaState.value != 'weather_mouvemente'" src="./assets/icons/f_weather_mouvemente.svg" />
+                <img *ngIf="seaState.value == 'weather_mouvemente'" src="./assets/icons/weather_mouvemente-on.svg" />
               </mat-radio-button>
-              <mat-radio-button class="wather-radio" value='weather_agite'>
-                <li *ngIf="seaState.value != 'weather_agite' " class="list-inline-item"><img src="./assets/icons/f_weather_agite.svg" /></li>
-                <li *ngIf="seaState.value == 'weather_agite' " class="list-inline-item"><img src="./assets/icons/weather_agite-on.svg" /></li>
+              <mat-radio-button value='weather_agite'>
+                <img *ngIf="seaState.value != 'weather_agite'" src="./assets/icons/f_weather_agite.svg" />
+                <img *ngIf="seaState.value == 'weather_agite'" src="./assets/icons/weather_agite-on.svg" />
               </mat-radio-button>
-              <mat-radio-button class="wather-radio" value='weather_tempete'>
-                <li *ngIf="seaState.value != 'weather_tempete' " class="list-inline-item"><img src="./assets/icons/f_weather_tempete.svg" /></li>
-                <li *ngIf="seaState.value == 'weather_tempete' " class="list-inline-item"><img src="./assets/icons/weather_tempete-on.svg" /></li>
+              <mat-radio-button value='weather_tempete'>
+                <img *ngIf="seaState.value != 'weather_tempete'" src="./assets/icons/f_weather_tempete.svg" />
+                <img *ngIf="seaState.value == 'weather_tempete'" src="./assets/icons/weather_tempete-on.svg" />
               </mat-radio-button>
             </mat-radio-group>
-            </ul>
           </div>
           <div class="row">
-            <div [ngClass]="{'col-md-4': true, 'has-error': hasSubmit && diveForm.get('wind_temperature').invalid}">
-              <h5 class="title with-required">Température de l'air</h5>
+            <div [ngClass]="{'form-group': true, 'col-md-4': true, 'has-error': hasSubmit && diveForm.get('wind_temperature').invalid}">
+              <h5 class="form-group-title with-required">Température de l'air</h5>
               <mat-form-field class="full-width">
-                <input matInput value="0" formControlName="wind_temperature">
+                <input matInput type="number" value="0" formControlName="wind_temperature">
+                <span matSuffix>°C</span>
               </mat-form-field>
             </div>
-            <div [ngClass]="{'col-md-4': true, 'has-error': hasSubmit && diveForm.get('wind_temperature').invalid}">
-              <h5 class="title with-required">Température de l'eau</h5>
+            <div [ngClass]="{
+              'form-group': true, 
+              'col-md-4': true, 
+              'has-error': hasSubmit && diveForm.get('water_temperature').invalid
+            }">
+              <h5 class="form-group-title with-required">Température de l'eau</h5>
               <mat-form-field class="full-width">
-                <input matInput value="0" formControlName="water_temperature">
+                <input matInput type="number" value="0" formControlName="water_temperature">
+                <span matSuffix>°C</span>
               </mat-form-field>
             </div>
-            <div [ngClass]="{'col-md-4': true, 'form-group-visibility': true, 'has-error': hasSubmit && diveForm.get('wind_temperature').invalid}">
+            <div [ngClass]="{
+              'form-group': true, 
+              'col-md-4': true, 
+              'form-group-visibility': true, 
+              'has-error': hasSubmit && diveForm.get('visibility').invalid
+            }">
               <!-- <input matInput placeholder="visiblité" value="0" formControlName="visibility"> -->
-              <h5 class="title with-required">Visiblité</h5>
+              <h5 class="form-group-title with-required">Visiblité <small>(m)</small></h5>
               <mat-radio-group formControlName="visibility">
                 <mat-radio-button value="0">0 à 5</mat-radio-button>
                 <mat-radio-button value="5">5 à 15</mat-radio-button>
@@ -187,27 +192,30 @@
           <mat-toolbar>
             <span>TYPE DE PLONGÉE </span>
           </mat-toolbar>
-            <div formArrayName="divetypes" class="well well-lg">
-              <div class="boat">
-                <ul class="list-inline">
-                <li class="list-inline-item" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
-                  <mat-checkbox class="example-margin" formControlName="name">{{diveTypes[i].name}}</mat-checkbox>
-                  <mat-form-field class="full-width" *ngIf="divetypes.controls[i].controls.name.value">
-                    <input matInput placeholder="Nombre de plongeur" formControlName="nbrDivers">
-                  </mat-form-field>
-                </li>
-              </ul>
-              </div>
+          <div class="row" formArrayName="divetypes">
+            <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
+              <mat-checkbox class="checkbox-btn" formControlName="name">{{diveTypes[i].name}}</mat-checkbox>
+              <mat-form-field *ngIf="divetypes.controls[i].controls.name.value">
+                <input class="text-right" matInput type="number" formControlName="nbrDivers">
+                <span matPrefix>Nombre de plongeur</span>
+              </mat-form-field>
             </div>
+          </div>
         </section>
         <section class="sitedives">
           <mat-toolbar>
             <span>SITE DE PLONGÉE </span>
           </mat-toolbar>
-          <div>
-            Cliquez sur la carte pour définir votre lieu de plongé.
+          <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('latlng').invalid}">
+            <h5 class="form-group-title with-required">Cliquez sur la carte pour définir votre lieu de plongé.</h5>
+            <input matInput value="" formControlName="latlng" />
+            <div id="leafletmap" style="height: 400px;"
+              leaflet
+              [leafletOptions]="leafletOptions"
+              (leafletMapReady)="onMapReady($event)"
+            >
+            </div>
           </div>
-          <input matInput value="" formControlName="latlng">
           <!-- <div class="row">
             <div class="col-md-3">
               <mat-radio-group formControlName="referenced">
@@ -219,14 +227,10 @@
               <input matInput placeholder="coordonnées de plongée (cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
             </div>
           </div> -->
-          <div id="leafletmap" style="height: 400px;"
-          leaflet
-          [leafletOptions]="options"
-          (leafletMapReady)="onMapReady($event)"
-          >
-        </div>
-        <button class="btn btn-secondary btn-block" (click)="save()">ENVOYER LA DÉCLARATION</button>
+          
+        
       </section>
+      <button class="btn btn-secondary btn-block" (click)="save()">ENVOYER LA DÉCLARATION</button>
       </form>
   </mat-card>
 </main>

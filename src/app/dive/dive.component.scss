@@ -1,14 +1,53 @@
 .page-form-dive {
   min-height: 100vh;
   padding-top: 140px;
+
+  mat-toolbar {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 20px;
+    height: auto;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #333;
+      margin-left: 10px;
+    }
+  }
+
   mat-radio-group[name='referenced'] {
     text-transform: uppercase;
     font-weight: bolder;
     // color: #00accc;
   }
 
+  .radio-weather {
+    margin-top: 20px;
+    .mat-radio-button {
+      max-width: 180px;
+    }
+    img {
+      max-width: 100px;
+      max-height: 100px;
+    }
+  }
+
+  .mat-form-field-lg {
+    width: 50%;
+    max-width: 360px;
+  }
+
   .mat-form-field-infix {
     border: none;
+  }
+
+  .form-group-sea-state {
+    margin-bottom: 2rem;
   }
   
   .form-group-visibility {
@@ -16,11 +55,40 @@
       display: inline-block;
       margin-top: 15px;
     }
-    .mat-radio-button:not(:last-child) {
-      margin-right: 15px;
+  }
+
+  section {
+    margin-bottom: 30px;
+    &.calendar {
+      > .row {
+        padding-top: 20px;
+      }
+      .mat-input-element {
+        min-height: 24px;
+      }
+      .mat-form-field-label {
+        width: 100% !important;
+        transform: translateY(-1.28125em) scale(1) perspective(100px) translateZ(.001px) !important;
+      }
+      .times {
+        .time {
+          .btn-remove {
+            position: absolute;
+            left: 15px;
+            transform: translateX(-100%);
+          }
+        }
+      }
     }
-    .mat-radio-label-content {
-      padding-right: 5px !important;
+    &.typedives {
+      .mat-checkbox {
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .mat-form-field-prefix {
+        font-style: italic;
+        color: #666;
+      }
     }
   }
 }
@@ -33,16 +101,15 @@
   background-color: #00accc;
 }
 
-mat-toolbar {
-  margin: 0px 0px 50px 0px;
-}
-
-h5, .mat-form-field-label {
-  color: #00accc !important;
-  font-size: 14px !important;
-  text-transform: uppercase !important;
-  font-weight: 600 !important;
-  font-family: 'Hind', sans-serif !important;
+h5 {
+  color: #00accc;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: 'Hind', sans-serif;
+  small {
+    text-transform: none;
+  }
 }
 
 .list-inline {

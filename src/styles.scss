@@ -1,5 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  color: #00accc;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: 'Hind', sans-serif;
+}
+
+.mat-form-field-required-marker {
+  color: #f44336;
+}
+
+.checkbox-btn {
+  border: 2px solid #000;
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  .mat-checkbox-inner-container {
+    display: none;
+  }
+  .mat-checkbox-layout {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+  &.mat-checkbox-checked {
+    background: #408fab;
+    border-color: #408fab;
+    color: #FFF;
+  }
+}
+
 body {
   font-family: 'Crimson Text', serif;
   color: #303030;
@@ -157,4 +190,39 @@ header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block:hover {
 
 .mat-radio-outer-circle {
   border-color: #00accc !important;
+}
+
+.mat-radio-button:not(:last-child) {
+  margin-right: 15px;
+}
+.mat-radio-label-content {
+  padding-right: 5px !important;
+}
+
+.mat-radio-group {
+  &.d-flex {
+    .mat-radio-button {
+      flex: 1;
+      margin-right: 0;
+      .mat-radio-label {
+        display: flex;
+        .mat-radio-label-content {
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+.form-group.has-error {
+  .form-group-title {
+    color: #f44336 !important;
+  }
+}
+
+.with-required {
+  &:after {
+    content: "*";
+    color: #f44336;
+  }
 }
