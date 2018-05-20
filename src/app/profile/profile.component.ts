@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Inject, ViewEncapsulation } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 import * as _ from 'lodash';
+import * as L from 'leaflet';
 
 import { config } from '../settings';
 import { UserService } from '../services/user.service';
@@ -23,7 +24,8 @@ import { LoaderDialogComponent } from '../register/register.component';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit {
 
@@ -35,6 +37,15 @@ export class ProfileComponent implements OnInit {
   fg: FormGroup;
   user: any = {};
   config;
+  leafletOptions = {
+    layers: [
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+    ],
+    zoom: 12,
+    center: L.latLng(43, 6.3833),
+    dragging: true,
+    scrollWheelZoom: false
+  };
 
   constructor(
     private router: Router,
@@ -77,6 +88,14 @@ export class ProfileComponent implements OnInit {
 
   ngOnDestroy() {
     this.onDestroy$.next();
+  }
+
+  onMapReady(map: L.Map) {
+    L.marker([50.6311634, 3.0599573]).addTo(map);
+    /* map.on('click', (e) => {
+      console.log(e.latlng);
+      this.diveForm.controls['latlng'].setValue(e.latlng);
+    }); */
   }
 
   getPermit(id: number) {

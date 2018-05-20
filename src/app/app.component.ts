@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, HostBinding } from '@angular/core';
 import { Observable } from 'rxjs'
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgRedux } from '@angular-redux/store';
@@ -12,13 +12,17 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { SessionModule } from './models/session.module';
 import { UserService } from './services/user.service';
 import { config } from './settings';
+import { getNsPrefix } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
+
+  @HostBinding('class.nosidenav') nosidenav:boolean;
 
   isConnected$ : Observable<boolean> = null
 
@@ -36,7 +40,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isConnected$ = this.userService.isConnected()
+    this.isConnected$ = this.userService.isConnected();
+    //TODO
+    this.router.events.subscribe(value => {
+      this.nosidenav = ['/login', '/register'].indexOf(this.router.routerState.snapshot.url) > -1;
+    });
   }
 
   /*

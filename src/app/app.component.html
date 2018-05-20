@@ -10,6 +10,20 @@
     <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a> -->
   </nav>
 </header>
+
+<aside class="sidenav">
+  <a routerLink="/profile" routerLinkActive="active"
+    href="#" name="routing-strategies"
+    class="btn">
+      Votre Authorisation
+  </a>
+  <a routerLink="/dive" routerLinkActive="active"
+    href="#" name="routing-strategies"
+    class="btn">
+      Déclarer une plongée
+  </a>
+</aside>
+
 <router-outlet></router-outlet>
 
 <ng-template #profile>

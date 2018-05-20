@@ -1,15 +1,17 @@
-<div class="container-fluid page-profile">
-  <div class="row justify-content-center">
-    <div class="col-md-auto">
-      <mat-card>
-        <mat-list>
-          <mat-list-item>
-            <button id="confirm" mat-raised-button (click)="getPermit(user.id)"> Télécharger l'autorisation </button>
-          </mat-list-item>
-          <mat-list-item> ID: {{ user.id }} </mat-list-item>
-          <mat-list-item> Email: {{ user.email }} </mat-list-item>
-        </mat-list>
-      </mat-card>
-    </div>
+<button mat-button disableRipple>
+    <!-- (click)="getPermit(user.id)" -->
+  Télécharger l'autorisation de plongée dans les coeurs marins du parc national de Port-Cros
+  <div class="icon-wrapper">
+    <mat-icon>cloud_download</mat-icon>
+  </div>
+</button>
+
+<div class="map-wrapper">
+  <h5>Localiser les aires</h5>
+  <div id="leafletmap" class="map"
+    leaflet
+    [leafletOptions]="leafletOptions"
+    (leafletMapReady)="onMapReady($event)"
+  >
   </div>
 </div>

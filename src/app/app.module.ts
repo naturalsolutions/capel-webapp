@@ -7,7 +7,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ErrorComponent, RegisterComponent, LoaderDialogComponent } from './register/register.component';
+import { RegisterComponent, LoaderDialogComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -32,7 +32,6 @@ import {DivesComponent} from './dives/dives.component';
     ProfileComponent,
     RegisterComponent,
     BoatComponent,
-    ErrorComponent,
     LoaderDialogComponent,
     DiveComponent,
     PermitViewDialog,
@@ -51,7 +50,6 @@ import {DivesComponent} from './dives/dives.component';
     LeafletModule.forRoot()
   ],
   entryComponents: [
-    ErrorComponent,
     LoaderDialogComponent,
     PermitViewDialog
   ],

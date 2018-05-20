@@ -1,6 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+.sidenav {
+  position: fixed;
+  z-index: 2000;
+  width: 240px;
+  top: 80px;
+  bottom: 0;
+  background: #666;
+  .btn {
+    text-transform: uppercase;
+    padding: 20px 0;
+    display: block;
+    color: #FFF;
+    box-shadow: none !important;
+    &:nth-child(even) {
+      background: #777;
+    }
+  }
+}
+app-root {
+  &.nosidenav {
+    .sidenav {
+      display: none;
+    }
+  }
+}
+
+button:focus {
+  outline: none;
+}
+
 .mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb, .mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb-label {
   background: #00accc;
 }
@@ -15,6 +45,7 @@
   width: 133.33334%;
 }
 
+h5,
 mat-label,
 .mat-form-field-appearance-legacy .mat-form-field-label {
   color: #00accc;
@@ -107,7 +138,7 @@ body {
 
 header {
   position: fixed;
-  z-index: 2;
+  z-index: 2000;
   width: 100%;
 }
 header h1 {
