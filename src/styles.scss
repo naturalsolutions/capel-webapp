@@ -6,6 +6,18 @@
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-label {
+  top: 2em;
+}
+
+.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-form-field-autofill-control:-webkit-autofill+.mat-form-field-label-wrapper .mat-form-field-label {
+  -webkit-transform: translateY(-2em) scale(.75) perspective(100px) translateZ(.00101px);
+  transform: translateY(-2em) scale(.75) perspective(100px) translateZ(.00101px);
+  -ms-transform: translateY(-2em) scale(.75);
+  width: 133.33334%;
+}
+
+mat-label,
+.mat-form-field-appearance-legacy .mat-form-field-label {
   color: #00accc;
   font-size: 14px;
   text-transform: uppercase;
@@ -214,6 +226,31 @@ header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block:hover {
           flex: 1;
         }
       }
+    }
+  }
+}
+
+form {
+  fieldset {
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
+  .mat-toolbar {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 20px;
+    height: auto;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #333;
+      margin-left: 10px;
     }
   }
 }

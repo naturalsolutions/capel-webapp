@@ -2,6 +2,18 @@ app-register {
   .page {
     min-height: 100vh;
     padding-top: 120px;
+    padding-bottom: 80px;
+  }
+  .mat-card {
+    padding-bottom: 0;
+  }
+  .form-actions {
+    position: relative;
+    margin-top: 60px;
+    .btn {
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
   }
   .complete{
     mat-card{

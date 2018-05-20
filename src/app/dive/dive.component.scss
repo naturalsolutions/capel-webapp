@@ -2,24 +2,6 @@
   min-height: 100vh;
   padding-top: 140px;
 
-  mat-toolbar {
-    background: transparent;
-    padding: 0;
-    margin-bottom: 20px;
-    height: auto;
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    text-transform: uppercase;
-    &::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #333;
-      margin-left: 10px;
-    }
-  }
-
   mat-radio-group[name='referenced'] {
     text-transform: uppercase;
     font-weight: bolder;
