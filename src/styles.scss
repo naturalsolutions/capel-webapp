@@ -9,10 +9,9 @@
   top: 2em;
 }
 
-.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-form-field-autofill-control:-webkit-autofill+.mat-form-field-label-wrapper .mat-form-field-label {
-  -webkit-transform: translateY(-2em) scale(.75) perspective(100px) translateZ(.00101px);
-  transform: translateY(-2em) scale(.75) perspective(100px) translateZ(.00101px);
-  -ms-transform: translateY(-2em) scale(.75);
+.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label,
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.8em) scale(.75) perspective(100px) translateZ(.00101px);
   width: 133.33334%;
 }
 

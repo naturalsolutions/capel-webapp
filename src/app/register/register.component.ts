@@ -39,7 +39,6 @@ export class RegisterComponent implements OnInit {
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
     }, { validator: this.passwordConfirming, updateOn: 'blur' });
-    this.addBoat();
   }
   // Confirm password validation
   passwordConfirming(c: AbstractControl): { invalid: boolean } {
@@ -51,8 +50,8 @@ export class RegisterComponent implements OnInit {
   addBoat() {
     this.boats = this.userForm.get('boats') as FormArray;
     let fg:FormGroup = this.fb.group({
-      name: new FormControl(''),
-      matriculation: new FormControl(''),
+      name: new FormControl('', Validators.required),
+      matriculation: new FormControl('', Validators.required),
     });
     this.boats.push(fg);
   }
@@ -66,8 +65,8 @@ export class RegisterComponent implements OnInit {
   save() {
     this.isSubmit = true;
     if (this.userForm.invalid) {
-      this.snackBar.openFromComponent(ErrorComponent, {
-        duration: 1000
+      this.snackBar.open("Merci de remplir les champs correctement", "OK", {
+        duration: 3000
       });
     } else {
       const data: any = this.userForm.getRawValue();
@@ -113,12 +112,6 @@ export class RegisterComponent implements OnInit {
   get name() { return this.userForm.get('boats').get('name'); }
   get matriculation() { return this.userForm.get('boats').get('matriculation'); }
 }
-@Component({
-  selector: 'app-error-component',
-  template: `<div class="error">Merci de remplir les champs correctement</div>`,
-  styles: [`.error { color: red; }`],
-})
-export class ErrorComponent { }
 
 @Component({
   selector: 'app-loader-dialog-component',

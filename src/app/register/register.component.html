@@ -104,18 +104,23 @@
               </div>
             </div>
           </fieldset>
-          <fieldset>
+          <fieldset class="boats">
             <mat-toolbar>
               LE BATEAU
             </mat-toolbar>
-            <div formArrayName="boats" class="well well-lg">
+            <div formArrayName="boats">
               <div class="boat" *ngFor="let boat of boats.controls; let i=index" [formGroupName]="i">
-                <div class="button-row text-right">
+                <!-- <div class="button-row text-right">
                   <button mat-mini-fab color="warn" (click)="removeBoat(i)">X</button>
-                </div>
+                </div> -->
+                <button mat-icon-button color="warn" 
+                  class="btn-remove"
+                  (click)="removeBoat(i)">
+                  <mat-icon>close</mat-icon>
+                </button>
                 <div class="col-sm-12">
                   <mat-form-field floatLabel="auto" class="full-width">
-                    <input matInput type="text" placeholder="nom" formControlName="name">
+                    <input matInput type="text" placeholder="Nom" formControlName="name" required>
                   </mat-form-field>
                   <div *ngIf="boat.controls.name.invalid && (boat.controls.name.dirty || boat.controls.name.touched)" class="alert alert-danger">
                     <div *ngIf="boat.controls.name.errors.required">
@@ -125,7 +130,7 @@
                 </div>
                 <div class="col-sm-12">
                   <mat-form-field floatLabel="auto" class="full-width">
-                    <input matInput type="text" placeholder="matriculation" formControlName="matriculation">
+                    <input matInput type="text" placeholder="Matriculation" formControlName="matriculation" required>
                   </mat-form-field>
                   <div *ngIf="boat.controls.matriculation.invalid && (boat.controls.matriculation.dirty || boat.controls.matriculation.touched)"
                     class="alert alert-danger">
@@ -136,7 +141,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-center">
+            <div class="text-center mt-3">
               <button type="button" class="btn btn-secondary" (click)="addBoat()">AJOUTER UN BATEAU</button>
             </div>
           </fieldset>
