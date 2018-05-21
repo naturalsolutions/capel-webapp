@@ -8,7 +8,6 @@
 
     <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a> -->
 
-    <a  name="routing-strategies" routerLink="/dives" routerLinkActive="active" class="btn btn-link btn-sm d-none d-md-block visible-is-connected">mes plongées</a>
     <a routerLink="/profile" routerLinkActive="active"
       href="#" name="routing-strategies"
       class="btn btn-link btn-sm d-none d-md-block navProfile visible-is-connected">
@@ -36,14 +35,7 @@
       <a routerLink="/profile" routerLinkActive="active"
         href="#" name="routing-strategies"
         class="btn">
-        Votre Authorisation
-      </a>
-    </li>
-    <li>
-      <a routerLink="/dive" routerLinkActive="active"
-        href="#" name="routing-strategies"
-        class="btn">
-        Déclarer une plongée
+        Votre Autorisation
       </a>
     </li>
     <li>
@@ -62,6 +54,15 @@
       </mat-panel-description>
     </mat-expansion-panel>
   </mat-accordion>
+  <ul class="list-unstyled">
+    <li>
+      <a routerLink="/dive" routerLinkActive="active"
+        href="#" name="routing-strategies"
+        class="btn btn-primary">
+        Déclarer une plongée
+      </a>
+    </li>
+  </ul>
   <div class="btn-collapse"></div>
 </aside>
 

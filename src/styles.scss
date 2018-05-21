@@ -40,7 +40,7 @@ app-root {
     align-items: center;
     font-weight: 500;
     letter-spacing: 2px;
-    &:nth-child(odd) {
+    &:nth-child(even) {
       background: rgba(255, 255, 255, .1);
     }
     .btn {
@@ -51,6 +51,8 @@ app-root {
       font-size: inherit;
       font-weight: inherit;
       letter-spacing: inherit;
+      flex: 1;
+      border-radius: 0;
     }
   }
   .dives {
@@ -132,7 +134,7 @@ mat-label,
 
 .checkbox-btn {
   border: 2px solid #000;
-  padding: 8px 0;
+  padding: 8px 10px;
   font-size: 13px;
   font-weight: 600;
   .mat-checkbox-inner-container {

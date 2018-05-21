@@ -67,7 +67,6 @@ export class AppComponent implements OnInit {
   getDives() {
     console.log('getDives');
     this.diveService.getDives().then(data => {
-      console.log(data);
       this.dives = data;
     }, error => {
       console.log(error);

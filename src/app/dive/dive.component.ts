@@ -72,8 +72,8 @@ export class DiveComponent implements OnInit {
       }
     });
     this.userService.getUsers().then(users => {
-      this.users = users;
-    })
+      this.users = _.filter(users, {category: 'structure'});
+    });
     /* this.boatCtrl = new FormControl();
     this.boatCtrl.valueChanges.subscribe(value => {
       console.log(value);
@@ -156,13 +156,14 @@ export class DiveComponent implements OnInit {
 
   }
   save() {
-    this.hasSubmit = true;
     if (this.diveForm.invalid) {
+      this.diveForm.reset();
       this.snackBar.open("Merci de remplir les champs correctement", "OK", {
         duration: 3000
       });
       return;
     }
+    this.hasSubmit = true;
     const data = this.diveForm.getRawValue();
     if (data.divingDate)
       data.divingDate = data.divingDate.format();

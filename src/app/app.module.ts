@@ -24,7 +24,7 @@ import { DiveComponent } from './dive/dive.component';
 import { BoatService } from './services/boat.service';
 import { DiveService } from './services/dive.service';
 
-import { PermitViewDialog } from './profile/profile.component';
+import { RuleDialog } from './profile/profile.component';
 import { DivesComponent } from './dives/dives.component';
 
 registerLocaleData(localeFr);
@@ -38,7 +38,7 @@ registerLocaleData(localeFr);
     BoatComponent,
     LoaderDialogComponent,
     DiveComponent,
-    PermitViewDialog,
+    RuleDialog,
     DivesComponent,
   ],
   imports: [
@@ -55,7 +55,7 @@ registerLocaleData(localeFr);
   ],
   entryComponents: [
     LoaderDialogComponent,
-    PermitViewDialog
+    RuleDialog
   ],
   providers: [
     InitGuard,

@@ -17,7 +17,7 @@
               <div class="col-md-8">
                 <div class="times" formArrayName="times">
                   <div class="time row" *ngFor="let time of times.controls; let i=index" [formGroupName]="i" >
-                    <button mat-icon-button color="warn" 
+                    <button mat-icon-button  
                       class="btn-remove"
                       *ngIf="times.length > 1 && i"
                       (click)="removeTime(i)">
@@ -196,7 +196,7 @@
               <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
               <mat-form-field *ngIf="typedive.controls.selected.value">
                 <input class="text-right" matInput type="number" min="1" formControlName="nbrDivers">
-                <span matPrefix>Nombre de plongeur</span>
+                <span matPrefix>nb. de plongeurs</span>
               </mat-form-field>
             </div>
           </div>
