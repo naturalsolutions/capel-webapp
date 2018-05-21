@@ -12,31 +12,21 @@ import { config } from '../settings';
 @Injectable()
 export class UserService {
 
-  connected$: BehaviorSubject<boolean>
-
   constructor(
       private http: HttpClient,
       private ngRedux: NgRedux<any>,
       private sessionActionsService: SessionActionsService) {
 
     const sessionState = this.ngRedux.getState().session
-    this.connected$ = <BehaviorSubject<boolean>>new BehaviorSubject(sessionState.token);
-
-  }
-
-  isConnected(): Observable<boolean> {
-    return this.connected$.asObservable().share()
   }
 
   login(data: any): Promise<any> {
-    this.connected$.next(true)
     return this.http.post<any>(config.serverURL + '/api/users/login', data)
       .toPromise();
   }
 
   logout() {
     this.sessionActionsService.close();
-    this.connected$.next(false);
   }
 
   getProfile(): Promise<any> {

@@ -60,9 +60,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.userService.isConnected()) {
-      this.router.navigate(['/login']);
-    }
     console.debug('ProfileComponent ngOnInit');
     this.userService.getProfile().then(user => {
         this.user = user;

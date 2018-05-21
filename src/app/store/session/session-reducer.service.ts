@@ -15,6 +15,11 @@ export function sessionReducer(state: any = INITIAL_STATE.session, action: ISess
       return new SessionModule(action.data);
     case SessionActionsService.CLOSE_SESSION:
       return null;
+    case SessionActionsService.INCREMENT_DIVES:
+      state.patch({
+        nbAddedDives: state.nbAddedDives + 1
+      });
+      return new SessionModule(state.toJSON());
     case SessionActionsService.PATCH_SESSION:
       state.patch(action.data);
       return new SessionModule(state.toJSON());

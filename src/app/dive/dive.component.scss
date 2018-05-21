@@ -50,10 +50,10 @@
       .mat-input-element {
         min-height: 24px;
       }
-      .mat-form-field-label {
+      /* .mat-form-field-label {
         width: 100% !important;
         transform: translateY(-1.28125em) scale(1) perspective(100px) translateZ(.001px) !important;
-      }
+      } */
       .times {
         .time {
           .btn-remove {
@@ -93,7 +93,6 @@ h5 {
   font-size: 14px;
   text-transform: uppercase;
   font-weight: 600;
-  font-family: 'Hind', sans-serif;
   small {
     text-transform: none;
   }

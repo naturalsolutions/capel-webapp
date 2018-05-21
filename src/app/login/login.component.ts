@@ -14,8 +14,7 @@ import {LoaderDialogComponent} from '../register/register.component';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  isConnected$ : Observable<boolean>
+  
   fg:FormGroup;
 
   constructor(
@@ -25,9 +24,7 @@ export class LoginComponent implements OnInit {
     private snackBar: MatSnackBar,
     private sessionActionsService: SessionActionsService,
     public dialog: MatDialog,
-  ) {
-    this.userService.logout();
-  }
+  ) {}
 
   ngOnInit() {
     this.fg = this.fb.group({

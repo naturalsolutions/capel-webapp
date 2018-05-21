@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 import 'rxjs/add/observable/of';
 import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -19,11 +21,13 @@ import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
 import { DiveComponent } from './dive/dive.component';
-import {BoatService} from './services/boat.service';
-import {DiveService} from './services/dive.service';
+import { BoatService } from './services/boat.service';
+import { DiveService } from './services/dive.service';
 
 import { PermitViewDialog } from './profile/profile.component';
-import {DivesComponent} from './dives/dives.component';
+import { DivesComponent } from './dives/dives.component';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -60,10 +64,10 @@ import {DivesComponent} from './dives/dives.component';
     BoatService,
     DiveService,
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptorService,
-    multi: true,
-  }],
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

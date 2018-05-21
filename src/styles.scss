@@ -1,22 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+body {
+  font-family: 'Hind', sans-serif;
+  color: #303030;
+}
+
+app-root {
+  &.is-connected {
+    .hidden-is-connected {
+      display: none !important;
+    }
+  }
+  &:not(.is-connected) {
+    .visible-is-connected {
+      display: none !important;
+    }
+  }
+}
+
 .sidenav {
   position: fixed;
-  z-index: 2000;
+  z-index: 1001;
   width: 240px;
+  padding-right: 20px;
   top: 80px;
   bottom: 0;
-  background: #666;
-  .btn {
+  background: #3e3e3e;
+  ul {
+    margin-bottom: 0;
+  }
+  li {
     text-transform: uppercase;
-    padding: 20px 0;
-    display: block;
     color: #FFF;
-    box-shadow: none !important;
-    &:nth-child(even) {
-      background: #777;
+    font-size: 0.8rem;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    letter-spacing: 2px;
+    &:nth-child(odd) {
+      background: rgba(255, 255, 255, .1);
     }
+    .btn {
+      padding: 20px 0;
+      display: block;
+      box-shadow: none !important;
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+    }
+  }
+  .dives {
+    border-top: 1px solid #999;
+    .mat-expansion-panel {
+      background: transparent;
+      box-shadow: none;
+      border-bottom: 1px solid #999;
+      .mat-expansion-panel-body {
+        padding-bottom: 0;
+        .mat-expansion-panel-header-description {
+          padding: 10px;
+          color: #FFF;
+        }
+      }
+      &.mat-expanded {
+        .mat-expansion-panel-header {
+          border-bottom: 1px solid #666;
+        }
+      }
+    }
+    .mat-expansion-panel-header-title {
+      color: #FFF;
+    }
+    .mat-expansion-indicator {
+      color: #FFF;
+      &::after {
+        color: #FFF;
+      }
+    }
+  }
+  .btn-collapse {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 20px;
+    background: #408fab;
   }
 }
 app-root {
@@ -52,7 +124,6 @@ mat-label,
   font-size: 14px;
   text-transform: uppercase;
   font-weight: 600;
-  font-family: 'Hind', sans-serif;
 }
 
 .mat-form-field-required-marker {
@@ -79,12 +150,7 @@ mat-label,
   }
 }
 
-body {
-  font-family: 'Crimson Text', serif;
-  color: #303030;
-}
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, .btn {
-  font-family: 'Hind', sans-serif;
   text-transform: uppercase;
   margin: 0;
   color: #222222;
@@ -138,7 +204,7 @@ body {
 
 header {
   position: fixed;
-  z-index: 2000;
+  z-index: 1001;
   width: 100%;
 }
 header h1 {
@@ -183,6 +249,11 @@ header nav {
     font-size: 1.2rem;
   }
 }
+
+.cdk-overlay-container {
+  z-index: 1002;
+}
+
 .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background: #00accc; /* Old browsers */
 }

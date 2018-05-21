@@ -91,7 +91,7 @@ export class DiveComponent implements OnInit {
   ngOnInit() {
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
-      referenced: new FormControl('referenced'),
+      referenced: new FormControl('notreferenced'),
       times: new FormArray([]),
       divetypes: new FormArray([]),
       boats: new FormControl([]),
@@ -157,18 +157,30 @@ export class DiveComponent implements OnInit {
   }
   save() {
     this.hasSubmit = true;
+    if (this.diveForm.invalid) {
+      this.snackBar.open("Merci de remplir les champs correctement", "OK", {
+        duration: 3000
+      });
+      return;
+    }
     const data = this.diveForm.getRawValue();
     if (data.divingDate)
       data.divingDate = data.divingDate.format();
+    data.boats = _.map(data.boats, boat => {
+      return {
+        boat: boat.name
+      };
+    });
     //data.boats = this.boatsChsd;
-    data.structure = _.get(data.structure, 'id');
+    //data.structure = _.get(data.structure, 'id');
     console.log(data);
 
-    /* this.diveService.save(data).then(data => {
+    this.diveService.save(data).then(response => {
+      this.diveService.added$.next(data);
       this.router.navigate(['/dives']);
     }, error => {
       console.log(error);
-    }) */
+    });
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }

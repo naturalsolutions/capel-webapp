@@ -13,6 +13,7 @@ import { SessionModule } from './models/session.module';
 import { UserService } from './services/user.service';
 import { config } from './settings';
 import { getNsPrefix } from '@angular/compiler';
+import { DiveService } from './services/dive.service';
 
 @Component({
   selector: 'app-root',
@@ -22,29 +23,55 @@ import { getNsPrefix } from '@angular/compiler';
 })
 export class AppComponent implements OnInit {
 
-  @HostBinding('class.nosidenav') nosidenav:boolean;
+  @HostBinding('class.nosidenav') nosidenav: boolean;
+  @HostBinding('class.is-connected') isConnected: boolean;
 
-  isConnected$ : Observable<boolean> = null
+  dives = [];
 
   constructor(
-      private ngRedux: NgRedux<any>,
-      private router: Router,
-      private route: ActivatedRoute,
-      private appActionsService: AppActionsService,
-      private userService: UserService,
-      private snackBar: MatSnackBar) {}
+    private ngRedux: NgRedux<any>,
+    private router: Router,
+    private route: ActivatedRoute,
+    private appActionsService: AppActionsService,
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    private diveService: DiveService
+  ) { }
 
   logOut() {
-    this.userService.logout()
+    this.userService.logout();
     this.router.navigate(['/login']);
   }
 
   ngOnInit() {
-    this.isConnected$ = this.userService.isConnected();
+
+    this.diveService.added$
+      .subscribe(value => {
+        if (this.isConnected)
+          this.getDives();
+      });
+
+    this.ngRedux.select('session')
+      .subscribe((session: any) => {
+        this.isConnected = _.get(session, 'token');
+        if (this.isConnected)
+          this.getDives();
+      });
+
     //TODO
     this.router.events.subscribe(value => {
       this.nosidenav = ['/login', '/register'].indexOf(this.router.routerState.snapshot.url) > -1;
     });
+  }
+
+  getDives() {
+    console.log('getDives');
+    this.diveService.getDives().then(data => {
+      console.log(data);
+      this.dives = data;
+    }, error => {
+      console.log(error);
+    })
   }
 
   /*
