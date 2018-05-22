@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit {
     <mat-dialog-content>
       <iframe src="./assets/reglement_pnpc_coeurs_marins_2018.pdf"></iframe>
     </mat-dialog-content>
-    <mat-dialog-actions>
+    <mat-dialog-actions class="justify-content-end">
       <div class="col">
         <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'a')">Je m'engage à respecter la réglementation marine en coeur de Parc</mat-checkbox>
         <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'b')">Je m'engage à respecter les conditions du règlement de plongée</mat-checkbox>
