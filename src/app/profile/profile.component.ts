@@ -17,7 +17,6 @@ import * as L from 'leaflet';
 
 import { config } from '../settings';
 import { UserService } from '../services/user.service';
-import { LoaderDialogComponent } from '../register/register.component';
 import { NgRedux } from '@angular-redux/store';
 
 

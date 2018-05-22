@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Observable } from 'rxjs/Observable';
@@ -13,6 +13,7 @@ import * as L from 'leaflet';
 import { UserService } from '../services/user.service';
 import { BoatService } from '../services/boat.service';
 import { DiveService } from '../services/dive.service';
+import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-dive',
@@ -37,9 +38,9 @@ export class DiveComponent implements OnInit {
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
-  boatsChsd: any[] = [];
   boats: any[] = [];
   boatCtrl: FormControl;
+  initDiveType: any[] = [];
   filteredBoats: Observable<any[]>;
   users: any[] = [];
   map: L.Map;
@@ -58,7 +59,8 @@ export class DiveComponent implements OnInit {
               private diveService: DiveService,
               private userService: UserService,
               private snackBar: MatSnackBar,
-              private router: Router
+              private router: Router,
+              public dialog: MatDialog
               ) {
     this.adapter.setLocale('fr');
     this.boatService.getBoats().then(data => {
@@ -89,6 +91,7 @@ export class DiveComponent implements OnInit {
       state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
   ngOnInit() {
+    console.log('ngOnInit DiveComponent');
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
       referenced: new FormControl('notreferenced'),
@@ -107,7 +110,8 @@ export class DiveComponent implements OnInit {
     });
     this.addTime();
     this.diveService.getDiveTypes().then(data => {
-      this.initDiveTypeForm(data);
+      this.initDiveType = data;
+      this.initDiveTypeForm();
     });
     this.diveForm.get('isWithStructure').valueChanges
       .subscribe(value => {
@@ -119,9 +123,9 @@ export class DiveComponent implements OnInit {
         console.log(value);
       });
   }
-  initDiveTypeForm(data) {
+  initDiveTypeForm() {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
-    for (const divetype of data){
+    for (const divetype of this.initDiveType){
       this.divetypes.push(new FormGroup({
         id: new FormControl(divetype.id),
         selected: new FormControl(false),
@@ -138,15 +142,16 @@ export class DiveComponent implements OnInit {
       endTime: new FormControl('00:00'),
     }));
   }
-  addBoat () {
-    this.boatsChsd.push({'boat': this.boatCtrl.value});
+
+  removeTimes() {
+    while (this.times.length)
+      this.times.removeAt(0);
   }
-  deleteBoat(i) {
-    this.boatsChsd.splice(i, 1);
-  }
+  
   removeTime(i) {
     this.times.removeAt(i);
   }
+
   onMapReady(map: L.Map) {
     L.marker([50.6311634, 3.0599573]).addTo(map);
     map.on('click', (e) => {
@@ -155,9 +160,19 @@ export class DiveComponent implements OnInit {
     });
 
   }
+
+  reset() {
+    this.hasSubmit = false;
+    this.diveForm.reset();
+    this.removeTimes();
+    this.addTime();
+    while (this.divetypes.length)
+      this.divetypes.removeAt(0);
+    this.initDiveTypeForm();
+  }
+
   save() {
     if (this.diveForm.invalid) {
-      this.diveForm.reset();
       this.snackBar.open("Merci de remplir les champs correctement", "OK", {
         duration: 3000
       });
@@ -172,15 +187,30 @@ export class DiveComponent implements OnInit {
         boat: boat.name
       };
     });
-    //data.boats = this.boatsChsd;
     //data.structure = _.get(data.structure, 'id');
     console.log(data);
-
+    let loading = this.dialog.open(LoadingDialogComponent, {
+      disableClose: true
+    });
     this.diveService.save(data).then(response => {
+      loading.close();
       this.diveService.added$.next(data);
-      this.router.navigate(['/dives']);
+      let dialogRef = this.dialog.open(DiveSuccessDialog, {
+        panelClass: 'dive-success',
+        disableClose: true
+      });
+      dialogRef.afterClosed().subscribe(value => {
+        if (value) {
+          this.reset();
+          window.scrollTo(0, 0);
+        } else {
+          this.userService.logout();
+          this.router.navigate(['/login']);
+        }
+      });
     }, error => {
       console.log(error);
+      loading.close();
     });
   }
   //Getters
@@ -189,4 +219,36 @@ export class DiveComponent implements OnInit {
   get seaState() { return this.diveForm.get('seaState'); }
 
 
+}
+
+@Component({
+  selector: 'dive-success-dialog',
+  template: `
+    <h4>Félicitation !</h4>
+    <mat-dialog-content>
+      Votre plongée est bien déclarée.<br />
+      Que voulez-vous faire maintenant ?
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
+        Déclarer une nouvelle plongée
+      </button>
+      <button mat-raised-button mat-dialog-close color="warn" (click)="logout()">
+        J'ai fini, je me déconnecte
+      </button>
+    </mat-dialog-actions>`
+})
+export class DiveSuccessDialog {
+
+  constructor(public dialogRef: MatDialogRef<DiveSuccessDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  newDive() {
+    this.dialogRef.close(true);
+  }
+
+  logout() {
+    this.dialogRef.close(false);
+  }
 }
