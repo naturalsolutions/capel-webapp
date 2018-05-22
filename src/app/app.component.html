@@ -5,33 +5,65 @@
     </a>
   </h1>
   <nav class="d-flex justify-content-end align-items-center">
-    <div *ngIf="isConnected$ | async; then profile; else connect"></div>
 
     <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a> -->
+
+    <a routerLink="/profile" routerLinkActive="active"
+      href="#" name="routing-strategies"
+      class="btn btn-link btn-sm d-none d-md-block navProfile visible-is-connected">
+        <i class="material-icons">person</i>
+        Mon profil
+    </a>
+    <button type="button" (click)="logOut()" routerLinkActive="active"
+        class="btn btn-link btn-sm d-none d-md-block nav_profile visible-is-connected">
+      <i class="material-icons"></i>
+      se déconnecter
+    </button>
+
+    <a routerLink="/register" routerLinkActive="active"
+      href="#" name="routing-strategies"
+      class="btn btn-link btn-sm d-none d-md-block hidden-is-connected">
+        <i class="material-icons">person_outline</i>
+        S'inscrire
+    </a>
   </nav>
 </header>
-<router-outlet></router-outlet>
 
-<ng-template #profile>
-  <a  name="routing-strategies" routerLink="/dives" routerLinkActive="active" class="btn btn-link btn-sm d-none d-md-block">mes plongées</a>
-  <a routerLink="/profile" routerLinkActive="active"
-    href="#" name="routing-strategies"
-    class="btn btn-link btn-sm d-none d-md-block navProfile">
-      <i class="material-icons">person</i>
-      Mon profil
-  </a>
-  <a (click)="logOut()" routerLinkActive="active"
-     href="#" name="routing-strategies"
-     class="btn btn-link btn-sm d-none d-md-block nav_profile">
-    <i class="material-icons"></i>
-    se déconnecter
-  </a>
-</ng-template>
-<ng-template #connect>
-  <a routerLink="/register" routerLinkActive="active"
-    href="#" name="routing-strategies"
-    class="btn btn-link btn-sm d-none d-md-block">
-      <i class="material-icons">person_outline</i>
-      S'inscrire
-  </a>
-</ng-template>
+<aside class="sidenav">
+  <ul class="list-unstyled">
+    <li>
+      <a routerLink="/profile" routerLinkActive="active"
+        href="#" name="routing-strategies"
+        class="btn">
+        Votre Autorisation
+      </a>
+    </li>
+    <li>
+      Vos dernières plongées
+    </li>
+  </ul>
+  <mat-accordion class="dives">
+    <mat-expansion-panel *ngFor="let dive of dives">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ dive.divingDate | date:'shortDate':'':'fr' }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-panel-description *ngFor="let timeElem of dive.times">
+        {{timeElem[0]}} - {{timeElem[1]}}
+      </mat-panel-description>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <ul class="list-unstyled">
+    <li>
+      <a routerLink="/dive" routerLinkActive="active"
+        href="#" name="routing-strategies"
+        class="btn btn-primary">
+        Déclarer une plongée
+      </a>
+    </li>
+  </ul>
+  <div class="btn-collapse"></div>
+</aside>
+
+<router-outlet></router-outlet>

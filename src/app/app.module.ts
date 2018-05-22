@@ -1,13 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 import 'rxjs/add/observable/of';
 import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ErrorComponent, RegisterComponent, LoaderDialogComponent } from './register/register.component';
+import { RegisterComponent, LoaderDialogComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,11 +21,13 @@ import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
 import { DiveComponent } from './dive/dive.component';
-import {BoatService} from './services/boat.service';
-import {DiveService} from './services/dive.service';
+import { BoatService } from './services/boat.service';
+import { DiveService } from './services/dive.service';
 
-import { PermitViewDialog } from './profile/profile.component';
-import {DivesComponent} from './dives/dives.component';
+import { RuleDialog } from './profile/profile.component';
+import { DivesComponent } from './dives/dives.component';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -32,10 +36,9 @@ import {DivesComponent} from './dives/dives.component';
     ProfileComponent,
     RegisterComponent,
     BoatComponent,
-    ErrorComponent,
     LoaderDialogComponent,
     DiveComponent,
-    PermitViewDialog,
+    RuleDialog,
     DivesComponent,
   ],
   imports: [
@@ -51,9 +54,8 @@ import {DivesComponent} from './dives/dives.component';
     LeafletModule.forRoot()
   ],
   entryComponents: [
-    ErrorComponent,
     LoaderDialogComponent,
-    PermitViewDialog
+    RuleDialog
   ],
   providers: [
     InitGuard,
@@ -62,10 +64,10 @@ import {DivesComponent} from './dives/dives.component';
     BoatService,
     DiveService,
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptorService,
-    multi: true,
-  }],
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -38,6 +38,7 @@ export class InitGuard implements CanActivate {
               token: token,
               profile: profile
             });
+            //TODO mv
             let appState: AppModel = _.get(this.ngRedux.getState(), 'app');
             let messageName: string = 'email_confirm_success_' + profile.id;
             if (queryParams.flash_message == 'email_confirm_success' && !appState.hasUniqMessage(messageName)) {
@@ -62,8 +63,9 @@ export class InitGuard implements CanActivate {
       this.getProfileFromQueryToken(route.queryParams)
         .then(() => {
           let sessionState: SessionModule = _.get(this.ngRedux.getState(), 'session');
-          if (sessionState)
-            AuthInterceptorService.token = sessionState.token;
+          console.log('sessionState', sessionState);
+          /* if (sessionState)
+            AuthInterceptorService.token = sessionState.token; */
           observer.next(true);
           observer.complete();
         })

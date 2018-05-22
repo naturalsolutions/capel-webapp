@@ -15,6 +15,8 @@ export class RegisterComponent implements OnInit {
   userForm: FormGroup;
   boats: FormArray = new FormArray([]);
   status: string = '';
+  isSubmit:boolean;
+
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -22,15 +24,6 @@ export class RegisterComponent implements OnInit {
     private dialog: MatDialog
   ) {
 
-  }
-
-  // create new Boat Form
-  createBoat(): FormGroup {
-    //TODO manage required fields
-    return this.fb.group({
-      name: new FormControl(''),
-      matriculation: new FormControl(''),
-    });
   }
 
   // component initialisation
@@ -45,8 +38,7 @@ export class RegisterComponent implements OnInit {
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
-    }, { validator: this.passwordConfirming , updateOn: 'blur' });
-
+    }, { validator: this.passwordConfirming, updateOn: 'blur' });
   }
   // Confirm password validation
   passwordConfirming(c: AbstractControl): { invalid: boolean } {
@@ -57,7 +49,11 @@ export class RegisterComponent implements OnInit {
   // add new Boat
   addBoat() {
     this.boats = this.userForm.get('boats') as FormArray;
-    this.boats.push(this.createBoat());
+    let fg:FormGroup = this.fb.group({
+      name: new FormControl('', Validators.required),
+      matriculation: new FormControl('', Validators.required),
+    });
+    this.boats.push(fg);
   }
 
   // remove Boat
@@ -67,9 +63,10 @@ export class RegisterComponent implements OnInit {
 
   // save User
   save() {
+    this.isSubmit = true;
     if (this.userForm.invalid) {
-      this.snackBar.openFromComponent(ErrorComponent, {
-        duration: 1000
+      this.snackBar.open("Merci de remplir les champs correctement", "OK", {
+        duration: 3000
       });
     } else {
       const data: any = this.userForm.getRawValue();
@@ -82,6 +79,7 @@ export class RegisterComponent implements OnInit {
         disableClose: true
       });
 
+      console.log(data);
       this.userService.post(data)
         .then(user => {
           setTimeout(() => {
@@ -103,7 +101,7 @@ export class RegisterComponent implements OnInit {
   // User getters
   get lastname(){ return this.userForm.get('lastname'); }
   get firstname(){ return this.userForm.get('firstname'); }
-  get category(){ return this.userForm.get('type'); }
+  get category(){ return this.userForm.get('category'); }
   get email(){ return this.userForm.get('email'); }
   get phone(){ return this.userForm.get('phone'); }
   get address(){ return this.userForm.get('address'); }
@@ -114,12 +112,6 @@ export class RegisterComponent implements OnInit {
   get name() { return this.userForm.get('boats').get('name'); }
   get matriculation() { return this.userForm.get('boats').get('matriculation'); }
 }
-@Component({
-  selector: 'app-error-component',
-  template: `<div class="error">Merci de remplir les champs correctement</div>`,
-  styles: [`.error { color: red; }`],
-})
-export class ErrorComponent { }
 
 @Component({
   selector: 'app-loader-dialog-component',

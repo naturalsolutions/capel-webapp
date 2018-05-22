@@ -2,19 +2,36 @@ app-register {
   .page {
     min-height: 100vh;
     padding-top: 120px;
+    padding-bottom: 80px;
+  }
+  .mat-card {
+    padding-bottom: 0;
+  }
+  .boats {
+    .mat-toolbar {
+      margin-bottom: 0;
+    }
+  }
+  .boat {
+    position: relative;
+    .btn-remove {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      transform: translateX(-100%);
+    }
+  }
+  .form-actions {
+    position: relative;
+    margin-top: 60px;
+    .btn {
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
   }
   .complete{
     mat-card{
       display: inline-block;
-    }
-  }
-  .register {
-
-    .inscription {
-      background-color: #fff;
-    }
-    .boat {
-      padding: 10px 0px 10px 20px;
     }
   }
   .align-items {
@@ -34,7 +51,6 @@ app-register {
 }
 
 p {
-  font-family: 'Hind', sans-serif;
   display: block;
   font-size: 34%;
   color: #ddfe00;

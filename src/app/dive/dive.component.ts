@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -18,6 +18,7 @@ import { DiveService } from '../services/dive.service';
   selector: 'app-dive',
   templateUrl: './dive.component.html',
   styleUrls: ['./dive.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     // The locale would typically be provided on the root module of your application. We do it at
     // the component level here, due to limitations of our example generation script.
@@ -32,24 +33,24 @@ import { DiveService } from '../services/dive.service';
 })
 export class DiveComponent implements OnInit {
 
-
+  hasSubmit: boolean;
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
   boatsChsd: any[] = [];
   boats: any[] = [];
-  diveTypes: any[] = [];
   boatCtrl: FormControl;
   filteredBoats: Observable<any[]>;
   users: any[] = [];
   map: L.Map;
-  options = {
+  leafletOptions = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
     zoom: 12,
     center: L.latLng(43, 6.3833),
-    dragging: true
+    dragging: true,
+    scrollWheelZoom: false
   };
 
   constructor(private adapter: DateAdapter<any>,
@@ -60,10 +61,6 @@ export class DiveComponent implements OnInit {
               private router: Router
               ) {
     this.adapter.setLocale('fr');
-    this.diveService.getDiveTypes().then(data => {
-      this.diveTypes = data;
-      this.initDiveTypeForm();
-    });
     this.boatService.getBoats().then(data => {
       this.boats = data;
     }, error => {
@@ -75,14 +72,17 @@ export class DiveComponent implements OnInit {
       }
     });
     this.userService.getUsers().then(users => {
-      this.users = users;
-    })
-    this.boatCtrl = new FormControl();
-    this.filteredBoats = this.boatCtrl.valueChanges
+      this.users = _.filter(users, {category: 'structure'});
+    });
+    /* this.boatCtrl = new FormControl();
+    this.boatCtrl.valueChanges.subscribe(value => {
+      console.log(value);
+    }); */
+   /*  this.filteredBoats = this.boatCtrl.valueChanges
       .pipe(
         startWith(''),
         map(boat => boat ? this.filterBoats(boat) : this.boats.slice())
-      );
+      ); */
   }
   filterBoats(name: string) {
     return this.boats.filter(state =>
@@ -91,39 +91,51 @@ export class DiveComponent implements OnInit {
   ngOnInit() {
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
-      referenced: new FormControl(true, Validators.required),
+      referenced: new FormControl('notreferenced'),
       times: new FormArray([]),
       divetypes: new FormArray([]),
-      boats: new FormArray([]),
+      boats: new FormControl([]),
       wind: new FormControl('', Validators.required),
       water_temperature: new FormControl('', Validators.required),
       wind_temperature: new FormControl('', Validators.required),
       visibility: new FormControl('', Validators.required),
       sky: new FormControl('', Validators.required),
       seaState: new FormControl('', Validators.required),
-      structure: new FormControl('', Validators.required),
-      isWithStructure:  new FormControl(false),
+      structure: new FormControl(),
+      isWithStructure:  new FormControl('', Validators.required),
       latlng: new FormControl('', Validators.required),
     });
     this.addTime();
-
+    this.diveService.getDiveTypes().then(data => {
+      this.initDiveTypeForm(data);
+    });
+    this.diveForm.get('isWithStructure').valueChanges
+      .subscribe(value => {
+        this.diveForm.get('structure').setValidators(value ? Validators.required : null);
+        this.diveForm.get('structure').reset();
+      });
+    this.diveForm.get('times').valueChanges
+      .subscribe(value => {
+        console.log(value);
+      });
   }
-  initDiveTypeForm() {
+  initDiveTypeForm(data) {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
-    for (const divetype of this.diveTypes){
+    for (const divetype of data){
       this.divetypes.push(new FormGroup({
         id: new FormControl(divetype.id),
-        name: new FormControl(false, Validators.required),
+        selected: new FormControl(false),
+        name: new FormControl(divetype.name),
         nameMat: new FormControl(divetype.name),
-        nbrDivers: new FormControl(''),
+        nbrDivers: new FormControl(1),
       }));
     }
   }
   addTime() {
     this.times = this.diveForm.get('times') as FormArray;
     this.times.push(new FormGroup({
-      startTime: new FormControl(''),
-      endTime: new FormControl(''),
+      startTime: new FormControl('00:00'),
+      endTime: new FormControl('00:00'),
     }));
   }
   addBoat () {
@@ -144,15 +156,33 @@ export class DiveComponent implements OnInit {
 
   }
   save() {
+    if (this.diveForm.invalid) {
+      this.diveForm.reset();
+      this.snackBar.open("Merci de remplir les champs correctement", "OK", {
+        duration: 3000
+      });
+      return;
+    }
+    this.hasSubmit = true;
     const data = this.diveForm.getRawValue();
-    data.boats = this.boatsChsd;
+    if (data.divingDate)
+      data.divingDate = data.divingDate.format();
+    data.boats = _.map(data.boats, boat => {
+      return {
+        boat: boat.name
+      };
+    });
+    //data.boats = this.boatsChsd;
+    //data.structure = _.get(data.structure, 'id');
+    console.log(data);
 
-    this.diveService.save(data).then(data => {
+    this.diveService.save(data).then(response => {
+      this.diveService.added$.next(data);
       this.router.navigate(['/dives']);
     }, error => {
       this.router.navigate(['/dives']);
       console.log(error);
-    })
+    });
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }

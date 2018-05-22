@@ -2,14 +2,18 @@ import { Injectable } from '@angular/core';
 import { config } from '../settings';
 import {HttpClient} from '@angular/common/http';
 import {NgRedux} from '@angular-redux/store';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class DiveService {
+
+  added$: BehaviorSubject<any>
 
   constructor(
     private http: HttpClient,
     private ngRedux: NgRedux<any>
   ) {
+    this.added$ = <BehaviorSubject<boolean>>new BehaviorSubject({});
   }
 
   getDiveTypes(): Promise<any> {

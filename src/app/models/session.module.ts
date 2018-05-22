@@ -8,8 +8,10 @@ export class SessionModule {
   token: string;
   user: UserModule;
   appVersion: string;
+  nbAddedDives: number;
 
   constructor(data: any = null) {
+    this.nbAddedDives = 0;
     if (data) {
       this.patch(data);
     }

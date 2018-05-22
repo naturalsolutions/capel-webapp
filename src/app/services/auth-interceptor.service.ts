@@ -3,18 +3,23 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { NgRedux } from '@angular-redux/store';
+import * as _ from 'lodash';
 
 @Injectable()
 export class AuthInterceptorService  implements HttpInterceptor{
 
   public static token: string;
 
-  constructor() { }
+  constructor(
+    private ngRedux: NgRedux<any>
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (AuthInterceptorService.token && req.withCredentials !== true) {
+    let token:string = _.get(this.ngRedux.getState().session, 'token') || AuthInterceptorService.token;
+    if (token && req.withCredentials !== true) {
       const cloned = req.clone({
-        headers: req.headers.set('Authorization', 'Bearer ' + AuthInterceptorService.token)
+        headers: req.headers.set('Authorization', 'Bearer ' + token)
       });
       return next.handle(cloned).catch((error, caught) => {
         return this.errorHandler(error, caught);
