@@ -150,6 +150,7 @@ export class DiveComponent implements OnInit {
     this.diveService.save(data).then(data => {
       this.router.navigate(['/dives']);
     }, error => {
+      this.router.navigate(['/dives']);
       console.log(error);
     })
   }
