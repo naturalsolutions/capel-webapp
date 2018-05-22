@@ -1,7 +1,7 @@
 export var config = {
   //'serverURL' : 'http://149.202.44.29/capel',
-  'serverURL' : 'http://127.0.0.1:5000',
-  //'serverURL': 'https://capel-beta.herokuapp.com/',
+  //'serverURL' : 'http://127.0.0.1:5000',
+  'serverURL': 'https://capel-beta.herokuapp.com',
   'appName' : 'capel',
   'appVersion': '1.0'
 };
