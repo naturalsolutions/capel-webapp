@@ -20,6 +20,14 @@ export class DiveService {
     return this.http.get<any>(config.serverURL + '/api/dives/typedives')
       .toPromise();
   }
+  getDiveSites(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/divesites')
+      .toPromise();
+  }
+  getDiveHearts(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/divehearts')
+      .toPromise();
+  }
   save(data: any): Promise<any> {
     const appState = this.ngRedux.getState()
     const sessionState = appState.session

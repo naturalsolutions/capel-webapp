@@ -29,8 +29,8 @@ export class DivesComponent implements OnInit {
     })
   }
   formatDate(date: any) {
-    let dt = new Date(date);
-    return dt.getMonth()+'/'+dt.getDay()+'/'+dt.getFullYear();
+    const dt = new Date(date);
+    return dt.getMonth() + '/' + dt.getDay() + '/' + dt.getFullYear();
   }
 
 

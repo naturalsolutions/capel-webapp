@@ -50,7 +50,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-panel-description *ngFor="let timeElem of dive.times">
-        {{timeElem[0]}} - {{timeElem[1]}}
+        {{dive.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
       </mat-panel-description>
     </mat-expansion-panel>
   </mat-accordion>

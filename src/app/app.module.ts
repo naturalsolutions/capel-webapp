@@ -9,7 +9,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { RegisterComponent, LoaderDialogComponent } from './register/register.component';
+import { RegisterComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -20,12 +20,13 @@ import { StoreModule } from './models/store.module';
 import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
-import { DiveComponent } from './dive/dive.component';
+import { DiveComponent, DiveSuccessDialog } from './dive/dive.component';
 import { BoatService } from './services/boat.service';
 import { DiveService } from './services/dive.service';
 
 import { RuleDialog } from './profile/profile.component';
 import { DivesComponent } from './dives/dives.component';
+import { AppDialogsModule } from './app-dialogs/app-dialogs.module';
 
 registerLocaleData(localeFr);
 
@@ -36,9 +37,9 @@ registerLocaleData(localeFr);
     ProfileComponent,
     RegisterComponent,
     BoatComponent,
-    LoaderDialogComponent,
     DiveComponent,
     RuleDialog,
+    DiveSuccessDialog,
     DivesComponent,
   ],
   imports: [
@@ -48,14 +49,15 @@ registerLocaleData(localeFr);
     ReactiveFormsModule,
     HttpClientModule,
     AppMaterialModule,
+    AppDialogsModule,
     AppRoutingModule,
     StoreModule,
     NgReduxModule,
     LeafletModule.forRoot()
   ],
   entryComponents: [
-    LoaderDialogComponent,
-    RuleDialog
+    RuleDialog,
+    DiveSuccessDialog
   ],
   providers: [
     InitGuard,

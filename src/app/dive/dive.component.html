@@ -17,7 +17,7 @@
               <div class="col-md-8">
                 <div class="times" formArrayName="times">
                   <div class="time row" *ngFor="let time of times.controls; let i=index" [formGroupName]="i" >
-                    <button mat-icon-button  
+                    <button mat-icon-button
                       class="btn-remove"
                       *ngIf="times.length > 1 && i"
                       (click)="removeTime(i)">
@@ -31,13 +31,43 @@
                     </mat-form-field>
                   </div>
                 </div>
+                <!--
                 <div class="text-center">
                   <button mat-raised-button color="accent" (click)="addTime()">
                     <mat-icon>add</mat-icon> Ajouter une tranche horaire
                   </button>
                 </div>
+                -->
               </div>
           </div>
+        </section>
+        <section class="sitedives">
+          <mat-toolbar>
+            <span>SITE DE PLONGÉE </span>
+          </mat-toolbar>
+          <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('latlng').invalid}">
+            <h5 class="form-group-title with-required">Cliquez sur la carte pour définir votre lieu de plongé.</h5>
+            <input matInput value="" formControlName="latlng" />
+            <div id="leafletmap" style="height: 400px;"
+                 leaflet
+                 [leafletOptions]="leafletOptions"
+                 (leafletMapReady)="onMapReady($event)"
+            >
+            </div>
+          </div>
+          <!-- <div class="row">
+            <div class="col-md-3">
+              <mat-radio-group formControlName="referenced">
+                <mat-radio-button value="referenced" class="ref-radio">Site réferencé</mat-radio-button>
+                <mat-radio-button value="notreferenced" class="ref-radio">Site non réferencé</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="col-md-6">
+              <input matInput placeholder="coordonnées de plongée (cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
+            </div>
+          </div> -->
+
+
         </section>
         <section class="structure">
           <mat-toolbar>
@@ -90,6 +120,22 @@
             </mat-select>
           </mat-form-field>
         </section>
+
+        <section class="typedives">
+          <mat-toolbar>
+            <span>TYPE DE PLONGÉE </span>
+          </mat-toolbar>
+          <div class="row" formArrayName="divetypes">
+            <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
+              <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
+              <mat-form-field *ngIf="typedive.controls.selected.value">
+                <input class="text-right" matInput type="number" min="1" formControlName="nbrDivers">
+                <span matPrefix>nb. de plongeurs</span>
+              </mat-form-field>
+            </div>
+          </div>
+        </section>
+
         <section class="weather">
           <mat-toolbar>
             <span>CONDITION CLIMATIQUES </span>
@@ -161,8 +207,8 @@
               </mat-form-field>
             </div>
             <div [ngClass]="{
-              'form-group': true, 
-              'col-md-4': true, 
+              'form-group': true,
+              'col-md-4': true,
               'has-error': hasSubmit && diveForm.get('water_temperature').invalid
             }">
               <h5 class="form-group-title with-required">Température de l'eau</h5>
@@ -172,9 +218,9 @@
               </mat-form-field>
             </div>
             <div [ngClass]="{
-              'form-group': true, 
-              'col-md-4': true, 
-              'form-group-visibility': true, 
+              'form-group': true,
+              'col-md-4': true,
+              'form-group-visibility': true,
               'has-error': hasSubmit && diveForm.get('visibility').invalid
             }">
               <!-- <input matInput placeholder="visiblité" value="0" formControlName="visibility"> -->
@@ -187,48 +233,6 @@
             </div>
           </div>
         </section>
-        <section class="typedives">
-          <mat-toolbar>
-            <span>TYPE DE PLONGÉE </span>
-          </mat-toolbar>
-          <div class="row" formArrayName="divetypes">
-            <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
-              <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
-              <mat-form-field *ngIf="typedive.controls.selected.value">
-                <input class="text-right" matInput type="number" min="1" formControlName="nbrDivers">
-                <span matPrefix>nb. de plongeurs</span>
-              </mat-form-field>
-            </div>
-          </div>
-        </section>
-        <section class="sitedives">
-          <mat-toolbar>
-            <span>SITE DE PLONGÉE </span>
-          </mat-toolbar>
-          <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('latlng').invalid}">
-            <h5 class="form-group-title with-required">Cliquez sur la carte pour définir votre lieu de plongé.</h5>
-            <input matInput value="" formControlName="latlng" />
-            <div id="leafletmap" style="height: 400px;"
-              leaflet
-              [leafletOptions]="leafletOptions"
-              (leafletMapReady)="onMapReady($event)"
-            >
-            </div>
-          </div>
-          <!-- <div class="row">
-            <div class="col-md-3">
-              <mat-radio-group formControlName="referenced">
-                <mat-radio-button value="referenced" class="ref-radio">Site réferencé</mat-radio-button>
-                <mat-radio-button value="notreferenced" class="ref-radio">Site non réferencé</mat-radio-button>
-              </mat-radio-group>
-            </div>
-            <div class="col-md-6">
-              <input matInput placeholder="coordonnées de plongée (cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
-            </div>
-          </div> -->
-          
-        
-      </section>
       <button class="btn btn-secondary btn-block" (click)="save()">ENVOYER LA DÉCLARATION</button>
       </form>
   </mat-card>

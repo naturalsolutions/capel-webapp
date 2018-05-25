@@ -6,7 +6,7 @@ import {UserService} from '../services/user.service';
 import {SessionActionsService} from '../store/session/session-actions.service';
 import * as _ from 'lodash';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {LoaderDialogComponent} from '../register/register.component';
+import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const dialogRef = this.dialog.open(LoaderDialogComponent, {
+    const dialogRef = this.dialog.open(LoadingDialogComponent, {
       disableClose: true
     });
     this.userService.login(this.fg.value).then(data => {

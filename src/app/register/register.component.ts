@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
+import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -75,7 +76,7 @@ export class RegisterComponent implements OnInit {
         if (_.get(boat, 'name') && _.get(boat, 'matriculation'))
           return boat;
       });
-      let dialogRef = this.dialog.open(LoaderDialogComponent, {
+      let dialogRef = this.dialog.open(LoadingDialogComponent, {
         disableClose: true
       });
 
@@ -112,9 +113,3 @@ export class RegisterComponent implements OnInit {
   get name() { return this.userForm.get('boats').get('name'); }
   get matriculation() { return this.userForm.get('boats').get('matriculation'); }
 }
-
-@Component({
-  selector: 'app-loader-dialog-component',
-  template: `<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>`
-})
-export class LoaderDialogComponent { }

@@ -17,7 +17,6 @@ import * as L from 'leaflet';
 
 import { config } from '../settings';
 import { UserService } from '../services/user.service';
-import { LoaderDialogComponent } from '../register/register.component';
 import { NgRedux } from '@angular-redux/store';
 
 
@@ -70,11 +69,11 @@ export class ProfileComponent implements OnInit {
     <mat-dialog-content>
       <iframe src="./assets/reglement_pnpc_coeurs_marins_2018.pdf"></iframe>
     </mat-dialog-content>
-    <mat-dialog-actions>
+    <mat-dialog-actions class="justify-content-end">
       <div class="col">
-        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'a')">Check me!</mat-checkbox>
-        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'b')">Check me!</mat-checkbox>
-        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'c')">Check me!</mat-checkbox>
+        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'a')">Je m'engage à respecter la réglementation marine en coeur de Parc</mat-checkbox>
+        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'b')">Je m'engage à respecter les conditions du règlement de plongée</mat-checkbox>
+        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'c')">Je m'engage ainsi à remplir mes données de plongée</mat-checkbox>
       </div>
       <div>
         <a mat-raised-button mat-dialog-close color="primary" [disabled]="!hasCheckAll" href="{{ config.serverURL }}/api/users/{{ user.id }}/permit.pdf">
