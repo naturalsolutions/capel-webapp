@@ -4,6 +4,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
+import {config} from '../settings';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,8 @@ export class RegisterComponent implements OnInit {
   boats: FormArray = new FormArray([]);
   status: string = '';
   isSubmit:boolean;
-
+  config = config;
+  keys = Object.keys(config.countries);
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -29,13 +31,17 @@ export class RegisterComponent implements OnInit {
 
   // component initialisation
   ngOnInit() {
+
     this.userForm = this.fb.group({
-      category: new FormControl('', Validators.required),
+      category: new FormControl('particulier', Validators.required),
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
+      company: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
+      zip: new FormControl('', Validators.required),
+      country: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
@@ -103,13 +109,12 @@ export class RegisterComponent implements OnInit {
   get lastname(){ return this.userForm.get('lastname'); }
   get firstname(){ return this.userForm.get('firstname'); }
   get category(){ return this.userForm.get('category'); }
-  get email(){ return this.userForm.get('email'); }
-  get phone(){ return this.userForm.get('phone'); }
-  get address(){ return this.userForm.get('address'); }
   get password(){ return this.userForm.get('password'); }
   get repeat(){ return this.userForm.get('repeat'); }
 
   // Boat Getters
   get name() { return this.userForm.get('boats').get('name'); }
   get matriculation() { return this.userForm.get('boats').get('matriculation'); }
+
 }
+

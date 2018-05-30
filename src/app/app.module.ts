@@ -28,6 +28,9 @@ import { RuleDialog } from './profile/profile.component';
 import { DivesComponent } from './dives/dives.component';
 import { AppDialogsModule } from './app-dialogs/app-dialogs.module';
 
+
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -53,7 +56,8 @@ registerLocaleData(localeFr);
     AppRoutingModule,
     StoreModule,
     NgReduxModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    LeafletMarkerClusterModule.forRoot()
   ],
   entryComponents: [
     RuleDialog,

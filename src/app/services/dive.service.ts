@@ -20,10 +20,23 @@ export class DiveService {
     return this.http.get<any>(config.serverURL + '/api/dives/typedives')
       .toPromise();
   }
+  getDiveSites(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/divesites')
+      .toPromise();
+  }
+  getDiveHearts(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/divehearts')
+      .toPromise();
+  }
   save(data: any): Promise<any> {
     const appState = this.ngRedux.getState()
     const sessionState = appState.session
     return this.http.post<any>(config.serverURL + '/api/users/' + sessionState.profile.id + '/dives', data)
+      .toPromise();
+  }
+  getCheckedPointHearts(data: any): Promise<any> {
+    console.log(data);
+    return this.http.post<any>(config.serverURL + '/api/users/divehearts/checkpoint', data)
       .toPromise();
   }
   getDives(): Promise<any> {

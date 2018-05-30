@@ -4,9 +4,6 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
-import { startWith } from 'rxjs/operators/startWith';
 import * as _ from 'lodash';
 import * as L from 'leaflet';
 
@@ -15,6 +12,11 @@ import { BoatService } from '../services/boat.service';
 import { DiveService } from '../services/dive.service';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 
+import {NgRedux} from '@angular-redux/store';
+
+
+
+let divesite_id;
 @Component({
   selector: 'app-dive',
   templateUrl: './dive.component.html',
@@ -39,29 +41,48 @@ export class DiveComponent implements OnInit {
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
   boats: any[] = [];
-  boatCtrl: FormControl;
   initDiveType: any[] = [];
-  filteredBoats: Observable<any[]>;
   users: any[] = [];
+  diveSites: any[] = [];
+
   map: L.Map;
   leafletOptions = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
-    zoom: 12,
+    zoom: 9,
     center: L.latLng(43, 6.3833),
     dragging: true,
     scrollWheelZoom: false
   };
 
+  // Marker cluster stuff
+  markerClusterGroup: L.MarkerClusterGroup;
+  markerClusterData: any[] = [];
+  markerClusterOptions: L.MarkerClusterGroupOptions;
+
+  icon = L.icon({
+    iconUrl: 'assets/icon-marker.png',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  });
+  profile:any;
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
               private diveService: DiveService,
               private userService: UserService,
               private snackBar: MatSnackBar,
               private router: Router,
+              public dialog: MatDialog,
+              private ngRedux: NgRedux<any>
               public dialog: MatDialog
               ) {
+
+    const appState = this.ngRedux.getState();
+    this.profile = appState.session.profile;
     this.adapter.setLocale('fr');
     this.boatService.getBoats().then(data => {
       this.boats = data;
@@ -76,6 +97,7 @@ export class DiveComponent implements OnInit {
     this.userService.getUsers().then(users => {
       this.users = _.filter(users, {category: 'structure'});
     });
+
     /* this.boatCtrl = new FormControl();
     this.boatCtrl.valueChanges.subscribe(value => {
       console.log(value);
@@ -91,38 +113,96 @@ export class DiveComponent implements OnInit {
       state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
   ngOnInit() {
-    console.log('ngOnInit DiveComponent');
+
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
       referenced: new FormControl('notreferenced'),
       times: new FormArray([]),
       divetypes: new FormArray([]),
       boats: new FormControl([]),
-      wind: new FormControl('', Validators.required),
-      water_temperature: new FormControl('', Validators.required),
-      wind_temperature: new FormControl('', Validators.required),
-      visibility: new FormControl('', Validators.required),
-      sky: new FormControl('', Validators.required),
-      seaState: new FormControl('', Validators.required),
+      wind: new FormControl(''),
+      water_temperature: new FormControl(null),
+      wind_temperature: new FormControl(null),
+      visibility: new FormControl(null),
+      sky: new FormControl(null),
+      seaState: new FormControl(''),
       structure: new FormControl(),
       isWithStructure:  new FormControl('', Validators.required),
-      latlng: new FormControl('', Validators.required),
+      latlng: new FormControl('')
     });
+
     this.addTime();
+
     this.diveService.getDiveTypes().then(data => {
       this.initDiveType = data;
       this.initDiveTypeForm();
     });
+
     this.diveForm.get('isWithStructure').valueChanges
       .subscribe(value => {
         this.diveForm.get('structure').setValidators(value ? Validators.required : null);
         this.diveForm.get('structure').reset();
       });
+
     this.diveForm.get('times').valueChanges
       .subscribe(value => {
-        console.log(value);
       });
+
+    this.diveService.getDiveSites().then(data => {
+      this.diveSites = data;
+      const listMarker: any[] = [];
+      for (const diveSite of this.diveSites ) {
+
+        const marker = L.marker([diveSite.longitude, diveSite.latitude], {
+          title: diveSite.name,
+          icon: this.icon,
+          radius: 20,
+          divesite_id: diveSite.id,
+          divesite_name: diveSite.name,
+
+        });
+
+        marker.bindPopup(diveSite.name).openPopup();
+        marker.on('click', this.onClick.bind(this));
+        listMarker.push(marker);
+      }
+      this.markerClusterData = listMarker;
+    });
+
+    this.diveService.getDiveHearts().then(data => {
+
+        for (let heart of data) {
+          heart.geom_poly = JSON.parse(heart.geom_poly);
+          let  geojsonFeature = {
+            'type': 'Feature',
+            'properties': {
+              'name': 'Coors Field',
+              'amenity': 'Baseball Stadium',
+              'popupContent': 'This is where the Rockies play!'
+            },
+            'geometry': heart.geom_poly
+          };
+          new L.geoJSON(geojsonFeature, {
+            style: function(feature) {
+              return feature.properties.style;
+            }
+          }).addTo(this.map);
+
+        }
+    });
+
   }
+  onClick(event) {
+    divesite_id = event.target.options.divesite_id;
+    this.diveForm.controls['latlng'].setValue('Vous êtes plongée á : '+event.target.options.divesite_name);
+
+  }
+  markerClusterReady(group: L.MarkerClusterGroup) {
+
+    this.markerClusterGroup = group;
+
+  }
+
   initDiveTypeForm() {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
     for (const divetype of this.initDiveType){
@@ -147,18 +227,22 @@ export class DiveComponent implements OnInit {
     while (this.times.length)
       this.times.removeAt(0);
   }
-  
   removeTime(i) {
     this.times.removeAt(i);
   }
 
   onMapReady(map: L.Map) {
     L.marker([50.6311634, 3.0599573]).addTo(map);
-    map.on('click', (e) => {
-      console.log(e.latlng);
-      this.diveForm.controls['latlng'].setValue(e.latlng);
-    });
+    map.on('click', this.checkPoint.bind(this))
+    this.map = map;
+  }
 
+  checkPoint(e) {
+    divesite_id = null;
+    this.diveService.getCheckedPointHearts(e.latlng).then(data => {
+      console.log(data);
+    })
+    this.diveForm.controls['latlng'].setValue(e.latlng);
   }
 
   reset() {
@@ -171,9 +255,26 @@ export class DiveComponent implements OnInit {
     this.initDiveTypeForm();
   }
 
+
+  reset() {
+    this.hasSubmit = false;
+    this.diveForm.reset();
+    this.removeTimes();
+    this.addTime();
+    while (this.divetypes.length)
+      this.divetypes.removeAt(0);
+    this.initDiveTypeForm();
+  }
   save() {
+
     if (this.diveForm.invalid) {
       this.snackBar.open("Merci de remplir les champs correctement", "OK", {
+        duration: 3000
+      });
+      return;
+    }
+    if (!divesite_id) {
+      this.snackBar.open("Merci de sélectionner un site de plongée", "OK", {
         duration: 3000
       });
       return;
@@ -187,8 +288,7 @@ export class DiveComponent implements OnInit {
         boat: boat.name
       };
     });
-    //data.structure = _.get(data.structure, 'id');
-    console.log(data);
+    data.divesite_id = divesite_id;
     let loading = this.dialog.open(LoadingDialogComponent, {
       disableClose: true
     });
@@ -209,9 +309,12 @@ export class DiveComponent implements OnInit {
         }
       });
     }, error => {
+      //this.router.navigate(['/dives']);
       console.log(error);
       loading.close();
     });
+
+
   }
   //Getters
   get isWithStructure(){ return this.diveForm.get('isWithStructure'); }
