@@ -11,7 +11,9 @@ import { UserService } from '../services/user.service';
 import { BoatService } from '../services/boat.service';
 import { DiveService } from '../services/dive.service';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
+
 import {NgRedux} from '@angular-redux/store';
+
 
 
 let divesite_id;
@@ -76,6 +78,7 @@ export class DiveComponent implements OnInit {
               private router: Router,
               public dialog: MatDialog,
               private ngRedux: NgRedux<any>
+              public dialog: MatDialog
               ) {
 
     const appState = this.ngRedux.getState();
@@ -110,7 +113,6 @@ export class DiveComponent implements OnInit {
       state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
   ngOnInit() {
-
 
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
@@ -225,7 +227,6 @@ export class DiveComponent implements OnInit {
     while (this.times.length)
       this.times.removeAt(0);
   }
-
   removeTime(i) {
     this.times.removeAt(i);
   }
@@ -254,6 +255,16 @@ export class DiveComponent implements OnInit {
     this.initDiveTypeForm();
   }
 
+
+  reset() {
+    this.hasSubmit = false;
+    this.diveForm.reset();
+    this.removeTimes();
+    this.addTime();
+    while (this.divetypes.length)
+      this.divetypes.removeAt(0);
+    this.initDiveTypeForm();
+  }
   save() {
 
     if (this.diveForm.invalid) {
@@ -278,7 +289,6 @@ export class DiveComponent implements OnInit {
       };
     });
     data.divesite_id = divesite_id;
-    //data.structure = _.get(data.structure, 'id');
     let loading = this.dialog.open(LoadingDialogComponent, {
       disableClose: true
     });

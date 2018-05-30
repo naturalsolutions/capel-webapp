@@ -115,4 +115,6 @@ export class RegisterComponent implements OnInit {
   // Boat Getters
   get name() { return this.userForm.get('boats').get('name'); }
   get matriculation() { return this.userForm.get('boats').get('matriculation'); }
+
 }
+
