@@ -11,10 +11,6 @@ app-register {
     top: 0;
     left: 0;
   }
-
-  .mat-card {
-    padding-bottom: 0;
-  }
   .boats {
     .mat-toolbar {
       margin-bottom: 0;
@@ -31,16 +27,18 @@ app-register {
   }
   .form-actions {
     position: relative;
-    margin-top: 60px;
+    margin-top: 40px;
     .btn {
       position: absolute;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
     }
   }
-  .complete{
-    mat-card{
-      display: inline-block;
-    }
+  .complete {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
   }
   /* .align-items {
     padding: 40px 10px 10px 20px;

@@ -1,9 +1,9 @@
-<div *ngIf="status == 'complete'" class="complete col-xs-12 text-center">
-  <h1 class="brand">INSCRIPTION</h1>
-  <mat-card>
-    Votre inscription à bien été prise en compte.
-    <br /> Nous vous avons envoyé un email pour la valider.
-  </mat-card>
+<div *ngIf="status == 'complete'" class="complete text-center">
+    <h1 class="brand">INSCRIPTION</h1>
+    <mat-card class="d-inline-block mx-3">
+      Votre inscription à bien été prise en compte.
+      <br /> Nous vous avons envoyé un email pour la valider.
+    </mat-card>
 </div>
 <div *ngIf="status != 'complete'" class="row mx-0 py-3 py-sm-5">
   <div class="col-sm-3">
