@@ -78,7 +78,6 @@ export class DiveComponent implements OnInit {
               private router: Router,
               public dialog: MatDialog,
               private ngRedux: NgRedux<any>
-              public dialog: MatDialog
               ) {
 
     const appState = this.ngRedux.getState();
@@ -255,16 +254,6 @@ export class DiveComponent implements OnInit {
     this.initDiveTypeForm();
   }
 
-
-  reset() {
-    this.hasSubmit = false;
-    this.diveForm.reset();
-    this.removeTimes();
-    this.addTime();
-    while (this.divetypes.length)
-      this.divetypes.removeAt(0);
-    this.initDiveTypeForm();
-  }
   save() {
 
     if (this.diveForm.invalid) {
