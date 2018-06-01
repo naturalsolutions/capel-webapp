@@ -23,7 +23,13 @@ import {DiveService} from './services/dive.service';
 })
 export class AppComponent implements OnInit {
 
-  @HostBinding('class.nosidenav') nosidenav: boolean;
+  showSidenav:boolean;
+
+  @HostBinding('class.show-sidenav') get getShowSidenav() {
+    return this.showSidenav;
+  }
+
+  @HostBinding('class.page-force-no-sidenav') pageNoSidenav: boolean;
   @HostBinding('class.is-connected') isConnected: boolean;
   groupedDives: any[] = [];
   dives = [];
@@ -59,7 +65,8 @@ export class AppComponent implements OnInit {
 
     //TODO
     this.router.events.subscribe(value => {
-      this.nosidenav = ['/login', '/register'].indexOf(this.router.routerState.snapshot.url) > -1;
+      this.pageNoSidenav = ['/login', '/register'].indexOf(this.router.routerState.snapshot.url) > -1;
+      this.showSidenav = false;
     });
   }
 
