@@ -1,33 +1,37 @@
+app-login {
 
-.page {
-  min-height: 100vh;
-  padding-top: 120px;
-}
+  display: flex !important;
+  flex-wrap: wrap;
+  padding-left: 0 !important;
 
   .mat-form-field {
     display: block;
   }
-.page:before {
-  content: '';
-  width: 100%;
-  height: calc(100vh - 80px);
-  background-size: cover;
-  background: url('../../assets/fond-1.jpg') no-repeat;
-  position: fixed;
-  top: 80px;
-  left: 0;
-}
-button.btn.btn-primary.btn-login {
-  margin-bottom: -30px;
-}
-.login-card{
-  margin-top: 5%;
-}
-a.pass-recover{
-  display: block;
-  cursor: pointer;
-  color: darkgrey;
-  font-size: 11px;
-}
+  
+  &:before {
+    content: '';
+    width: 100%;
+    /* height: calc(100vh - 80px); */
+    height: 100%;
+    background-size: cover;
+    background: url('../../assets/fond-1.jpg') no-repeat center;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 
+  .mat-card-content {
+    margin-bottom: 0;
+  }
+  
+  button.btn.btn-primary.btn-login {
+    transform: translateY(60%);
+  }
 
+  a.pass-recover{
+    display: block;
+    cursor: pointer;
+    color: darkgrey;
+    font-size: 11px;
+  }
+}

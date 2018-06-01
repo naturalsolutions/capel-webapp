@@ -1,0 +1,9 @@
+main {
+  >*:last-child {
+    display: block;
+    min-height: 100vh;
+    padding-top: 80px;
+    padding-left: 240px;
+    padding-right: 0;
+  }
+}
