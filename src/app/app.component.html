@@ -43,7 +43,7 @@
     </li>
   </ul>
   <mat-accordion class="dives">
-    <mat-expansion-panel *ngFor="let dive of dives">
+    <mat-expansion-panel *ngFor="let dive of dives; let i = index">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ dive.divingDate | date:'shortDate':'':'fr' }}

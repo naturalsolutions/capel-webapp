@@ -33,6 +33,10 @@ export class UserService {
     return this.http.get<any>(config.serverURL + '/api/users/me')
       .toPromise();
   }
+  setPassword(email:any): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/'+email+'/password/recover')
+      .toPromise();
+  }
   getUsers(): Promise<any> {
     return this.http.get<any>(config.serverURL + '/api/users')
       .toPromise();

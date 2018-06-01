@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   @HostBinding('class.is-connected') isConnected: boolean;
 
   dives = [];
+  groupedDives:any[] = [];
 
   constructor(
     private ngRedux: NgRedux<any>,
@@ -68,6 +69,18 @@ export class AppComponent implements OnInit {
     console.log('getDives');
     this.diveService.getDives().then(data => {
       this.dives = data;
+      let obj: any = {};
+      for ( let i = 0 ; i < data.length; i++ ) {
+        obj.divingDate = data[i].divingDate;
+        obj.dives = [];
+        while ( data[i].divingDate === data[ i + 1 ].divingDate ) {
+          obj.dives.push(data[ i + 1 ]);
+          i++;
+          if (i === data.length - 1) return;
+        }
+        this.groupedDives.push(obj);
+      }
+      console.log(this.groupedDives);
     }, error => {
       console.log(error);
     })

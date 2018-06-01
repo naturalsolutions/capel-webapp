@@ -44,7 +44,6 @@ export class DiveComponent implements OnInit {
   initDiveType: any[] = [];
   users: any[] = [];
   diveSites: any[] = [];
-
   map: L.Map;
   leafletOptions = {
     layers: [
@@ -126,7 +125,7 @@ export class DiveComponent implements OnInit {
       sky: new FormControl(null),
       seaState: new FormControl(''),
       structure: new FormControl(),
-      isWithStructure:  new FormControl('', Validators.required),
+      isWithStructure:  new FormControl(''),
       latlng: new FormControl('')
     });
 
