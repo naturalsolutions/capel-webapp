@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   @HostBinding('class.is-connected') isConnected: boolean;
 
   dives = [];
+  //groupedDives:any[] = [];
 
   constructor(
     private ngRedux: NgRedux<any>,
@@ -70,7 +71,7 @@ export class AppComponent implements OnInit {
       this.dives = data;
     }, error => {
       console.log(error);
-    })
+    });
   }
 
   /*

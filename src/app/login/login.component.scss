@@ -19,9 +19,19 @@ app-login {
     top: 0;
     left: 0;
   }
+
+  .mat-card-content {
+    margin-bottom: 0;
+  }
   
   button.btn.btn-primary.btn-login {
-    position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translateY(60%);
+  }
+
+  a.pass-recover{
+    display: block;
+    cursor: pointer;
+    color: darkgrey;
+    font-size: 11px;
   }
 }
