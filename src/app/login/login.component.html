@@ -1,41 +1,32 @@
-<main class="page container-fluid">
-  <div class="row">
-    <div class="col-sm-3 align-items">
-      <h1 class="brand">CAPEL
-        <small>Carnet de Plongée En Ligne</small>
-      </h1>
-    </div>
-    <div class="col-sm-6 text-center">
-      <h1 class="brand">Connexion</h1>
-    </div>
-    <div class="col-sm-3 order-mobile align-items">
-      <div class="col-sm mt-2 mt-sm-0">
-        <h1 class="brand">
-          <small>VOUS N'AVEZ PAS DE COMPTE ?</small>
-        </h1>
-        <a href="#" routerLink="/register" class="btn btn-primary"> S'INSCRIRE</a>
-      </div>
-    </div>
+<div class="col-sm-4 pt-3 pt-sm-5">
+  <h1 class="brand">CAPEL
+    <small>Carnet de Plongée En Ligne</small>
+  </h1>
+</div>
+<div class="col-sm-4 d-sm-flex flex-sm-column pt-sm-5 pb-sm-5 mb-sm-1">
+  <h1 class="brand text-center">Connexion</h1>
+  <form [formGroup]="fg" (submit)="onSubmit()" class="my-sm-auto">
+    <mat-card class="text-center">
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="Email" formControlName="username">
+        </mat-form-field>
+        <mat-form-field *ngIf="!setPass">
+          <input matInput type="password" placeholder="Mot de passe" formControlName="password">
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <a (click)="setPassword()" *ngIf="!setPass" class="pass-recover">Mot de passe oublié</a>
+        <a (click)="setPass = false" *ngIf="setPass" class="text-left pl-3 pass-recover">&lt;&lt;&lt; Retour à la connexion</a>
+        <button *ngIf="!setPass" class="btn btn-primary btn-login">SE CONNECTER</button>
+        <button *ngIf="setPass" class="btn btn-primary btn-login">Envoyer</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
+<div class="col-sm-4 pt-sm-5 text-center text-sm-right">
+  <div class="text-center text-sm-left d-inline-block">
+    <h5 class="text-primary">VOUS N'AVEZ PAS DE COMPTE ?</h5>
+    <a href="#" routerLink="/register" class="btn btn-primary"> S'INSCRIRE</a>
   </div>
-  <div class="row text-center login-card">
-    <div class="col-sm-4 offset-md-4">
-      <form [formGroup]="fg" (submit)="onSubmit()">
-        <mat-card class="text-center">
-          <mat-card-content>
-            <mat-form-field>
-              <input matInput placeholder="Email" formControlName="username">
-            </mat-form-field>
-            <mat-form-field *ngIf="!setPass">
-              <input matInput type="password" placeholder="Mot de passe" formControlName="password">
-            </mat-form-field>
-          </mat-card-content>
-          <mat-card-actions>
-            <a (click)="setPassword()" *ngIf="!setPass" class="pass-recover">Mot de passe oublié</a>
-            <button *ngIf="!setPass" class="btn btn-primary btn-login">SE CONNECTER</button>
-            <button *ngIf="setPass" class="btn btn-primary btn-login">Envoyer</button>
-          </mat-card-actions>
-        </mat-card>
-      </form>
-    </div>
-  </div>
-</main>
+</div>
