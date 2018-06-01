@@ -166,17 +166,6 @@ mat-label,
   font-size: 14px;
 }
 
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block {
-  font-weight: bolder;
-  text-transform: uppercase;
-}
-
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.active,
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block.visited,
-header > nav > a.btn.btn-link.btn-sm.d-none.d-md-block:hover {
-  color: #00accc !important;
-}
-
 .navProfile, .navProfile.active, .navProfile:hover {
   font-weight: normal;
   text-decoration: none;
