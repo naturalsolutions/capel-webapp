@@ -43,15 +43,20 @@
     </li>
   </ul>
   <mat-accordion class="dives">
-    <mat-expansion-panel *ngFor="let dive of dives; let i = index">
+    <mat-expansion-panel *ngFor="let diveDisplay of groupedDives; let i = index">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ dive.divingDate | date:'shortDate':'':'fr' }}
+          {{ diveDisplay.dive.divingDate | date:'shortDate':'':'fr' }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <mat-panel-description *ngFor="let timeElem of dive.times">
-        {{dive.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
+      <mat-panel-description *ngFor="let timeElem of diveDisplay.dive.times">
+        {{diveDisplay.dive.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
       </mat-panel-description>
+      <div *ngFor="let dvieDisplay of diveDisplay.dives">
+      <mat-panel-description *ngFor="let timeElem of dvieDisplay.times">
+        {{dvieDisplay.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
+      </mat-panel-description>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
   <ul class="list-unstyled">
