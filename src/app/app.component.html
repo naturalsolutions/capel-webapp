@@ -1,5 +1,5 @@
-<header>
-  <button mat-icon-button class="toggle-sidenav d-md-none" (click)="showSidenav = !showSidenav">
+<header class="d-flex align-items-center">
+  <button mat-icon-button class="toggle-sidenav d-md-none pl-3 mr-auto" (click)="showSidenav = !showSidenav">
     <mat-icon>menu</mat-icon>
   </button>
   <h1 class="d-none d-md-block">
@@ -7,25 +7,25 @@
       <img src="assets/images/logo.png" alt="Parc national de Port-Cros" />
     </a>
   </h1>
-  <nav class="d-flex justify-content-end align-items-center">
+  <nav class="d-none d-md-flex align-items-center ml-auto">
 
     <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a> -->
 
     <a routerLink="/profile" routerLinkActive="active"
       href="#" name="routing-strategies"
-      class="btn btn-link btn-sm d-none d-md-block navProfile visible-is-connected">
+      class="btn btn-link btn-sm navProfile visible-is-connected">
         <i class="material-icons">person</i>
         Mon profil
     </a>
     <button type="button" (click)="logOut()" routerLinkActive="active"
-        class="btn btn-link btn-sm d-none d-md-block nav_profile visible-is-connected">
+        class="btn btn-link btn-sm nav_profile visible-is-connected">
       <i class="material-icons"></i>
       se déconnecter
     </button>
 
     <a routerLink="/register" routerLinkActive="active"
       href="#" name="routing-strategies"
-      class="btn btn-link btn-sm d-none d-md-block hidden-is-connected">
+      class="btn btn-link btn-sm hidden-is-connected">
         <i class="material-icons">person_outline</i>
         S'inscrire
     </a>
@@ -33,45 +33,67 @@
 </header>
 
 <aside class="sidenav">
-  <ul class="list-unstyled">
-    <li>
-      <a routerLink="/profile" routerLinkActive="active"
-        href="#" name="routing-strategies"
-        class="btn">
-        Votre Autorisation
-      </a>
-    </li>
-    <li>
-      Vos dernières plongées
-    </li>
-  </ul>
-  <mat-accordion class="dives">
-    <mat-expansion-panel *ngFor="let diveDisplay of groupedDives; let i = index">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ diveDisplay.dive.divingDate | date:'shortDate':'':'fr' }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <mat-panel-description *ngFor="let timeElem of diveDisplay.dive.times">
-        {{diveDisplay.dive.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
-      </mat-panel-description>
-      <div *ngFor="let dvieDisplay of diveDisplay.dives">
-      <mat-panel-description *ngFor="let timeElem of dvieDisplay.times">
-        {{dvieDisplay.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
-      </mat-panel-description>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
-  <ul class="list-unstyled">
-    <li>
-      <a routerLink="/dive" routerLinkActive="active"
-        href="#" name="routing-strategies"
-        class="btn btn-primary">
-        Déclarer une plongée
-      </a>
-    </li>
-  </ul>
-  <div class="btn-collapse"></div>
+  <div class="sidenav-inner">
+    <ul class="list-unstyled">
+      <li>
+        <a routerLink="/profile" routerLinkActive="active"
+          href="#" name="routing-strategies"
+          class="btn">
+          Votre Autorisation
+        </a>
+      </li>
+      <li>
+        Vos dernières plongées
+      </li>
+    </ul>
+    <mat-accordion class="dives">
+      <mat-expansion-panel *ngFor="let diveDisplay of groupedDives; let i = index">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ diveDisplay.dive.divingDate | date:'shortDate':'':'fr' }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description *ngFor="let timeElem of diveDisplay.dive.times">
+          {{diveDisplay.dive.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
+        </mat-panel-description>
+        <div *ngFor="let dvieDisplay of diveDisplay.dives">
+        <mat-panel-description *ngFor="let timeElem of dvieDisplay.times">
+          {{dvieDisplay.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
+        </mat-panel-description>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <ul class="list-unstyled mb-auto">
+      <li>
+        <a routerLink="/dive" routerLinkActive="active"
+          href="#" name="routing-strategies"
+          class="btn btn-primary">
+          Déclarer une plongée
+        </a>
+      </li>
+    </ul>
+
+    <a routerLink="/profile" routerLinkActive="active"
+      href="#" name="routing-strategies"
+      class="btn btn-link btn-sm visible-is-connected d-md-none text-left text-light">
+        <i class="material-icons">person</i>
+        Mon profil
+    </a>
+
+    <button type="button" (click)="logOut()" routerLinkActive="active"
+        class="btn btn-link btn-sm d-md-none visible-is-connected text-left text-light">
+      <i class="material-icons"></i>
+      se déconnecter
+    </button>
+
+    <a routerLink="/register" routerLinkActive="active"
+      href="#" name="routing-strategies"
+      class="btn btn-link btn-sm hidden-is-connected d-md-none text-left text-light">
+        <i class="material-icons">person_outline</i>
+        S'inscrire
+    </a>
+    <div class="btn-collapse"></div>
+  </div>
 </aside>
 
 <main>

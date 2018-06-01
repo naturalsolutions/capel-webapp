@@ -12,20 +12,14 @@ app-root {
 
   header {
     position: fixed;
-    z-index: 1001;
-    width: 100%;
-    .toggle-sidenav {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-    }
-  }
-  &.page-force-no-sidenav {
-    header {
-      .toggle-sidenav {
-        display: none !important;
-      }
-    }
+    z-index: 1002;
+    width: 100vw;
+    min-height: 50px;
+    background: #ede8e2; /* Old browsers */
+    background: -moz-linear-gradient(left, #ede8e2 0%, #c7baae 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #ede8e2 0%,#c7baae 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #ede8e2 0%,#c7baae 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ede8e2', endColorstr='#c7baae',GradientType=1 ); /* IE6-9 */
   }
 
   header h1 {
@@ -41,22 +35,40 @@ app-root {
   }
   header nav {
     height: 80px;
-    background: #ede8e2; /* Old browsers */
-    background: -moz-linear-gradient(left, #ede8e2 0%, #c7baae 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(left, #ede8e2 0%,#c7baae 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to right, #ede8e2 0%,#c7baae 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ede8e2', endColorstr='#c7baae',GradientType=1 ); /* IE6-9 */
   }
   
   main {
     >*:last-child {
       display: block;
       min-height: 100vh;
-      padding-top: 80px;
+      padding-top: 50px;
       padding-left: 0;
       padding-right: 0;
       @media screen and (min-width: 768px) {
         padding-left: 240px;
+        padding-top: 80px;
+      }
+    }
+  }
+
+  &.page-force-no-sidenav {
+    main {
+      >*:last-child {
+        padding-left: 0;
+      }
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    &.page-force-no-sidenav {
+      header {
+        display: none !important;
+      }
+      main {
+        >*:last-child {
+          padding-left: 0;
+          padding-top: 0;
+        }
       }
     }
   }
@@ -64,12 +76,21 @@ app-root {
   .sidenav {
     position: fixed;
     z-index: 1001;
-    width: 240px;
-    padding-right: 20px;
-    top: 80px;
-    bottom: 0;
-    background: #3e3e3e;
+    height: 100vh;
+    padding-top: 50px;
     transition: transform .1s linear;
+    @media screen and (min-width: 768px) {
+      padding-top: 80px;
+    }
+    .sidenav-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 240px;
+      height: 100%;
+      padding-right: 20px;
+      background: #3e3e3e;
+    }
     ul {
       margin-bottom: 0;
     }
