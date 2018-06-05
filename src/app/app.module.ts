@@ -6,7 +6,7 @@ import localeFr from '@angular/common/locales/fr';
 import 'rxjs/add/observable/of';
 import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { AppComponent } from './app.component';
+import {AppComponent, DiveDeleteDialog} from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
@@ -43,6 +43,7 @@ registerLocaleData(localeFr);
     DiveComponent,
     RuleDialog,
     DiveSuccessDialog,
+    DiveDeleteDialog,
     DivesComponent,
   ],
   imports: [
@@ -61,7 +62,8 @@ registerLocaleData(localeFr);
   ],
   entryComponents: [
     RuleDialog,
-    DiveSuccessDialog
+    DiveSuccessDialog,
+    DiveDeleteDialog
   ],
   providers: [
     InitGuard,

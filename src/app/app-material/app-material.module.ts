@@ -20,7 +20,7 @@ import {
   MatSnackBarModule,
   MatToolbarModule,
   MatSliderModule,
-  MatExpansionModule
+  MatExpansionModule, MatMenuModule
 } from '@angular/material';
 
 @NgModule({
@@ -43,7 +43,8 @@ import {
     MatSliderModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatMenuModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -64,7 +65,8 @@ import {
     MatSliderModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatMenuModule
   ],
   declarations: [],
   providers: [

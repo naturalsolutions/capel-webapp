@@ -24,6 +24,11 @@ const routes: Routes = [{
       path: 'dive',
       component: DiveComponent,
       canActivate: [AuthGuard]
+    }
+    , {
+      path: 'dive/:id',
+      component: DiveComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'dives',

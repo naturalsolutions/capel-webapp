@@ -1,18 +1,12 @@
-import {Component, OnInit, ViewEncapsulation, HostBinding} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, OnInit, ViewEncapsulation, HostBinding, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {NgRedux} from '@angular-redux/store';
-import {MatSnackBar} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import 'rxjs/add/operator/first';
 import * as _ from 'lodash';
 
-import {AppModel} from './models/app.model';
 import {AppActionsService} from './store/app/app-actions.service';
-import {AuthInterceptorService} from './services/auth-interceptor.service';
-import {SessionModule} from './models/session.module';
 import {UserService} from './services/user.service';
-import {config} from './settings';
-import {getNsPrefix} from '@angular/compiler';
 import {DiveService} from './services/dive.service';
 
 @Component({
@@ -39,6 +33,7 @@ export class AppComponent implements OnInit {
               private route: ActivatedRoute,
               private appActionsService: AppActionsService,
               private userService: UserService,
+              public dialog: MatDialog,
               private snackBar: MatSnackBar,
               private diveService: DiveService) {
   }
@@ -52,8 +47,10 @@ export class AppComponent implements OnInit {
 
     this.diveService.added$
       .subscribe(value => {
-        if (this.isConnected)
+        if (this.isConnected) {
           this.getDives();
+          console.log('called');
+        }
       });
 
     this.ngRedux.select('session')
@@ -63,7 +60,6 @@ export class AppComponent implements OnInit {
           this.getDives();
       });
 
-    //TODO
     this.router.events.subscribe(value => {
       this.pageNoSidenav = ['/login', '/register'].indexOf(this.router.routerState.snapshot.url) > -1;
       this.showSidenav = false;
@@ -71,24 +67,22 @@ export class AppComponent implements OnInit {
   }
 
   getDives() {
-    console.log('getDives');
     this.diveService.getDives().then(data => {
       this.dives = data;
       const obj: any = {};
-      this.droupeDives_2();
-      console.log(this.groupedDives);
+      this.groupeDives_optimal();
     }, error => {
       console.log(error);
     });
   }
 
-  droupeDives_1() {
-
+  groupeDives_naive() {
+    this.groupedDives = []
     for (const dive of this.dives) {
       let obj: any = {};
       obj.dives = [];
       let exists = this.groupedDives.find((groupedDive) => {
-        return dive.divingDate = groupedDive.divingDate;
+        return dive.divingDate == groupedDive.dive.divingDate;
       })
       if (exists)
         exists.dives.push(dive)
@@ -99,8 +93,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  droupeDives_2() {
-
+  groupeDives_optimal() {
+    this.groupedDives = []
     for (let i = 0; i < this.dives.length; i++) {
       console.log(i);
       let obj: any = {};
@@ -121,32 +115,54 @@ export class AppComponent implements OnInit {
       }
   }
 
-  /*
-  isSessionValid(session): boolean {
-    if (!_.get(session, 'token')) {
-      return false;
-    }
-    return true;
+  removeDive(dive: any) {
+    let dialogRef = this.dialog.open(DiveDeleteDialog, {
+      panelClass: 'dive-success',
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) {
+        this.diveService.delete(dive).then( data  => {
+          console.log(data);
+          this.dives = this.dives.filter(gpDive => {
+            return gpDive.id != dive.id;
+          });
+          this.groupeDives_optimal();
+        }, error => {
+          console.log(error);
+        })
+      }
+    })
+
+  }
+}
+@Component({
+  selector: 'dive-delete-dialog',
+  template: `
+    <h4>Suppression !</h4>
+    <mat-dialog-content>
+      voulez-vous vraiment supprimer la plongée selectionnée?
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="confirm()">
+        Confirmer
+      </button>
+      <button mat-raised-button mat-dialog-close color="warn" (click)="logout()">
+        Annuller
+      </button>
+    </mat-dialog-actions>`
+})
+export class DiveDeleteDialog {
+
+  constructor(public dialogRef: MatDialogRef<DiveDeleteDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-  start() {
-    this.ngRedux.select('session')
-      .first((session: any) => {
-        console.debug('start first', session);
-        if (!this.isSessionValid(session)) {
-          return false;
-        }
-        AuthInterceptorService.token = session.token;
-        return true;
-      })
-      .subscribe((session: any) => {
-        this.router.navigate(['/profile']);
-        this.ngRedux.select('session')
-          .subscribe((sessions: any) => {
-            if (!sessions) {
-              this.start();
-            }
-          });
-      });
-  } */
+  confirm() {
+    this.dialogRef.close(true);
+  }
+
+  logout() {
+    this.dialogRef.close(false);
+  }
 }

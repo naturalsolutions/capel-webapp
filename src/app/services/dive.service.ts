@@ -34,6 +34,15 @@ export class DiveService {
     return this.http.post<any>(config.serverURL + '/api/users/' + sessionState.profile.id + '/dives', data)
       .toPromise();
   }
+  delete(dive: any) {
+    console.log(dive);
+    return this.http.delete<any>(config.serverURL + '/api/users/dives/'+ dive.id, {})
+      .toPromise();
+  }
+  get(id: any) {
+    return this.http.get<any>(config.serverURL + '/api/users/dives/'+ id, {})
+      .toPromise();
+  }
   getCheckedPointHearts(data: any): Promise<any> {
     console.log(data);
     return this.http.post<any>(config.serverURL + '/api/users/divehearts/checkpoint', data)

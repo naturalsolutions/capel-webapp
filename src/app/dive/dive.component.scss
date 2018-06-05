@@ -1,5 +1,5 @@
 .page-form-dive {
-  
+
   mat-radio-group[name='referenced'] {
     text-transform: uppercase;
     font-weight: bolder;
@@ -29,7 +29,7 @@
   .form-group-sea-state {
     margin-bottom: 2rem;
   }
-  
+
   .form-group-visibility {
     .mat-radio-group {
       display: inline-block;
@@ -120,4 +120,7 @@ mat-chip {
   position: fixed;
   top: 80px;
   left: 0;
+}
+.weather img {
+  max-width: 100px;
 }
