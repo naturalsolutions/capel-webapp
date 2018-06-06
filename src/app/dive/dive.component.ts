@@ -184,6 +184,7 @@ export class DiveComponent implements OnInit {
       this.id = +params['id']; // (+) converts string 'id' to a number
       this.diveService.get(this.id).then(dive => {
         this.dive = dive;
+        console.log(this.dive);
         this.setDiveFrom();
       }, error => {
         console.log(error);
@@ -218,16 +219,23 @@ export class DiveComponent implements OnInit {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
     for (const divetype of this.initDiveType) {
       let exists: any = false;
-      if (this.dive)
-        exists = this.dive.typeDives.filter(
-          typedive => typedive.id == divetype.id);
-
+      let nbrDivers = 1;
+      if (this.dive) {
+        for ( const divetypedive of this.dive.divetypedives ) {
+          if ( divetypedive.typeDive.id === divetype.id ) {
+            exists = true;
+            nbrDivers = divetypedive.divers;
+          }
+        }
+      }
+      //exists = this.dive.divetypedives.filter(
+      //  divetypedive => divetypedive.typeDive.id == divetype.id);
       this.divetypes.push(new FormGroup({
         id: new FormControl(divetype.id),
         selected: new FormControl(exists != false ? true : false),
         name: new FormControl(divetype.name),
         nameMat: new FormControl(divetype.name),
-        nbrDivers: new FormControl(1),
+        nbrDivers: new FormControl(nbrDivers),
       }));
     }
   }

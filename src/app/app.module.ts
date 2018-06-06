@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import {AppComponent, DiveDeleteDialog} from './app.component';
 import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
+import { PermitComponent } from './permit/permit.component';
 import { RegisterComponent } from './register/register.component';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,12 +24,13 @@ import { DiveComponent, DiveSuccessDialog } from './dive/dive.component';
 import { BoatService } from './services/boat.service';
 import { DiveService } from './services/dive.service';
 
-import { RuleDialog } from './profile/profile.component';
+import { RuleDialog } from './permit/permit.component';
 import { DivesComponent } from './dives/dives.component';
 import { AppDialogsModule } from './app-dialogs/app-dialogs.module';
 
 
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import { ProfileComponent } from './profile/profile.component';
 
 registerLocaleData(localeFr);
 
@@ -37,7 +38,7 @@ registerLocaleData(localeFr);
   declarations: [
     AppComponent,
     LoginComponent,
-    ProfileComponent,
+    PermitComponent,
     RegisterComponent,
     BoatComponent,
     DiveComponent,
@@ -45,6 +46,7 @@ registerLocaleData(localeFr);
     DiveSuccessDialog,
     DiveDeleteDialog,
     DivesComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth-guard';
 import { InitGuard } from './services/init-guard';
 import {DiveComponent} from './dive/dive.component';
 import {DivesComponent} from './dives/dives.component';
+import {PermitComponent} from './permit/permit.component';
+import {ProfileComponent} from './profile/profile.component';
 const routes: Routes = [{
   path: '',
   canActivate: [InitGuard],
@@ -16,6 +17,10 @@ const routes: Routes = [{
   }, {
     path: 'register',
     component: RegisterComponent
+  }, {
+    path: 'permit',
+    component: PermitComponent,
+    canActivate: [AuthGuard]
   }, {
     path: 'profile',
     component: ProfileComponent,
