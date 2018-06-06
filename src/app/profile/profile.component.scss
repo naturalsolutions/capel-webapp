@@ -6,14 +6,23 @@ section{
   }
   span {
     display: block;
-    color: #ddfe00;
-    font-size: 12px;
-    text-transform: uppercase;
     font-weight: 600;
+    font-weight: normal;
+    color: #fff;
+    text-transform: lowercase;
+    font-size: 14px;
+  }
+  .caption{
+
   }
   h5{
     color: #ddfe00;
     font-size: 14px;
+    padding: 8px;
+    font-weight: normal;
+  }
+  a{
+    color: #ddfe00;
   }
 }
 section:before {

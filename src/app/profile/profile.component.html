@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col text-center">
       <h1>{{user.firstname}}  {{user.lastname}}</h1>
-      <span>Plongeur débutant</span>
+      <span class="caption">Plongeur débutant</span>
       <h5>{{user.email}}</h5>
       <h5>{{user.phone}}</h5>
       <h5>{{user.address}}</h5>
@@ -12,23 +12,23 @@
   </div>
   <div class="row text-center">
     <div class="col">
-      <h1>{{dives.length}}</h1>
+      <h1>{{ nbrDives }}</h1>
       <span>Plongées</span>
       <a href="#">tout les sites</a>
     </div>
     <div class="col">
-      <h1>{{dives.length/2}}</h1>
+      <h1>{{ nbrHoursInWater }}</h1>
       <span>Heures sous l'eau</span>
       <a href="#">tout les sites</a>
     </div>
     <div class="col">
-      <h1>{{dives.length/5}}</h1>
-      <span>site explorés</span>
+      <h1>{{ nbrDives/5 }}</h1>
+      <span>sites explorés</span>
       <a href="#">tout les sites</a>
     </div>
     <div class="col">
-      <h1>{{dives.length/5}}</h1>
-      <span>Plongée par mois</span>
+      <h1>{{ nbrDives/nbrDivesMonths | number}}</h1>
+      <span>Plongées par mois</span>
       <a href="#">tout les sites</a>
     </div>
   </div>
