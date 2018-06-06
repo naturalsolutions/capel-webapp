@@ -1,16 +1,35 @@
-<button mat-button disableRipple (click)="showRule()">
-  Demander l'autorisation de plongée dans les coeurs marins du parc national de Port-Cros
-  <div class="icon-wrapper">
-    <mat-icon>cloud_download</mat-icon>
+<section class="user-details">
+  <div class="row">
+    <div class="col text-center">
+      <h1>{{user.firstname}}  {{user.lastname}}</h1>
+      <span>Plongeur débutant</span>
+      <h5>{{user.email}}</h5>
+      <h5>{{user.phone}}</h5>
+      <h5>{{user.address}}</h5>
+      <h5>{{user.zip}}</h5>
+      <h5>{{user.country}}</h5>
+    </div>
   </div>
-</button>
-
-<div class="map-wrapper">
-  <h5>Localiser les aires</h5>
-  <div id="leafletmap" class="map"
-    leaflet
-    [leafletOptions]="leafletOptions"
-    (leafletMapReady)="onMapReady($event)"
-  >
+  <div class="row text-center">
+    <div class="col">
+      <h1>{{dives.length}}</h1>
+      <span>Plongées</span>
+      <a href="#">tout les sites</a>
+    </div>
+    <div class="col">
+      <h1>{{dives.length/2}}</h1>
+      <span>Heures sous l'eau</span>
+      <a href="#">tout les sites</a>
+    </div>
+    <div class="col">
+      <h1>{{dives.length/5}}</h1>
+      <span>site explorés</span>
+      <a href="#">tout les sites</a>
+    </div>
+    <div class="col">
+      <h1>{{dives.length/5}}</h1>
+      <span>Plongée par mois</span>
+      <a href="#">tout les sites</a>
+    </div>
   </div>
-</div>
+</section>
