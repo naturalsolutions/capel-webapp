@@ -96,7 +96,6 @@ export class AppComponent implements OnInit {
   groupeDives_optimal() {
     this.groupedDives = []
     for (let i = 0; i < this.dives.length; i++) {
-      console.log(i);
       let obj: any = {};
       obj.dives = [];
       obj.dive = this.dives[i];

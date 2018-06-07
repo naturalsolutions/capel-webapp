@@ -38,7 +38,7 @@ export class DiveComponent implements OnInit {
   diveForm: FormGroup;
   times: FormArray = new FormArray([]);
   divetypes: FormArray = new FormArray([]);
-  boats: any[] = [];
+  boatsWS: any[] = [];
   initDiveType: any[] = [];
   users: any[] = [];
   diveSites: any[] = [];
@@ -87,7 +87,7 @@ export class DiveComponent implements OnInit {
     this.profile = appState.session.profile;
     this.adapter.setLocale('fr');
     this.boatService.getBoats().then(data => {
-      this.boats = data;
+      this.boatsWS = data;
     }, error => {
       if (_.get(error, 'statusText') === 'UNAUTHORIZED') {
         this.snackBar.open('le Token est expiré', 'OK', {
@@ -98,6 +98,16 @@ export class DiveComponent implements OnInit {
     });
     this.userService.getUsers().then(users => {
       this.users = _.filter(users, {category: 'structure'});
+    });
+
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id']; // (+) converts string 'id' to a number
+      this.diveService.get(this.id).then(dive => {
+        this.dive = dive;
+        this.setDiveFrom();
+      }, error => {
+        console.log(error);
+      });
     });
 
   }
@@ -180,16 +190,6 @@ export class DiveComponent implements OnInit {
       }
     });
 
-    this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
-      this.diveService.get(this.id).then(dive => {
-        this.dive = dive;
-        console.log(this.dive);
-        this.setDiveFrom();
-      }, error => {
-        console.log(error);
-      });
-    });
   }
 
   setDiveFrom() {
@@ -197,6 +197,7 @@ export class DiveComponent implements OnInit {
     this.addTime(this.dive.times[0][0].substring(0, 5), this.dive.times[0][1].substring(0, 5));
     this.diveForm.controls['divingDate'].setValue(new Date(this.dive.divingDate));
     divesite_id = this.dive.dive_site.id;
+    this.diveForm.controls['boats'].setValue(this.dive.boats);
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + this.dive.dive_site.name);
     this.diveForm.controls['wind'].setValue(this.dive.weather.wind);
     this.diveForm.controls['water_temperature'].setValue(this.dive.weather.water_temperature);
@@ -206,6 +207,9 @@ export class DiveComponent implements OnInit {
     this.diveForm.controls['seaState'].setValue(this.dive.weather.seaState);
   }
 
+  compareBoat(boatN, boatO) {
+    return boatN.name === boatO.name;
+  }
   onClick(event) {
     divesite_id = event.target.options.divesite_id;
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + event.target.options.divesite_name);
@@ -266,7 +270,6 @@ export class DiveComponent implements OnInit {
   checkPoint(e) {
     divesite_id = null;
     this.diveService.getCheckedPointHearts(e.latlng).then(data => {
-      console.log(data);
     });
     this.diveForm.controls['latlng'].setValue(e.latlng);
   }
@@ -313,7 +316,6 @@ export class DiveComponent implements OnInit {
     let loading = this.dialog.open(LoadingDialogComponent, {
       disableClose: true
     });
-    console.log(data);
     this.diveService.save(data).then(response => {
       loading.close();
       this.diveService.added$.next(data);

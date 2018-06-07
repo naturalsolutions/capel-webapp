@@ -124,14 +124,14 @@
           </mat-chip-list>
         </div> -->
         <mat-form-field class="mat-form-field-lg">
-          <mat-select formControlName="boats" placeholder="Sélectionnez les bateaux" multiple>
+          <mat-select formControlName="boats" placeholder="Sélectionnez les bateaux" multiple [compareWith]="compareBoat">
             <!-- <mat-select-trigger *ngIf="boats.length > 1">
               {{diveForm.get('boats').value[0] ? diveForm.get('boats').value[0].name : ''}}
               <span *ngIf="diveForm.get('boats').value?.length > 1">
                 (+{{diveForm.get('boats').value.length - 1}})
               </span>
             </mat-select-trigger> -->
-            <mat-option *ngFor="let boat of boats" [value]="boat">
+            <mat-option *ngFor="let boat of boatsWS"  [value]="boat">
               {{ boat.name }} <small>{{boat.matriculation}}</small>
             </mat-option>
           </mat-select>

@@ -17,12 +17,12 @@
       <a href="#">tout les sites</a>
     </div>
     <div class="col">
-      <h1>{{ nbrHoursInWater }}</h1>
+      <h1>{{ nbrHoursInWater | number}}</h1>
       <span>Heures sous l'eau</span>
       <a href="#">tout les sites</a>
     </div>
     <div class="col">
-      <h1>{{ nbrDives/5 }}</h1>
+      <h1>{{ sites.length }}</h1>
       <span>sites explorés</span>
       <a href="#">tout les sites</a>
     </div>
@@ -30,6 +30,13 @@
       <h1>{{ nbrDives/nbrDivesMonths | number}}</h1>
       <span>Plongées par mois</span>
       <a href="#">tout les sites</a>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="row">
+    <div class="col-md-12">
+      <chart [options]="options"></chart>
     </div>
   </div>
 </section>

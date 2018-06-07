@@ -32,7 +32,10 @@ import { AppDialogsModule } from './app-dialogs/app-dialogs.module';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 import { ProfileComponent } from './profile/profile.component';
 
+import { ChartModule } from 'angular2-highcharts';
+
 registerLocaleData(localeFr);
+declare var require: any;
 
 @NgModule({
   declarations: [
@@ -60,7 +63,8 @@ registerLocaleData(localeFr);
     StoreModule,
     NgReduxModule,
     LeafletModule.forRoot(),
-    LeafletMarkerClusterModule.forRoot()
+    LeafletMarkerClusterModule.forRoot(),
+    ChartModule.forRoot(require('highcharts')),
   ],
   entryComponents: [
     RuleDialog,

@@ -25,7 +25,7 @@ section{
     color: #ddfe00;
   }
 }
-section:before {
+section.user-details:before {
   content: '';
   width: 100%;
   height: calc(50% - 80px);
@@ -35,5 +35,11 @@ section:before {
   top: 80px;
   left: 0;
 }
+chart {
+  width: 100% !important;
+  margin: 0 auto;
+  display: block;
+}
+
 
 
