@@ -9,6 +9,14 @@ export class DiveService {
 
   added$: BehaviorSubject<any>
 
+  currentSite: any;
+  setCurrentSite(site:any ) {
+    console.log(site);
+    this.currentSite = site;
+  }
+  getCurrentSite() {
+    return this.currentSite;
+  }
   constructor(
     private http: HttpClient,
     private ngRedux: NgRedux<any>
@@ -46,6 +54,11 @@ export class DiveService {
   getCheckedPointHearts(data: any): Promise<any> {
     console.log(data);
     return this.http.post<any>(config.serverURL + '/api/users/divehearts/checkpoint', data)
+      .toPromise();
+  }
+  saveSite(data: any): Promise<any> {
+
+    return this.http.post<any>(config.serverURL + '/api/users/divesite/save', data)
       .toPromise();
   }
   getDives(): Promise<any> {

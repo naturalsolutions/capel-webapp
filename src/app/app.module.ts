@@ -20,7 +20,7 @@ import { StoreModule } from './models/store.module';
 import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
-import { DiveComponent, DiveSuccessDialog } from './dive/dive.component';
+import {DiveAddNewSiteDialog, DiveComponent, DiveNotAllowedDialog, DiveSuccessDialog} from './dive/dive.component';
 import { BoatService } from './services/boat.service';
 import { DiveService } from './services/dive.service';
 
@@ -35,7 +35,16 @@ import { ProfileComponent } from './profile/profile.component';
 import { ChartModule } from 'angular2-highcharts';
 
 registerLocaleData(localeFr);
+import {HighchartsStatic} from 'angular2-highcharts/dist/HighchartsService';
+
 declare var require: any;
+export function highchartsFactory() {
+  const hc = require('highcharts/highstock');
+  const dd = require('highcharts/modules/exporting');
+  dd(hc);
+  return hc;
+}
+
 
 @NgModule({
   declarations: [
@@ -47,9 +56,11 @@ declare var require: any;
     DiveComponent,
     RuleDialog,
     DiveSuccessDialog,
+    DiveNotAllowedDialog,
     DiveDeleteDialog,
     DivesComponent,
     ProfileComponent,
+    DiveAddNewSiteDialog
   ],
   imports: [
     BrowserModule,
@@ -64,12 +75,14 @@ declare var require: any;
     NgReduxModule,
     LeafletModule.forRoot(),
     LeafletMarkerClusterModule.forRoot(),
-    ChartModule.forRoot(require('highcharts')),
+    ChartModule,
   ],
   entryComponents: [
     RuleDialog,
     DiveSuccessDialog,
-    DiveDeleteDialog
+    DiveDeleteDialog,
+    DiveNotAllowedDialog,
+    DiveAddNewSiteDialog
   ],
   providers: [
     InitGuard,
@@ -77,6 +90,11 @@ declare var require: any;
     UserService,
     BoatService,
     DiveService,
+    {
+    provide: HighchartsStatic,
+    useFactory: highchartsFactory
+    }
+    ,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
