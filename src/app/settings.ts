@@ -1,7 +1,7 @@
 export var config = {
   //'serverURL' : 'http://149.202.44.29/capel',
-  'serverURL' : 'http://127.0.0.1:5000',
-  //'serverURL': 'https://capel-staging.herokuapp.com',
+  //'serverURL' : 'http://127.0.0.1:5000',
+  'serverURL': 'https://capel-staging.herokuapp.com',
   'appName' : 'capel',
   'appVersion': '1.0',
   'countries': {
@@ -33,8 +33,8 @@ export var config = {
     'MK':'Mac\u00e9doine','MG':'Madagascar','MY':'Malaisie','MW':'Malawi','MV':'Maldives','ML':'Mali','MT':'Malte',
     'MA':'Maroc','MQ':'Martinique','MU':'Maurice','MR':'Mauritanie','YT':'Mayotte','MX':'Mexique','MD':'Moldavie',
     'MC':'Monaco','MN':'Mongolie','ME':'Mont\u00e9n\u00e9gro','MS':'Montserrat','MZ':'Mozambique','MM':'Myanmar (Birmanie)',
-    'NA':'Namibie','UN':'Nations Unies','NR':'Nauru','NP':'N\u00e9pal','NI':'Nicaragua','NE':'Niger','NG':'Nig\u00e9ria','NU':
-     'Niue','NO':'Norv\u00e8ge','NC':'Nouvelle-Cal\u00e9donie','NZ':'Nouvelle-Z\u00e9lande','OM':'Oman','UG':'Ouganda',
+    'NA':'Namibie','UN':'Nations Unies','NR':'Nauru','NP':'N\u00e9pal','NI':'Nicaragua','NE':'Niger','NG':'Nig\u00e9ria','NU': 'Niue',
+    'NO':'Norv\u00e8ge','NC':'Nouvelle-Cal\u00e9donie','NZ':'Nouvelle-Z\u00e9lande','OM':'Oman','UG':'Ouganda',
     'UZ':'Ouzb\u00e9kistan','PK':'Pakistan','PW':'Palaos','PA':'Panama','PG':'Papouasie-Nouvelle-Guin\u00e9e',
     'PY':'Paraguay','NL':'Pays-Bas','BQ':'Pays-Bas carib\u00e9ens','PE':'P\u00e9rou','PH':'Philippines','PL':'Pologne',
     'PF':'Polyn\u00e9sie fran\u00e7aise','PR':'Porto Rico','PT':'Portugal','QA':'Qatar','HK':'R.A.S. chinoise de Hong Kong',

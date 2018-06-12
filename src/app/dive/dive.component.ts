@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation, Inject} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, Inject, NgZone} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar, MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
@@ -66,6 +66,14 @@ export class DiveComponent implements OnInit {
     shadowAnchor: [4, 62],  // the same for the shadow
     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
   });
+  iconUser = L.icon({
+    iconUrl: 'assets/icon-marker-user.png',
+    iconSize: [38, 95], // size of the icon
+    shadowSize: [50, 64], // size of the shadow
+    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+  });
   profile: any;
 
   //Dive edit
@@ -81,7 +89,8 @@ export class DiveComponent implements OnInit {
               private router: Router,
               public dialog: MatDialog,
               private ngRedux: NgRedux<any>,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private zone: NgZone) {
 
     const appState = this.ngRedux.getState();
     this.profile = appState.session.profile;
@@ -102,6 +111,7 @@ export class DiveComponent implements OnInit {
 
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
+      if( this.id )
       this.diveService.get(this.id).then(dive => {
         this.dive = dive;
         this.setDiveFrom();
@@ -120,12 +130,12 @@ export class DiveComponent implements OnInit {
       times: new FormArray([]),
       divetypes: new FormArray([]),
       boats: new FormControl([]),
-      wind: new FormControl(''),
+      wind: new FormControl(null),
       water_temperature: new FormControl(null),
       wind_temperature: new FormControl(null),
       visibility: new FormControl(null),
       sky: new FormControl(null),
-      seaState: new FormControl(''),
+      seaState: new FormControl(null),
       structure: new FormControl(),
       isWithStructure: new FormControl(''),
       latlng: new FormControl('')
@@ -152,10 +162,9 @@ export class DiveComponent implements OnInit {
       this.diveSites = data;
       const listMarker: any[] = [];
       for (const diveSite of this.diveSites) {
-
-        const marker = L.marker([diveSite.longitude, diveSite.latitude], {
+        const marker = L.marker([diveSite.latitude, diveSite.longitude], {
           title: diveSite.name,
-          icon: this.icon,
+          icon: diveSite.privacy == 'public' ? this.iconUser : this.icon,
           radius: 20,
           divesite_id: diveSite.id,
           divesite_name: diveSite.name,
@@ -200,11 +209,11 @@ export class DiveComponent implements OnInit {
     this.diveForm.controls['boats'].setValue(this.dive.boats);
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + this.dive.dive_site.name);
     this.diveForm.controls['wind'].setValue(this.dive.weather.wind);
-    this.diveForm.controls['water_temperature'].setValue(this.dive.weather.water_temperature);
-    this.diveForm.controls['wind_temperature'].setValue(this.dive.weather.wind_temperature);
-    this.diveForm.controls['visibility'].setValue('' + this.dive.weather.visibility);
-    this.diveForm.controls['sky'].setValue(this.dive.weather.sky);
-    this.diveForm.controls['seaState'].setValue(this.dive.weather.seaState);
+    this.diveForm.controls['water_temperature'].setValue(this.dive.weather.water_temperature ? this.dive.weather.water_temperature : null);
+    this.diveForm.controls['wind_temperature'].setValue(this.dive.weather.wind_temperature ? this.dive.weather.wind_temperature : null);
+    this.diveForm.controls['visibility'].setValue( this.dive.weather.visibility ? '' + this.dive.weather.visibility : null);
+    this.diveForm.controls['sky'].setValue(this.dive.weather.sky ? this.dive.weather.sky : null);
+    this.diveForm.controls['seaState'].setValue(this.dive.weather.seaState ? this.dive.weather.seaState : null);
   }
 
   compareBoat(boatN, boatO) {
@@ -268,8 +277,45 @@ export class DiveComponent implements OnInit {
   }
 
   checkPoint(e) {
+    /*
     divesite_id = null;
-    this.diveService.getCheckedPointHearts(e.latlng).then(data => {
+    this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
+        if ( hearts.length ) {
+          this.zone.run(() => {
+            let dialogRef = this.dialog.open(DiveNotAllowedDialog, {
+              panelClass: 'dive-success',
+              data: {
+                hearts: hearts
+              }
+            });
+            dialogRef.afterClosed().subscribe(value => {
+              if (value) {
+                window.scrollTo(0, 0);
+              }
+            });
+          });
+        }else{
+
+        }
+
+
+    });*/
+    this.zone.run(() => {
+      let dialogRef = this.dialog.open(DiveAddNewSiteDialog, {
+        panelClass: 'dive-success',
+        height: '380px',
+        width: '420px',
+        data: {
+          site: e.latlng
+        }
+      });
+      dialogRef.afterClosed().subscribe(value => {
+
+          let site = this.diveService.getCurrentSite();
+          window.scrollTo(0, 0);
+          this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
+          divesite_id  = site.id;
+      });
     });
     this.diveForm.controls['latlng'].setValue(e.latlng);
   }
@@ -328,8 +374,7 @@ export class DiveComponent implements OnInit {
           this.reset();
           window.scrollTo(0, 0);
         } else {
-          this.userService.logout();
-          this.router.navigate(['/login']);
+          this.router.navigate(['/profile']);
         }
       });
     }, error => {
@@ -369,8 +414,8 @@ export class DiveComponent implements OnInit {
       <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
         Déclarer une nouvelle plongée
       </button>
-      <button mat-raised-button mat-dialog-close color="warn" (click)="logout()">
-        J'ai fini, je me déconnecte
+      <button mat-raised-button mat-dialog-close color="primary" (click)="logout()">
+        continuer ma navigation
       </button>
     </mat-dialog-actions>`
 })
@@ -385,6 +430,118 @@ export class DiveSuccessDialog {
   }
 
   logout() {
+    this.dialogRef.close(false);
+  }
+}
+
+
+@Component({
+  selector: 'dive-not-allowed-dialog',
+  template: `
+    <h4>Attention !</h4>
+    <mat-dialog-content>
+      Vous n'avez d'autorisation pour plonger sur ce site.<br/>
+      <ul>
+        <li *ngFor="let heart of data.hearts">
+          {{ heart.name }}
+        </li>
+      </ul>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="ok()">
+        Annuler
+      </button>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="cancel()">
+        Demander d'autorisation
+      </button>
+    </mat-dialog-actions>`
+})
+export class DiveNotAllowedDialog {
+  constructor(public dialogRef: MatDialogRef<DiveNotAllowedDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log(data);
+  }
+
+  ok() {
+    this.dialogRef.close(true);
+  }
+
+  cancel() {
+    this.dialogRef.close(false);
+  }
+}
+
+
+@Component({
+  selector: 'dive-add-newsite-dialog',
+  template: `
+    <h4>Ajouter un site de plongée !</h4>
+    <mat-dialog-content>
+      <form  class="register-form inscription" [formGroup]="siteForm">
+        <div class="row">
+          <div class="col-sm-12">
+            <mat-form-field class="mat-form-field-lg full-width" >
+              <mat-select placeholder="visibilité du site" formControlName="privacy">
+                <mat-option  value="private">
+                  Privé
+                </mat-option>
+                <mat-option  value="public">
+                  Public
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12">
+            <mat-form-field class="full-width">
+              <input class="text-right" matInput placeholder="Nom de site" formControlName="name">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12">
+            <mat-form-field class="full-width">
+              <input class="text-right" matInput placeholder="latitude" disabled type="latitude" formControlName="latitude">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12">
+          <mat-form-field class="full-width">
+            <input class="text-right" matInput placeholder="longitude" disabled type="longitude" formControlName="longitude">
+          </mat-form-field>
+          </div>
+        </div>  
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="cancel()">
+        Annuler
+      </button>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="envoyer()">
+        Envoyer
+      </button>
+    </mat-dialog-actions>`,
+  styles: ['.full-width{ width: 100% }']
+})
+export class DiveAddNewSiteDialog {
+  siteForm: FormGroup;
+  constructor(public dialogRef: MatDialogRef<DiveAddNewSiteDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: any, public diveService: DiveService) {
+    this.siteForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      privacy: new FormControl('', Validators.required),
+      latitude: new FormControl(data.site.lat),
+      longitude: new FormControl(data.site.lng),
+      category: new FormControl('site')
+    });
+  }
+
+  envoyer() {
+    const data = this.siteForm.getRawValue();
+    this.diveService.saveSite(data).then(site => {
+      this.diveService.setCurrentSite(site);
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  cancel() {
     this.dialogRef.close(false);
   }
 }
