@@ -46,7 +46,7 @@
           <span>SITE DE PLONGÉE </span>
         </mat-toolbar>
         <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('latlng').invalid}">
-          <h5 class="form-group-title with-required">Cliquez sur la carte pour définir votre lieu de plongé.</h5>
+          <h5 class="form-group-title with-required">Cliquez sur la carte pour définir votre lieu de plongée.</h5>
           <input matInput value=""  formControlName="latlng" />
           <div id="leafletmap" style="height: 400px;"
                 leaflet
@@ -142,7 +142,7 @@
           <span>CONDITION CLIMATIQUES </span>
         </mat-toolbar>
         <div>
-          <h5 class="form-group-title">Vent <small>(Beaufort)</small></h5>
+          <h5 class="form-group-title">Vent <small>(Beaufort) 0: par défaut</small></h5>
           <mat-slider
             class="full-width"
             [max]="12"

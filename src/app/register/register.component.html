@@ -49,9 +49,9 @@
               <input matInput type="text" placeholder="Prénom" formControlName="firstname" required>
             </mat-form-field>
           </div>
-          <div class="col-sm-12">
+          <div class="col-sm-12" *ngIf="category.value == 'structure'">
             <mat-form-field floatLabel="auto" class="full-width">
-              <input matInput type="text" placeholder="Site Web" formControlName="website" required>
+              <input matInput type="text" placeholder="Site Web" formControlName="website">
             </mat-form-field>
           </div>
           <div class="col-sm-12">

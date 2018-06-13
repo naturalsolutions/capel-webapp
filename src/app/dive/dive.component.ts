@@ -60,19 +60,15 @@ export class DiveComponent implements OnInit {
 
   icon = L.icon({
     iconUrl: 'assets/icon-marker.png',
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    iconSize: [38, 51], // size of the icon
+    iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
   });
   iconUser = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    iconSize: [34, 50], // size of the icon
+    iconAnchor: [17, 50],
+    popupAnchor: [0, -50]
   });
   profile: any;
 
@@ -283,7 +279,6 @@ export class DiveComponent implements OnInit {
         if ( hearts.length ) {
           this.zone.run(() => {
             let dialogRef = this.dialog.open(DiveNotAllowedDialog, {
-              panelClass: 'dive-success',
               data: {
                 hearts: hearts
               }
@@ -302,9 +297,7 @@ export class DiveComponent implements OnInit {
     });*/
     this.zone.run(() => {
       let dialogRef = this.dialog.open(DiveAddNewSiteDialog, {
-        panelClass: 'dive-success',
-        height: '380px',
-        width: '420px',
+        width: '500px',
         data: {
           site: e.latlng
         }
@@ -315,6 +308,20 @@ export class DiveComponent implements OnInit {
           window.scrollTo(0, 0);
           this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
           divesite_id  = site.id;
+        this.snackBar.open('Votre site '+ site.name + ' est bien crée.', 'OK', {
+          duration: 3000
+        });
+          /*
+          const marker = L.marker([site.lati, site.latitude], {
+            title: site.name,
+            icon: this.iconUser,
+            radius: 20,
+            divesite_id: site.id,
+            divesite_name: site.name,
+
+          });
+          L.marker(marker).addTo(this.map);
+          */
       });
     });
     this.diveForm.controls['latlng'].setValue(e.latlng);
@@ -366,7 +373,6 @@ export class DiveComponent implements OnInit {
       loading.close();
       this.diveService.added$.next(data);
       let dialogRef = this.dialog.open(DiveSuccessDialog, {
-        panelClass: 'dive-success',
         disableClose: true
       });
       dialogRef.afterClosed().subscribe(value => {
@@ -405,7 +411,7 @@ export class DiveComponent implements OnInit {
 @Component({
   selector: 'dive-success-dialog',
   template: `
-    <h4>Félicitation !</h4>
+    <h4>Félicitations !</h4>
     <mat-dialog-content>
       Votre plongée est bien déclarée.<br/>
       Que voulez-vous faire maintenant ?

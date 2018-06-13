@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
       zip: new FormControl('', Validators.required),
-      country: new FormControl('', Validators.required),
+      country: new FormControl('FR', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])

@@ -33,10 +33,21 @@ app-root {
     width: auto;
     display: block;
   }
+  header h2 {
+    height: 100%;
+    margin-left: 150px;
+    padding: 0;
+    position: absolute;
+  }
+  header h2 img {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
   header nav {
     height: 80px;
   }
-  
+
   main {
     >*:last-child {
       display: block;
