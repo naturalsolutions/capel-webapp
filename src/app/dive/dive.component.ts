@@ -60,19 +60,15 @@ export class DiveComponent implements OnInit {
 
   icon = L.icon({
     iconUrl: 'assets/icon-marker.png',
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    iconSize: [38, 51], // size of the icon
+    iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
   });
   iconUser = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
-    iconSize: [38, 95], // size of the icon
-    shadowSize: [50, 64], // size of the shadow
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    iconSize: [34, 50], // size of the icon
+    iconAnchor: [17, 50],
+    popupAnchor: [0, -50]
   });
   profile: any;
 
