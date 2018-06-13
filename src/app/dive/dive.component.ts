@@ -303,8 +303,8 @@ export class DiveComponent implements OnInit {
     this.zone.run(() => {
       let dialogRef = this.dialog.open(DiveAddNewSiteDialog, {
         panelClass: 'dive-success',
-        height: '380px',
-        width: '420px',
+        height: '400px',
+        width: '440px',
         data: {
           site: e.latlng
         }
@@ -315,6 +315,20 @@ export class DiveComponent implements OnInit {
           window.scrollTo(0, 0);
           this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
           divesite_id  = site.id;
+        this.snackBar.open('Votre site '+ site.name + ' est bien crée.', 'OK', {
+          duration: 3000
+        });
+          /*
+          const marker = L.marker([site.lati, site.latitude], {
+            title: site.name,
+            icon: this.iconUser,
+            radius: 20,
+            divesite_id: site.id,
+            divesite_name: site.name,
+
+          });
+          L.marker(marker).addTo(this.map);
+          */
       });
     });
     this.diveForm.controls['latlng'].setValue(e.latlng);
@@ -405,7 +419,7 @@ export class DiveComponent implements OnInit {
 @Component({
   selector: 'dive-success-dialog',
   template: `
-    <h4>Félicitation !</h4>
+    <h4>Félicitations !</h4>
     <mat-dialog-content>
       Votre plongée est bien déclarée.<br/>
       Que voulez-vous faire maintenant ?

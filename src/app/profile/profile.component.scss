@@ -35,6 +35,16 @@ section.user-details:before {
   top: 80px;
   left: 0;
 }
+@media screen and (max-width: 767px) {
+  section.user-details:before {
+    height: calc(90%);
+    background:  url('../../assets/images/fond-profil.jpg') no-repeat;
+    top: 0px;
+  }
+  a.all-site{
+    display: none;
+  }
+}
 chart {
   width: 100% !important;
   margin: 0 auto;
