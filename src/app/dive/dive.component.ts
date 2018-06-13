@@ -297,8 +297,7 @@ export class DiveComponent implements OnInit {
     });*/
     this.zone.run(() => {
       let dialogRef = this.dialog.open(DiveAddNewSiteDialog, {
-        /* height: '400px',
-        width: '440px', */
+        width: '500px',
         data: {
           site: e.latlng
         }
