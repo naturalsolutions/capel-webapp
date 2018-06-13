@@ -61,10 +61,13 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-panel-description *ngFor="let timeElem of diveDisplay.dive.times">
-          {{diveDisplay.dive.dive_site.name}}  - {{timeElem[0] | slice:0:5}}
+          <span class="label">
+            <span class="d-block text-truncate">{{diveDisplay.dive.dive_site.name}}</span> 
+            <span class="d-block">{{timeElem[0] | slice:0:5}}</span>
+          </span>
           <a mat-icon-button color="warn" class="btn-remove" (click)="removeDive(diveDisplay.dive)">
-          <mat-icon>close</mat-icon>
-        </a>
+            <mat-icon>close</mat-icon>
+          </a>
           <a mat-icon-button color="green" class="btn-remove" [routerLink]="['/dive', {id: diveDisplay.dive.id  }]">
             <mat-icon>file_copy</mat-icon>
           </a>

@@ -137,10 +137,15 @@ app-root {
         box-shadow: none;
         border-bottom: 1px solid #999;
         .mat-expansion-panel-body {
-          padding-bottom: 0;
+          padding: 0;
           .mat-expansion-panel-header-description {
+            margin-right: 0;
             padding: 10px;
             color: #FFF;
+          }
+          .label {
+            overflow: hidden;
+            flex: 1;
           }
         }
         &.mat-expanded {
