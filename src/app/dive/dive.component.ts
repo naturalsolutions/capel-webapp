@@ -279,7 +279,6 @@ export class DiveComponent implements OnInit {
         if ( hearts.length ) {
           this.zone.run(() => {
             let dialogRef = this.dialog.open(DiveNotAllowedDialog, {
-              panelClass: 'dive-success',
               data: {
                 hearts: hearts
               }
@@ -298,9 +297,8 @@ export class DiveComponent implements OnInit {
     });*/
     this.zone.run(() => {
       let dialogRef = this.dialog.open(DiveAddNewSiteDialog, {
-        panelClass: 'dive-success',
-        height: '400px',
-        width: '440px',
+        /* height: '400px',
+        width: '440px', */
         data: {
           site: e.latlng
         }
@@ -376,7 +374,6 @@ export class DiveComponent implements OnInit {
       loading.close();
       this.diveService.added$.next(data);
       let dialogRef = this.dialog.open(DiveSuccessDialog, {
-        panelClass: 'dive-success',
         disableClose: true
       });
       dialogRef.afterClosed().subscribe(value => {

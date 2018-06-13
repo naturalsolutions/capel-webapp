@@ -116,7 +116,6 @@ export class AppComponent implements OnInit {
 
   removeDive(dive: any) {
     let dialogRef = this.dialog.open(DiveDeleteDialog, {
-      panelClass: 'dive-success',
       disableClose: true
     });
     dialogRef.afterClosed().subscribe(value => {
