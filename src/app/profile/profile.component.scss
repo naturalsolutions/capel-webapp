@@ -1,55 +1,46 @@
-
-section{
-  padding:50px 20px;
-  h1, h4, h5, span{
-    color:#fff;
+app-profile {
+  section{
+    padding:50px 20px;
+    &.user-details {
+      background:  url('../../assets/images/fond-profil.jpg') no-repeat;
+      background-size: cover;
+    }
+    h1, h4, h5, span{
+      color:#fff;
+    }
+    span {
+      display: block;
+      font-weight: 600;
+      font-weight: normal;
+      color: #fff;
+      text-transform: lowercase;
+      font-size: 14px;
+    }
+    h5{
+      color: #ddfe00;
+      font-size: 14px;
+      padding: 8px;
+      font-weight: normal;
+    }
+    a{
+      color: #ddfe00;
+    }
   }
-  span {
+
+  @media screen and (max-width: 767px) {
+    /* section.user-details:before {
+      height: calc(90%);
+      background:  url('../../assets/images/fond-profil.jpg') no-repeat;
+      top: 0px;
+    } */
+    a.all-site{
+      display: none;
+    }
+  }
+
+  chart {
+    width: 100% !important;
+    margin: 0 auto;
     display: block;
-    font-weight: 600;
-    font-weight: normal;
-    color: #fff;
-    text-transform: lowercase;
-    font-size: 14px;
-  }
-  .caption{
-
-  }
-  h5{
-    color: #ddfe00;
-    font-size: 14px;
-    padding: 8px;
-    font-weight: normal;
-  }
-  a{
-    color: #ddfe00;
-  }
+  }  
 }
-section.user-details:before {
-  content: '';
-  width: 100%;
-  height: calc(50% - 80px);
-  background-size: cover;
-  background: url('../../assets/images/fond-profil.jpg') no-repeat;
-  position: fixed;
-  top: 80px;
-  left: 0;
-}
-@media screen and (max-width: 767px) {
-  section.user-details:before {
-    height: calc(90%);
-    background:  url('../../assets/images/fond-profil.jpg') no-repeat;
-    top: 0px;
-  }
-  a.all-site{
-    display: none;
-  }
-}
-chart {
-  width: 100% !important;
-  margin: 0 auto;
-  display: block;
-}
-
-
-

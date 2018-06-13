@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {DiveService} from '../services/dive.service';
 import {NgRedux} from '@angular-redux/store';
 import {months} from 'moment';
@@ -6,7 +6,8 @@ import {months} from 'moment';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit {
   user: any;
