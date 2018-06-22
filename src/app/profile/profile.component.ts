@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {DiveService} from '../services/dive.service';
-import {NgRedux} from '@angular-redux/store';
-import {months} from 'moment';
+import { DiveService } from '../services/dive.service';
+import { NgRedux } from '@angular-redux/store';
+import { months } from 'moment';
+import { config } from '../settings';
 
 @Component({
   selector: 'app-profile',
@@ -18,8 +19,9 @@ export class ProfileComponent implements OnInit {
   nbrDives: any = 0;
   options: any;
   sites: any[] = [];
+  countries = config.countries;
   constructor(private diveService: DiveService,
-              private ngRedux: NgRedux<any>) {
+    private ngRedux: NgRedux<any>) {
 
     this.diveService.getDives().then(data => {
       this.dives = data;
@@ -39,7 +41,7 @@ export class ProfileComponent implements OnInit {
         this.getNbrDive(10),
         this.getNbrDive(11)
       ];
-      this.options =  {
+      this.options = {
         chart: {
           type: 'areaspline'
         },
@@ -100,9 +102,9 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  getNbrDive( month ) {
+  getNbrDive(month) {
     let nbr = 0;
-    for ( const dive of this.dives ) {
+    for (const dive of this.dives) {
       if (new Date(dive.divingDate).getMonth() === month)
         nbr++;
     }
@@ -112,16 +114,16 @@ export class ProfileComponent implements OnInit {
 
   getNbrHoursInWaterAndNbrMonth() {
     let oldDive: any;
-    for ( const dive of this.dives) {
+    for (const dive of this.dives) {
       this.calculateTimeInwater(dive.times[0][0].split(':'), dive.times[0][1].split(':'))
-      if ( ! oldDive ) {
+      if (!oldDive) {
         this.nbrDivesMonths++;
         oldDive = dive;
-      }else {
+      } else {
 
-        if ( new Date(dive.divingDate).getMonth() === new Date(oldDive.divingDate).getMonth() ) {
+        if (new Date(dive.divingDate).getMonth() === new Date(oldDive.divingDate).getMonth()) {
           oldDive = dive;
-        }else {
+        } else {
           this.nbrDivesMonths++;
           oldDive = dive;
         }
@@ -131,22 +133,22 @@ export class ProfileComponent implements OnInit {
 
   getExploredSite() {
 
-    for( const dive of this.dives) {
+    for (const dive of this.dives) {
       let exists = false;
-       for ( let site of this.sites )
-         if( site.id === dive.dive_site.id )
-            exists = true;
-       if (!exists)
+      for (let site of this.sites)
+        if (site.id === dive.dive_site.id)
+          exists = true;
+      if (!exists)
         this.sites.push(dive.dive_site);
     }
 
   }
 
-  calculateTimeInwater( startTime, endTime ) {
+  calculateTimeInwater(startTime, endTime) {
     this.nbrHoursInWater += Math.abs(
       (
-        (( Number(endTime[0]) * 60 ) +  Number(endTime[1])) -
-        (( Number(startTime[0]) * 60 ) + Number(startTime[1]))
+        ((Number(endTime[0]) * 60) + Number(endTime[1])) -
+        ((Number(startTime[0]) * 60) + Number(startTime[1]))
       )
       / 60
     );

@@ -1,12 +1,12 @@
 <section class="user-details">
   <div class="row">
     <div class="col text-center">
-      <h1>{{user.firstname}} {{user.lastname}}</h1>
-      <h5>{{user.email}}</h5>
-      <h5>{{user.phone}}</h5>
-      <h5>{{user.address}}</h5>
-      <h5>{{user.zip}}</h5>
-      <h5>{{user.country}}</h5>
+      <h1>{{ user.firstname}} {{ user.lastname }}</h1>
+      <h5>{{ user.email }}</h5>
+      <h5>{{ user.phone }}</h5>
+      <h5>{{ user.address }}</h5>
+      <h5>{{ user.zip }} {{ user.city }}</h5>
+      <h5>{{ countries[user.country] }}</h5>
     </div>
   </div>
   <div class="row text-center">
