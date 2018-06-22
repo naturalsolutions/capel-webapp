@@ -30,12 +30,13 @@ import { AppDialogsModule } from './app-dialogs/app-dialogs.module';
 
 
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent, ProfileFormDialogComponent } from './profile/profile.component';
 
 import { ChartModule } from 'angular2-highcharts';
 
 registerLocaleData(localeFr);
 import {HighchartsStatic} from 'angular2-highcharts/dist/HighchartsService';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -60,7 +61,9 @@ export function highchartsFactory() {
     DiveDeleteDialog,
     DivesComponent,
     ProfileComponent,
-    DiveAddNewSiteDialog
+    DiveAddNewSiteDialog,
+    ProfileFormComponent,
+    ProfileFormDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +85,9 @@ export function highchartsFactory() {
     DiveSuccessDialog,
     DiveDeleteDialog,
     DiveNotAllowedDialog,
-    DiveAddNewSiteDialog
+    DiveAddNewSiteDialog,
+    ProfileFormComponent,
+    ProfileFormDialogComponent
   ],
   providers: [
     InitGuard,

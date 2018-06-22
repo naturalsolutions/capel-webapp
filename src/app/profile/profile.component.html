@@ -1,6 +1,9 @@
 <section class="user-details">
-  <div class="row">
-    <div class="col text-center">
+  <div class="row justify-content-center">
+    <div class="text-center position-relative px-5">
+      <button mat-mini-fab class="position-absolute btn-edit" (click)="openProfileForm()">
+        <mat-icon>edit</mat-icon>
+      </button>
       <h1>{{ user.firstname}} {{ user.lastname }}</h1>
       <h5>{{ user.email }}</h5>
       <h5>{{ user.phone }}</h5>

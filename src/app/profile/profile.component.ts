@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { DiveService } from '../services/dive.service';
 import { NgRedux } from '@angular-redux/store';
 import { months } from 'moment';
 import { config } from '../settings';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,8 @@ export class ProfileComponent implements OnInit {
   sites: any[] = [];
   countries = config.countries;
   constructor(private diveService: DiveService,
-    private ngRedux: NgRedux<any>) {
+    private ngRedux: NgRedux<any>,
+    private dialog: MatDialog) {
 
     this.diveService.getDives().then(data => {
       this.dives = data;
@@ -154,4 +156,21 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  openProfileForm(): void {
+    this.dialog.open(ProfileFormDialogComponent, {
+      width: '480px',
+      data: { user: this.user }
+    });
+  }
+
+}
+
+@Component({
+  selector: 'app-profile-form-dialog-component',
+  template: `<mat-dialog-content><app-profile-form [method]="patch"></app-profile-form></mat-dialog-content>`
+})
+export class ProfileFormDialogComponent {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 }

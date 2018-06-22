@@ -1,0 +1,51 @@
+app-profile-form {
+  .boats {
+    .mat-toolbar {
+      margin-bottom: 0;
+    }
+  }
+  .boat {
+    position: relative;
+    .btn-remove {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      transform: translateX(-100%);
+    }
+  }
+  .form-actions {
+    position: relative;
+    margin-top: 40px;
+    .btn {
+      position: absolute;
+      transform: translateX(-50%);
+    }
+  }
+  .complete {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+  }
+  /* .align-items {
+        padding: 40px 10px 10px 20px;
+      } */
+  .full-width {
+    width: 100%;
+  }
+  /* @media (max-width: 768px) {
+        .align-items {
+          padding: 10px 10px 10px 10px;
+        }
+        .order-mobile{-webkit-box-ordinal-group:0;-ms-flex-order:-1;order:-1}
+    
+      } */
+  p {
+    display: block;
+    font-size: 34%;
+    color: #ddfe00;
+    text-transform: none;
+    margin-top: -5px;
+  }
+}

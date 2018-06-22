@@ -47,6 +47,11 @@ export class UserService {
       .toPromise();
   }
 
+  patch(data: any): Promise<any> {
+    return this.http.patch<any>(config.serverURL + '/api/users', data)
+      .toPromise();
+  }
+
   private extractData(res: Response) {
     return res || {};
   }
