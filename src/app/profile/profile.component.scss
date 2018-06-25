@@ -4,20 +4,8 @@ app-profile {
   }
   section{
     padding:50px 20px;
-    &.user-details {
-      background:  url('../../assets/images/fond-profil.jpg') no-repeat;
-      background-size: cover;
-    }
-    h1, h4, h5, span{
+    h1, h4, h5, span, li{
       color:#fff;
-    }
-    span {
-      display: block;
-      font-weight: 600;
-      font-weight: normal;
-      color: #fff;
-      text-transform: lowercase;
-      font-size: 14px;
     }
     h5{
       color: #ddfe00;
@@ -27,6 +15,40 @@ app-profile {
     }
     a{
       color: #ddfe00;
+    }
+    &.user-details {
+      background:  url('../../assets/images/fond-profil.jpg') no-repeat;
+      background-size: cover;
+      .boats {
+        font-size: 12px;
+        font-weight: 600;
+        ul {
+          margin-left: 5px;
+        }
+        li:not(:last-child) {
+          &::after {
+            content: " - ";
+          }
+        }
+        .delta {
+          margin-left: 5px;
+          font-weight: 600;
+          font-style: italic;
+        }
+      }
+      .list-boats {
+        display: inline-block;
+      }
+    }
+    &.kpis {
+      span {
+        display: block;
+        font-weight: 600;
+        font-weight: normal;
+        color: #fff;
+        text-transform: lowercase;
+        font-size: 14px;
+      }
     }
   }
 

@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 export class SessionModule {
 
   token: string;
+  profile:any;
   user: UserModule;
   appVersion: string;
   nbAddedDives: number;

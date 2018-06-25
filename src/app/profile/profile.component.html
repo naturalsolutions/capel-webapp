@@ -10,9 +10,16 @@
       <h5>{{ user.address }}</h5>
       <h5>{{ user.zip }} {{ user.city }}</h5>
       <h5>{{ countries[user.country] }}</h5>
+      <div class="boats" *ngIf="displayBoats.boats.length">
+        <span class="text-uppercase">Vos bateaux :</span>
+        <ul class="list-inline list-boats">
+          <li class="list-inline-item" *ngFor="let boat of displayBoats.boats">{{ boat.name }}</li>
+        </ul>
+        <span class="delta" *ngIf="displayBoats.delta">+{{ displayBoats.delta }}</span>
+      </div>
     </div>
   </div>
-  <div class="row text-center">
+  <div class="row text-center kpis">
     <div class="col">
       <h1>{{ nbrDives }}</h1>
       <span>Plongées</span>
@@ -29,7 +36,7 @@
       <a class="all-site" href="#">tous les sites</a>
     </div>
     <div class="col">
-      <h1>{{ nbrDives/nbrDivesMonths | number}}</h1>
+      <h1>{{ (nbrDives/nbrDivesMonths | number) || 0}}</h1>
       <span>Plongées par mois</span>
       <a class="all-site" href="#">tous les sites</a>
     </div>

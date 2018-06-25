@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { config } from '../settings';
@@ -16,6 +16,9 @@ export class ProfileFormComponent implements OnInit {
 
   @Input()
   method: string;
+  
+  @Output()
+  saved = new EventEmitter<any>();
 
   dataToPatch: any;
   userForm: FormGroup;
@@ -34,7 +37,6 @@ export class ProfileFormComponent implements OnInit {
 
   // component initialisation
   ngOnInit() {
-
     this.userForm = this.fb.group({
       category: new FormControl('particulier', Validators.required),
       firstname: new FormControl('', Validators.required),
@@ -65,22 +67,27 @@ export class ProfileFormComponent implements OnInit {
 
   fetch() {
     this.userService.getProfile()
-      .then(user => {
-        this.dataToPatch = user;
-        this.userForm.patchValue(user);
-        //TODO manage nested
-        this.boats = this.userForm.get('boats') as FormArray;
-        user.boats.forEach(boat => {
-          let fg: FormGroup = this.fb.group({
-            id: new FormControl(boat.id),
-            name: new FormControl(boat.name, Validators.required),
-            matriculation: new FormControl(boat.matriculation, Validators.required),
-          });
-          this.boats.push(fg);
-        });
+      .then(data => {
+        this.feed(data);
       }, error => {
         console.log(error);
       });
+  }
+
+  feed(data) {
+    this.dataToPatch = data;
+    this.userForm.patchValue(data);
+    //TODO manage nested
+    this.boats = this.userForm.get('boats') as FormArray;
+    this.boats.reset();
+    data.boats.forEach(boat => {
+      let fg: FormGroup = this.fb.group({
+        id: new FormControl(boat.id),
+        name: new FormControl(boat.name, Validators.required),
+        matriculation: new FormControl(boat.matriculation, Validators.required),
+      });
+      this.boats.push(fg);
+    });
   }
 
   // Confirm password validation
@@ -140,25 +147,26 @@ export class ProfileFormComponent implements OnInit {
       });
 
       delete formData.repeat;
-      
+
       console.log(formData);
 
-      let srvMethod:Promise<any> = this.method == 'post' ? this.userService.post(formData) : this.userService.post(formData);
-      
+      let srvMethod: Promise<any> = this.method == 'post' ? this.userService.post(formData) : this.userService.patchMe(formData);
+
       srvMethod.then(user => {
-          setTimeout(() => {
-            dialogRef.close();
-            this.status = 'complete';
-          }, 500);
-        }, error => {
-          if (_.get(error, 'error.error.name') == 'invalid_model')
-            this.snackBar.open("Cet email exite déjà", "OK", {
-              duration: 5000
-            });
-          setTimeout(() => {
-            dialogRef.close();
-          }, 500);
-        });
+        this.saved.emit(user);
+        setTimeout(() => {
+          dialogRef.close();
+          this.status = 'complete';
+        }, 500);
+      }, error => {
+        if (_.get(error, 'error.error.name') == 'invalid_model')
+          this.snackBar.open("Cet email exite déjà", "OK", {
+            duration: 5000
+          });
+        setTimeout(() => {
+          dialogRef.close();
+        }, 500);
+      });
     }
   }
 

@@ -3,7 +3,11 @@ import { DiveService } from '../services/dive.service';
 import { NgRedux } from '@angular-redux/store';
 import { months } from 'moment';
 import { config } from '../settings';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { SessionModule } from '../models/session.module';
+import { SessionActionsService } from '../store/session/session-actions.service';
+import { UserService } from '../services/user.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +16,11 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
   encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent implements OnInit {
-  user: any;
+  user: any = {};
+  displayBoats: any = {
+    boats: [],
+    delta: 0
+  };
   dives: any[];
   exploredSites: any = 0;
   nbrDivesMonths: any = 0;
@@ -23,7 +31,9 @@ export class ProfileComponent implements OnInit {
   countries = config.countries;
   constructor(private diveService: DiveService,
     private ngRedux: NgRedux<any>,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private userService: UserService
+  ) {
 
     this.diveService.getDives().then(data => {
       this.dives = data;
@@ -95,13 +105,33 @@ export class ProfileComponent implements OnInit {
       console.log(error);
     });
 
-    const appState = this.ngRedux.getState();
-    this.user = appState.session.profile;
+    /* const appState = this.ngRedux.getState();
+    //this.user = appState.session.profile;
+    this.ngRedux.select('session')
+      .subscribe((session:SessionModule) => {
+        this.user = session.profile;
+      }, error => {
 
+      }); */
   }
 
   ngOnInit() {
+    this.fetch();
+  }
 
+  fetch() {
+    this.userService.getProfile()
+      .then(data => {
+        this.feed(data);
+      }, error => {
+        console.log(error);
+      });
+  }
+
+  feed(data) {
+    this.user = data;
+    this.displayBoats.boats = _.take(data.boats, 2);
+    this.displayBoats.delta = data.boats.length - this.displayBoats.boats.length;
   }
 
   getNbrDive(month) {
@@ -160,17 +190,25 @@ export class ProfileComponent implements OnInit {
     this.dialog.open(ProfileFormDialogComponent, {
       width: '480px',
       data: { user: this.user }
-    });
+    }).afterClosed()
+      .subscribe(result => {
+        this.feed(result);
+      });
   }
 
 }
 
 @Component({
   selector: 'app-profile-form-dialog-component',
-  template: `<mat-dialog-content><app-profile-form [method]="patch"></app-profile-form></mat-dialog-content>`
+  template: `<mat-dialog-content><app-profile-form [method]="patch" (saved)="onSaved($event)"></app-profile-form></mat-dialog-content>`
 })
 export class ProfileFormDialogComponent {
   constructor(
+    public dialogRef: MatDialogRef<ProfileFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
+
+  onSaved(e) {
+    this.dialogRef.close(e);
+  }
 }
