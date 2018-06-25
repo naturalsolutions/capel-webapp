@@ -5,7 +5,6 @@ import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 import { config } from '../settings';
-import { NgRedux } from '@angular-redux/store';
 
 @Component({
   selector: 'app-register',
@@ -25,8 +24,7 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private userService: UserService,
-    private dialog: MatDialog,
-    private ngRedux: NgRedux<any>
+    private dialog: MatDialog
   ) {
 
   }
@@ -50,11 +48,6 @@ export class RegisterComponent implements OnInit {
       repeat: new FormControl('', [Validators.required, Validators.minLength(6)]),
       boats: this.fb.array([])
     }, { validator: this.passwordConfirming, updateOn: 'blur' });
-
-    const appState = this.ngRedux.getState();
-    //this.user = appState.session.profile;
-    console.log(appState.session.profile);
-    this.userForm.patchValue(appState.session.profile);
   }
   // Confirm password validation
   passwordConfirming(c: AbstractControl): { invalid: boolean } {
