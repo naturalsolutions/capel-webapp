@@ -122,12 +122,12 @@ export class ProfileFormComponent implements OnInit {
     } else {
       let formData: any = this.userForm.getRawValue();
       let boats = _.map(this.dataToPatch.boats, boat => {
-        let formBoat: any = _.find(formData.boats, formBoat => {
+        let formBoat: any = _.find(this.boats.getRawValue(), formBoat => {
           return formBoat.id == boat.id;
         });
         if (!formBoat)
           boat.status = 'removed';
-        return boat;
+        return formBoat;
       });
 
       let newBoats = _.filter(formData.boats, formBoat => {
@@ -136,7 +136,7 @@ export class ProfileFormComponent implements OnInit {
         delete formBoat.id;
         return true;
       });
-
+      console.log(this.boats.getRawValue())
       formData.boats = boats.concat(newBoats);
       formData.boats = _.filter(formData.boats, boat => {
         if (_.get(boat, 'name') && _.get(boat, 'matriculation'))
@@ -167,6 +167,7 @@ export class ProfileFormComponent implements OnInit {
           dialogRef.close();
         }, 500);
       });
+
     }
   }
 
