@@ -16,7 +16,7 @@ export class ProfileFormComponent implements OnInit {
 
   @Input()
   method: string;
-  
+
   @Output()
   saved = new EventEmitter<any>();
 
@@ -27,7 +27,7 @@ export class ProfileFormComponent implements OnInit {
   isSubmit: boolean;
   config = config;
   keys = Object.keys(config.countries);
-
+  hide;
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,

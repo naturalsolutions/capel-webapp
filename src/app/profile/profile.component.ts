@@ -203,6 +203,7 @@ export class ProfileComponent implements OnInit {
   template: `<mat-dialog-content><app-profile-form [method]="patch" (saved)="onSaved($event)"></app-profile-form></mat-dialog-content>`
 })
 export class ProfileFormDialogComponent {
+  patch;
   constructor(
     public dialogRef: MatDialogRef<ProfileFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
