@@ -122,12 +122,14 @@ export class ProfileFormComponent implements OnInit {
     } else {
       let formData: any = this.userForm.getRawValue();
       let boats = _.map(this.dataToPatch.boats, boat => {
-        let formBoat: any = _.find(this.boats.getRawValue(), formBoat => {
+        let formBoat: any = _.find(formData.boats, formBoat => {
           return formBoat.id == boat.id;
         });
-        if (!formBoat)
+        if (!formBoat) {
           boat.status = 'removed';
-        return formBoat;
+          return boat;
+        }else
+          return formBoat;
       });
 
       let newBoats = _.filter(formData.boats, formBoat => {
