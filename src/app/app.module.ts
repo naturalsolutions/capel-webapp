@@ -20,7 +20,7 @@ import { StoreModule } from './models/store.module';
 import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
-import {DiveAddNewSiteDialog, DiveComponent, DiveNotAllowedDialog, DiveSuccessDialog} from './dive/dive.component';
+import {DiveAddNewSiteDialog, DiveComponent, DiveHeartDialog, DiveNotAllowedDialog, DiveSuccessDialog} from './dive/dive.component';
 import { BoatService } from './services/boat.service';
 import { DiveService } from './services/dive.service';
 
@@ -37,6 +37,7 @@ import { ChartModule } from 'angular2-highcharts';
 registerLocaleData(localeFr);
 import {HighchartsStatic} from 'angular2-highcharts/dist/HighchartsService';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
+import {NgxEditorModule} from 'ngx-editor';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -55,6 +56,7 @@ export function highchartsFactory() {
     RegisterComponent,
     BoatComponent,
     DiveComponent,
+    DiveHeartDialog,
     RuleDialog,
     DiveSuccessDialog,
     DiveNotAllowedDialog,
@@ -79,6 +81,7 @@ export function highchartsFactory() {
     LeafletModule.forRoot(),
     LeafletMarkerClusterModule.forRoot(),
     ChartModule,
+    NgxEditorModule
   ],
   entryComponents: [
     RuleDialog,
@@ -87,7 +90,8 @@ export function highchartsFactory() {
     DiveNotAllowedDialog,
     DiveAddNewSiteDialog,
     ProfileFormComponent,
-    ProfileFormDialogComponent
+    ProfileFormDialogComponent,
+    DiveHeartDialog
   ],
   providers: [
     InitGuard,

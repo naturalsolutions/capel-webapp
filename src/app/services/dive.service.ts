@@ -36,6 +36,11 @@ export class DiveService {
     return this.http.get<any>(config.serverURL + '/api/users/divehearts')
       .toPromise();
   }
+  getUserSites(): Promise<any> {
+    return this.http.get<any>(config.serverURL + '/api/users/owndivesites')
+      .toPromise();
+  }
+
   save(data: any): Promise<any> {
     const appState = this.ngRedux.getState()
     const sessionState = appState.session

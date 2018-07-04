@@ -18,6 +18,7 @@ import * as L from 'leaflet';
 import { config } from '../settings';
 import { UserService } from '../services/user.service';
 import { NgRedux } from '@angular-redux/store';
+import {DiveService} from '../services/dive.service';
 
 
 @Component({
@@ -27,28 +28,48 @@ import { NgRedux } from '@angular-redux/store';
   encapsulation: ViewEncapsulation.None
 })
 export class PermitComponent implements OnInit {
-
+  map;
   leafletOptions = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
-    zoom: 12,
+    zoom: 8,
     center: L.latLng(43, 6.3833),
     dragging: true,
     scrollWheelZoom: false
   };
-
+  iconUser = L.icon({
+    iconUrl: 'assets/icon-marker-user.png',
+    iconSize: [49, 50], // size of the icon
+    iconAnchor: [17, 50],
+    popupAnchor: [0, -50]
+  });
+  userDiveSites: any[] = [];
   constructor(
     public dialog: MatDialog,
+    private diveService: DiveService
   ) {
   }
 
   ngOnInit() {
-    console.debug('ProfileComponent ngOnInit.');
+    this.diveService.getUserSites().then(data => {
+      this.userDiveSites = data;
+      for(let userDiveSite of this.userDiveSites){
+        const marker = L.marker([userDiveSite.latitude, userDiveSite.longitude], {
+          title: userDiveSite.name,
+          icon: this.iconUser,
+          radius: 20
+        }).addTo(this.map);
+        marker.bindPopup(userDiveSite.name).openPopup();
+      }
+    }, error => {
+      console.log(error);
+    });
   }
 
   onMapReady(map: L.Map) {
     L.marker([50.6311634, 3.0599573]).addTo(map);
+    this.map = map;
     /* map.on('click', (e) => {
       console.log(e.latlng);
       this.diveForm.controls['latlng'].setValue(e.latlng);

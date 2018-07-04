@@ -139,7 +139,7 @@
       </section>
       <section class="weather">
         <mat-toolbar>
-          <span>CONDITION CLIMATIQUES </span>
+          <span>CONDITIONS CLIMATIQUES </span>
         </mat-toolbar>
         <div>
           <h5 class="form-group-title">Vent <small>(Beaufort) 0: par défaut</small></h5>
@@ -231,6 +231,7 @@
           </div>
         </div>
       </section>
+      <app-ngx-editor style="min-height: 90px;" writeValue="sdsds" placeholder="Commentaire..." [spellcheck]="true" formControlName="comment"></app-ngx-editor>
     <button class="btn btn-secondary btn-block" (click)="save()">ENVOYER LA DÉCLARATION</button>
     </form>
 </mat-card>

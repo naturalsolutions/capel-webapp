@@ -38,6 +38,8 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "ng-redux": "^4.0.3",
+    "ngx-bootstrap": "^3.0.1",
+    "ngx-editor": "^3.3.0",
     "redux": "^3.7.2",
     "redux-localstorage": "^0.4.1",
     "redux-logger": "^3.0.6",

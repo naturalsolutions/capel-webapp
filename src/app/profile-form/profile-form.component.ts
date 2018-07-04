@@ -173,7 +173,7 @@ export class ProfileFormComponent implements OnInit {
     }
   }
 
-  // User getters
+  // User Getters
   get lastname() { return this.userForm.get('lastname'); }
   get firstname() { return this.userForm.get('firstname'); }
   get category() { return this.userForm.get('category'); }

@@ -8,6 +8,7 @@ import { SessionModule } from '../models/session.module';
 import { SessionActionsService } from '../store/session/session-actions.service';
 import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-profile',
@@ -21,86 +22,44 @@ export class ProfileComponent implements OnInit {
     boats: [],
     delta: 0
   };
+  map: L.Map;
+  leafletOptions = {
+    layers: [
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+    ],
+    zoom: 7,
+    center: L.latLng(43, 6.3833),
+    dragging: true,
+    scrollWheelZoom: false
+  };
+  iconUser = L.icon({
+    iconUrl: 'assets/icon-marker-user.png',
+    iconSize: [49, 50], // size of the icon
+    iconAnchor: [17, 50],
+    popupAnchor: [0, -50]
+  });
+
   dives: any[];
-  exploredSites: any = 0;
+  savedDives: any[];
   nbrDivesMonths: any = 0;
   nbrHoursInWater: any = 0;
   nbrDives: any = 0;
   options: any;
   sites: any[] = [];
+  userDiveSites: any[] = [];
   countries = config.countries;
-  constructor(private diveService: DiveService,
+
+  constructor(
+    private diveService: DiveService,
     private ngRedux: NgRedux<any>,
     private dialog: MatDialog,
     private userService: UserService
   ) {
 
     this.diveService.getDives().then(data => {
+      this.savedDives = data;
       this.dives = data;
-      this.getExploredSite();
-      this.nbrDives = this.dives.length;
-      this.getNbrHoursInWaterAndNbrMonth();
-      let dataChart = [
-        this.getNbrDive(0),
-        this.getNbrDive(1),
-        this.getNbrDive(3),
-        this.getNbrDive(4),
-        this.getNbrDive(5),
-        this.getNbrDive(6),
-        this.getNbrDive(7),
-        this.getNbrDive(8),
-        this.getNbrDive(9),
-        this.getNbrDive(10),
-        this.getNbrDive(11)
-      ];
-      this.options = {
-        chart: {
-          type: 'areaspline'
-        },
-        title: {
-          text: 'statistiques du nombre de plongées par mois'
-        },
-        legend: {
-          layout: 'vertical',
-          align: 'left',
-          verticalAlign: 'top',
-          x: 150,
-          y: 100,
-          floating: true,
-          borderWidth: 1
-        },
-        xAxis: {
-          categories: [
-            'Janvier',
-            'Fevrier',
-            'Mars',
-            'Avril',
-            'Juin',
-            'Juillet',
-            'Aout',
-            'Septembre',
-            'Octobre',
-            'Novembre',
-            'Decembre'
-          ]
-        },
-        yAxis: {
-          title: {
-            text: 'Capel'
-          }
-        },
-        tooltip: {
-          shared: true,
-          valueSuffix: ' plongées'
-        },
-        credits: {
-          enabled: false
-        },
-        series: [{
-          name: 'Plongées par mois',
-          data: dataChart
-        }]
-      };
+      this.dumpChar();
     }, error => {
       console.log(error);
     });
@@ -115,8 +74,111 @@ export class ProfileComponent implements OnInit {
       }); */
   }
 
+  setStatistics(event) {
+    this.dives =  this.savedDives.filter(dive => {
+      if (dive.dive_site.id == event.value.id)
+        return dive;
+    })
+    console.log(this.dives);
+    this.dumpChar();
+  }
+
+  setStatisticsByDate(event) {
+    console.log(event.value);
+    this.dives =  this.savedDives.filter(dive => {
+      if (new Date(dive.divingDate).getFullYear() === event.value){
+        return dive;
+      }
+    });
+    this.dumpChar();
+  }
+
+  dumpChar() {
+    this.getExploredSite();
+    this.nbrDives = this.dives.length;
+    this.getNbrHoursInWaterAndNbrMonth();
+    let dataChart = [
+      this.getNbrDive(0),
+      this.getNbrDive(1),
+      this.getNbrDive(3),
+      this.getNbrDive(4),
+      this.getNbrDive(5),
+      this.getNbrDive(6),
+      this.getNbrDive(7),
+      this.getNbrDive(8),
+      this.getNbrDive(9),
+      this.getNbrDive(10),
+      this.getNbrDive(11)
+    ];
+    this.options = {
+      chart: {
+        type: 'areaspline'
+      },
+      title: {
+        text: 'statistiques du nombre de plongées par mois'
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'left',
+        verticalAlign: 'top',
+        x: 150,
+        y: 100,
+        floating: true,
+        borderWidth: 1
+      },
+      xAxis: {
+        categories: [
+          'Janvier',
+          'Fevrier',
+          'Mars',
+          'Avril',
+          'Juin',
+          'Juillet',
+          'Aout',
+          'Septembre',
+          'Octobre',
+          'Novembre',
+          'Decembre'
+        ]
+      },
+      yAxis: {
+        title: {
+          text: 'Capel'
+        }
+      },
+      tooltip: {
+        shared: true,
+        valueSuffix: ' plongées'
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Plongées par mois',
+        data: dataChart
+      }]
+    };
+  }
+
   ngOnInit() {
     this.fetch();
+    this.diveService.getUserSites().then(data => {
+      this.userDiveSites = data;
+      for(let userDiveSite of this.userDiveSites){
+        const marker = L.marker([userDiveSite.latitude, userDiveSite.longitude], {
+        title: userDiveSite.name,
+        icon: this.iconUser,
+        radius: 20
+      }).addTo(this.map);
+      marker.bindPopup(userDiveSite.name).openPopup();
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  onMapReady(map: L.Map) {
+    this.map = map;
   }
 
   fetch() {
@@ -145,6 +207,8 @@ export class ProfileComponent implements OnInit {
   }
 
   getNbrHoursInWaterAndNbrMonth() {
+    this.nbrDivesMonths = 0;
+    this.nbrHoursInWater = 0;
     let oldDive: any;
     for (const dive of this.dives) {
       this.calculateTimeInwater(dive.times[0][0].split(':'), dive.times[0][1].split(':'))
@@ -164,7 +228,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getExploredSite() {
-
+    this.sites = []
     for (const dive of this.dives) {
       let exists = false;
       for (let site of this.sites)

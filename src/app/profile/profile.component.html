@@ -1,4 +1,5 @@
 <section class="user-details">
+
   <div class="row justify-content-center">
     <div class="text-center position-relative px-5">
       <button mat-mini-fab class="position-absolute btn-edit" (click)="openProfileForm()">
@@ -41,11 +42,41 @@
       <!--<a class="all-site" href="#">tous les sites</a> -->
     </div>
   </div>
+  <div class="position-absolute filter-dv">
+    Filtrée par :
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <mat-form-field>
+          <mat-select placeholder="Site de plongée" (selectionChange)="setStatistics($event)">
+            <mat-option *ngFor="let divesite of userDiveSites" [value]="divesite">
+              {{ divesite.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </li>
+      <li class="list-inline-item">
+        <mat-form-field>
+          <mat-select placeholder="Année" (selectionChange)="setStatisticsByDate($event)">
+            <mat-option  [value]="2017">2017</mat-option>
+            <mat-option  [value]="2018">2018</mat-option>
+            <mat-option  [value]="2019">2019</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </li>
+    </ul>
+  </div>
 </section>
 <section>
   <div class="row">
     <div class="col-md-12">
       <chart [options]="options"></chart>
     </div>
+  </div>
+</section>
+<section>
+  <div id="leafletmap" style="height: 400px;"
+       leaflet
+       [leafletOptions]="leafletOptions"
+       (leafletMapReady)="onMapReady($event)">
   </div>
 </section>

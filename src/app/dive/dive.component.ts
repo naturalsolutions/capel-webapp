@@ -47,7 +47,7 @@ export class DiveComponent implements OnInit {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '...'})
     ],
-    zoom: 9,
+    zoom: 7,
     center: L.latLng(43, 6.3833),
     dragging: true,
     scrollWheelZoom: false
@@ -60,13 +60,13 @@ export class DiveComponent implements OnInit {
 
   icon = L.icon({
     iconUrl: 'assets/icon-marker.png',
-    iconSize: [38, 51], // size of the icon
+    iconSize: [50, 51], // size of the icon
     iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
     popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
   });
   iconUser = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
-    iconSize: [34, 50], // size of the icon
+    iconSize: [49, 50], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
@@ -107,7 +107,7 @@ export class DiveComponent implements OnInit {
 
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
-      if( this.id )
+      if ( this.id )
       this.diveService.get(this.id).then(dive => {
         this.dive = dive;
         this.setDiveFrom();
@@ -133,6 +133,7 @@ export class DiveComponent implements OnInit {
       sky: new FormControl(null),
       seaState: new FormControl(null),
       structure: new FormControl(),
+      comment: new FormControl(''),
       isWithStructure: new FormControl(''),
       latlng: new FormControl('')
     });
@@ -166,7 +167,7 @@ export class DiveComponent implements OnInit {
           divesite_name: diveSite.name,
 
         });
-        marker.bindPopup(diveSite.name).openPopup();
+          marker.bindPopup(diveSite.name).openPopup();
         marker.on('click', this.onClick.bind(this));
         listMarker.push(marker);
       }
@@ -203,6 +204,7 @@ export class DiveComponent implements OnInit {
     this.diveForm.controls['divingDate'].setValue(new Date(this.dive.divingDate));
     divesite_id = this.dive.dive_site.id;
     this.diveForm.controls['boats'].setValue(this.dive.boats);
+    this.diveForm.controls['comment'].setValue(this.dive.comment);
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + this.dive.dive_site.name);
     this.diveForm.controls['wind'].setValue(this.dive.weather.wind);
     this.diveForm.controls['water_temperature'].setValue(this.dive.weather.water_temperature ? this.dive.weather.water_temperature : null);
@@ -273,60 +275,50 @@ export class DiveComponent implements OnInit {
   }
 
   checkPoint(e) {
-    /*
+
     divesite_id = null;
     this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
+        let checker = 0;
         if ( hearts.length ) {
           this.zone.run(() => {
-            let dialogRef = this.dialog.open(DiveNotAllowedDialog, {
+            let dialogRef = this.dialog.open(DiveHeartDialog, {
+              width: '500px',
               data: {
-                hearts: hearts
+                site: e.latlng
               }
             });
             dialogRef.afterClosed().subscribe(value => {
-              if (value) {
-                window.scrollTo(0, 0);
-              }
+              this.createSite(e);
             });
           });
-        }else{
-
         }
+        if( !hearts.length ) {
+            this.createSite(e);
+        }
+    });
 
-
-    });*/
+    this.diveForm.controls['latlng'].setValue(e.latlng);
+  }
+  createSite(e){
     this.zone.run(() => {
-      let dialogRef = this.dialog.open(DiveAddNewSiteDialog, {
+      let dialogRefSite = this.dialog.open(DiveAddNewSiteDialog, {
         width: '500px',
         data: {
           site: e.latlng
         }
       });
-      dialogRef.afterClosed().subscribe(value => {
+      dialogRefSite.afterClosed().subscribe(value => {
 
-          let site = this.diveService.getCurrentSite();
-          window.scrollTo(0, 0);
-          this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
-          divesite_id  = site.id;
-        this.snackBar.open('Votre site '+ site.name + ' est bien crée.', 'OK', {
+        let site = this.diveService.getCurrentSite();
+        window.scrollTo(0, 0);
+        this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
+        divesite_id = site.id;
+        this.snackBar.open('Votre site ' + site.name + ' est bien crée.', 'OK', {
           duration: 3000
         });
-          /*
-          const marker = L.marker([site.lati, site.latitude], {
-            title: site.name,
-            icon: this.iconUser,
-            radius: 20,
-            divesite_id: site.id,
-            divesite_name: site.name,
-
-          });
-          L.marker(marker).addTo(this.map);
-          */
       });
     });
-    this.diveForm.controls['latlng'].setValue(e.latlng);
   }
-
   reset() {
     this.hasSubmit = false;
     this.diveForm.reset();
@@ -428,6 +420,33 @@ export class DiveComponent implements OnInit {
 export class DiveSuccessDialog {
 
   constructor(public dialogRef: MatDialogRef<DiveSuccessDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  newDive() {
+    this.dialogRef.close(true);
+  }
+
+  logout() {
+    this.dialogRef.close(false);
+  }
+}
+@Component({
+  selector: 'dive-heart-dialog',
+  template: `
+    <h4>Attention !</h4>
+    <mat-dialog-content>
+      Attention vous entrez en cœur de parc.<br/>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
+        ok
+      </button>
+    </mat-dialog-actions>`
+})
+export class DiveHeartDialog {
+
+  constructor(public dialogRef: MatDialogRef<DiveHeartDialog>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
