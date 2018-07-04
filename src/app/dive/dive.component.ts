@@ -438,7 +438,7 @@ export class DiveSuccessDialog {
     <mat-dialog-content>
       Attention vous entrez en cœur de parc.<br/>
     </mat-dialog-content>
-    <mat-dialog-actions>
+    <mat-dialog-actions align="end">
       <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
         ok
       </button>

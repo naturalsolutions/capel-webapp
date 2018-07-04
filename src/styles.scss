@@ -99,7 +99,7 @@ mat-label,
   background: -webkit-linear-gradient(left, #ddfe00 0%,#c4d600 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to right, #ddfe00 0%,#c4d600 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ddfe00', endColorstr='#c4d600',GradientType=1 ); /* IE6-9 */
-  color: #000;
+  color: #000 !important;
 }
 
 .btn-secondary {
