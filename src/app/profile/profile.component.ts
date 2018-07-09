@@ -75,21 +75,29 @@ export class ProfileComponent implements OnInit {
   }
 
   setStatistics(event) {
+    console.log(event.value);
+    if (event.value === 'tous') {
+      this.dives = this.savedDives;
+    } else {
     this.dives =  this.savedDives.filter(dive => {
       if (dive.dive_site.id == event.value.id)
         return dive;
-    })
-    console.log(this.dives);
+    });
+    }
     this.dumpChar();
   }
 
   setStatisticsByDate(event) {
     console.log(event.value);
-    this.dives =  this.savedDives.filter(dive => {
-      if (new Date(dive.divingDate).getFullYear() === event.value){
-        return dive;
-      }
-    });
+    if (event.value === 'tous') {
+      this.dives = this.savedDives;
+    } else {
+      this.dives = this.savedDives.filter(dive => {
+        if (new Date(dive.divingDate).getFullYear() === event.value) {
+          return dive;
+        }
+      });
+    }
     this.dumpChar();
   }
 

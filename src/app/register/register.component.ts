@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 import { config } from '../settings';
+import { countries } from '../app-assets/countries/fr';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ export class RegisterComponent implements OnInit {
   status: string = '';
   isSubmit: boolean;
   config = config;
-  keys = Object.keys(config.countries);
+  countries = countries;
+  keys = Object.keys(countries);
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
