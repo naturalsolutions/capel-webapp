@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { UserModule } from './user.module';
 import * as _ from 'lodash';
 

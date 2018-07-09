@@ -5,7 +5,7 @@ import { config } from '../settings';
 import { UserService } from '../services/user.service';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 import * as _ from "lodash";
-
+import { countries } from '../app-assets/countries/fr';
 @Component({
   selector: 'app-profile-form',
   templateUrl: './profile-form.component.html',
@@ -26,7 +26,8 @@ export class ProfileFormComponent implements OnInit {
   status: string = '';
   isSubmit: boolean;
   config = config;
-  keys = Object.keys(config.countries);
+  keys = Object.keys(countries);
+  countries = countries;
   hide;
   constructor(
     private fb: FormBuilder,

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
     Router,
-    RouterStateSnapshot,
     ActivatedRouteSnapshot,
     CanActivate
   } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { NgRedux } from '@angular-redux/store';
 
 @Injectable()
@@ -17,7 +15,6 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const appState = this.ngRedux.getState()
     const sessionState = appState.session
-    // console.debug(sessionState);
     if (sessionState) {
       const token = <string>sessionState.token || null
       if (!token) {

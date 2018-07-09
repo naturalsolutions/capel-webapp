@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
-import { AuthInterceptorService } from '../../services/auth-interceptor.service';
-import { config } from '../../settings';
+
 
 @Injectable()
 export class AppActionsService {

@@ -61,7 +61,7 @@
     <mat-form-field floatLabel="auto" class="full-width">
       <mat-select formControlName="country" placeholder="Sélectionner Pays">
         <mat-option *ngFor="let key of keys" [value]="key">
-          {{config.countries[key]}}
+          {{countries[key]}}
         </mat-option>
       </mat-select>
     </mat-form-field>

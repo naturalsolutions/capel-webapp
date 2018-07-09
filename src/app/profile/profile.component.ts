@@ -1,14 +1,11 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { DiveService } from '../services/dive.service';
 import { NgRedux } from '@angular-redux/store';
-import { months } from 'moment';
-import { config } from '../settings';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { SessionModule } from '../models/session.module';
-import { SessionActionsService } from '../store/session/session-actions.service';
 import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import * as L from 'leaflet';
+import {countries} from '../app-assets/countries/fr';
 
 @Component({
   selector: 'app-profile',
@@ -47,7 +44,7 @@ export class ProfileComponent implements OnInit {
   options: any;
   sites: any[] = [];
   userDiveSites: any[] = [];
-  countries = config.countries;
+  countries = countries;
 
   constructor(
     private diveService: DiveService,
