@@ -137,6 +137,7 @@ export class ProfileComponent implements OnInit {
           'Fevrier',
           'Mars',
           'Avril',
+          'Mai',
           'Juin',
           'Juillet',
           'Aout',

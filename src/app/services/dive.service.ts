@@ -8,10 +8,9 @@ import { BehaviorSubject } from 'rxjs';
 export class DiveService {
 
   added$: BehaviorSubject<any>
-
   currentSite: any;
+
   setCurrentSite(site:any ) {
-    console.log(site);
     this.currentSite = site;
   }
   getCurrentSite() {
@@ -23,7 +22,6 @@ export class DiveService {
   ) {
     this.added$ = <BehaviorSubject<boolean>>new BehaviorSubject({});
   }
-
   getDiveTypes(): Promise<any> {
     return this.http.get<any>(config.serverURL + '/api/dives/typedives')
       .toPromise();
@@ -49,11 +47,11 @@ export class DiveService {
   }
   delete(dive: any) {
     console.log(dive);
-    return this.http.delete<any>(config.serverURL + '/api/users/dives/'+ dive.id, {})
+    return this.http.delete<any>(config.serverURL + '/api/users/dives/' + dive.id, {})
       .toPromise();
   }
   get(id: any) {
-    return this.http.get<any>(config.serverURL + '/api/users/dives/'+ id, {})
+    return this.http.get<any>(config.serverURL + '/api/users/dives/' + id, {})
       .toPromise();
   }
   getCheckedPointHearts(data: any): Promise<any> {

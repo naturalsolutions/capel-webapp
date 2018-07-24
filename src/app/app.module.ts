@@ -20,7 +20,7 @@ import { StoreModule } from './models/store.module';
 import { NgReduxModule } from '@angular-redux/store';
 import { BoatComponent } from './boat/boat.component';
 import { InitGuard } from './services/init-guard';
-import {DiveAddNewSiteDialog, DiveComponent, DiveHeartDialog, DiveNotAllowedDialog, DiveSuccessDialog} from './dive/dive.component';
+import { DiveAddNewSiteDialog, DiveComponent, DiveHeartDialog, DiveNotAllowedDialog, DiveSuccessDialog} from './dive/dive.component';
 import { BoatService } from './services/boat.service';
 import { DiveService } from './services/dive.service';
 
@@ -35,9 +35,9 @@ import { ProfileComponent, ProfileFormDialogComponent } from './profile/profile.
 import { ChartModule } from 'angular2-highcharts';
 
 registerLocaleData(localeFr);
-import {HighchartsStatic} from 'angular2-highcharts/dist/HighchartsService';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
-import {NgxEditorModule} from 'ngx-editor';
+import { NgxEditorModule } from 'ngx-editor';
 
 declare var require: any;
 export function highchartsFactory() {

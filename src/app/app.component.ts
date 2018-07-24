@@ -16,8 +16,7 @@ import {DiveService} from './services/dive.service';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-
-  showSidenav:boolean;
+  showSidenav: boolean;
 
   @HostBinding('class.show-sidenav') get getShowSidenav() {
     return this.showSidenav;
