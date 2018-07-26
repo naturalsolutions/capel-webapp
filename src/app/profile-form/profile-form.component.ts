@@ -140,7 +140,6 @@ export class ProfileFormComponent implements OnInit {
         delete formBoat.id;
         return true;
       });
-      console.log(this.boats.getRawValue())
       formData.boats = boats.concat(newBoats);
       formData.boats = _.filter(formData.boats, boat => {
         if (_.get(boat, 'name') && _.get(boat, 'matriculation'))

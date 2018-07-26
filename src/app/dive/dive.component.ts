@@ -167,7 +167,7 @@ export class DiveComponent implements OnInit {
           divesite_name: diveSite.name,
 
         });
-          marker.bindPopup(diveSite.name).openPopup();
+        marker.bindPopup(diveSite.name).openPopup();
         marker.on('click', this.onClick.bind(this));
         listMarker.push(marker);
       }
@@ -282,12 +282,13 @@ export class DiveComponent implements OnInit {
         if ( hearts.length ) {
           this.zone.run(() => {
             let dialogRef = this.dialog.open(DiveHeartDialog, {
-              width: '500px',
+              width: '600px',
               data: {
                 site: e.latlng
               }
             });
             dialogRef.afterClosed().subscribe(value => {
+              if(value)
               this.createSite(e);
             });
           });
@@ -296,7 +297,6 @@ export class DiveComponent implements OnInit {
             this.createSite(e);
         }
     });
-
     this.diveForm.controls['latlng'].setValue(e.latlng);
   }
   createSite(e){
@@ -436,11 +436,17 @@ export class DiveSuccessDialog {
   template: `
     <h4>Attention !</h4>
     <mat-dialog-content>
-      Attention vous entrez en cœur de parc.<br/>
+      Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement
     </mat-dialog-content>
     <mat-dialog-actions align="end">
+      <a href="http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations" target="_blank" mat-raised-button mat-dialog-close color="primary">
+        Voir les dispositions réglementaires
+      </a>
       <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
-        ok
+        Créer un site
+      </button>
+      <button mat-raised-button mat-dialog-close color="primary" (click)="close()">
+        Annuler
       </button>
     </mat-dialog-actions>`
 })
@@ -454,7 +460,7 @@ export class DiveHeartDialog {
     this.dialogRef.close(true);
   }
 
-  logout() {
+  close() {
     this.dialogRef.close(false);
   }
 }

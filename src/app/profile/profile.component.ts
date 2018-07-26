@@ -245,7 +245,9 @@ export class ProfileComponent implements OnInit {
     }
 
   }
-
+  roundToInt(flr:any){
+    return Math.round(flr);
+  }
   calculateTimeInwater(startTime, endTime) {
     this.nbrHoursInWater += Math.abs(
       (
