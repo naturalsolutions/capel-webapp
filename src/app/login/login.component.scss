@@ -6,7 +6,7 @@ app-login {
   .mat-form-field {
     display: block;
   }
-  
+
   &:before {
     content: '';
     width: 100%;
@@ -22,15 +22,24 @@ app-login {
   .mat-card-content {
     margin-bottom: 0;
   }
-  
+
   button.btn.btn-primary.btn-login {
     transform: translateY(60%);
   }
 
-  a.pass-recover{
-    display: block;
-    cursor: pointer;
-    color: darkgrey;
-    font-size: 11px;
-  }
+}
+a.pass-recover{
+  display: block;
+  cursor: pointer;
+  color: darkgrey;
+  font-size: 13px;
+  opacity: 0.7;
+  text-decoration: underline !important;
+}
+a.pass-recover:hover{
+  opacity: 1;
+  color: black;
+}
+.btn-register {
+  width: 220px;
 }

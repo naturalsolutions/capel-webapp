@@ -97,7 +97,7 @@ export class PermitComponent implements OnInit {
         <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'c')">je m'engage ainsi à renseigner mes données de plongée</mat-checkbox>
       </div>
       <div>
-        <a mat-raised-button mat-dialog-close color="primary" [disabled]="!hasCheckAll" href="{{ config.serverURL }}/api/users/{{ user.id }}/permit.pdf">
+        <a mat-raised-button mat-dialog-close class="btn btn-secondary" [disabled]="!hasCheckAll" href="{{ config.serverURL }}/api/users/{{ user.id }}/permit.pdf">
           Télécharger l'autorisation
         </a>
       </div>

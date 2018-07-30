@@ -102,6 +102,11 @@ mat-label,
   color: #000 !important;
 }
 
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #ddfe00 !important;
+  background-color: #303030;
+}
+
 .btn-secondary {
   color: #FFF;
   background: #00accc; /* Old browsers */
@@ -109,6 +114,15 @@ mat-label,
   background: -webkit-linear-gradient(left, #00accc 0%,#008faa 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to right, #00accc 0%,#008faa 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00accc', endColorstr='#008faa',GradientType=1 ); /* IE6-9 */
+}
+.btn-boat{
+  color: #00accc;
+  background: #fff; /* Old browsers */
+  border: 2px solid #00accc !important;;
+  border-radius: 4px;
+}
+.btn-validate{
+  width: 238px;
 }
 .btn-block{
   color: #303030;
@@ -118,6 +132,7 @@ mat-label,
   color: #FFF;
   font-size: 2rem;
 }
+
 .brand small {
   display: block;
   font-size: 34%;
@@ -125,6 +140,7 @@ mat-label,
   text-transform: none;
   margin-top: -5px;
 }
+
 .page {
   padding-top: 80px;
   background-color: #fff;

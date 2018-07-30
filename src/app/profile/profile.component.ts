@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
         type: 'areaspline'
       },
       title: {
-        text: 'statistiques du nombre de plongées par mois'
+        text: 'Statistiques du nombre de plongées par mois'
       },
       legend: {
         layout: 'vertical',

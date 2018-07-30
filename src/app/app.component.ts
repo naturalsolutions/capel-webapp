@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation, HostBinding, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import { config } from './settings';
 import {NgRedux} from '@angular-redux/store';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import 'rxjs/add/operator/first';
@@ -8,7 +9,6 @@ import * as _ from 'lodash';
 import {AppActionsService} from './store/app/app-actions.service';
 import {UserService} from './services/user.service';
 import {DiveService} from './services/dive.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,16 +17,16 @@ import {DiveService} from './services/dive.service';
 })
 export class AppComponent implements OnInit {
   showSidenav: boolean;
-
   @HostBinding('class.show-sidenav') get getShowSidenav() {
     return this.showSidenav;
   }
 
   @HostBinding('class.page-force-no-sidenav') pageNoSidenav: boolean;
   @HostBinding('class.is-connected') isConnected: boolean;
+  @HostBinding('class.is-admin') isAdmin: boolean;
   groupedDives: any[] = [];
   dives = [];
-
+  conf;
   constructor(private ngRedux: NgRedux<any>,
               private router: Router,
               private route: ActivatedRoute,
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.conf = config;
     this.diveService.added$
       .subscribe(value => {
         if (this.isConnected) {
@@ -55,8 +55,15 @@ export class AppComponent implements OnInit {
     this.ngRedux.select('session')
       .subscribe((session: any) => {
         this.isConnected = _.get(session, 'token');
-        if (this.isConnected)
+        if (this.isConnected) {
+          this.isAdmin = _.get(session, 'profile').role === "admin";
           this.getDives();
+          const status = _.get(session, 'profile').status;
+          if ( ['deleted', 'bloqued'].indexOf(status) > -1 ) {
+            alert("Une erreur technique est survenue merci de réessayer ultérieurement");
+            this.logOut();
+          }
+        }
       });
 
     this.router.events.subscribe(value => {

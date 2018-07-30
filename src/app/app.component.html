@@ -18,16 +18,27 @@
   <nav class="d-none d-md-flex align-items-center ml-auto">
 
     <!-- <a href="#" name="routing-strategies" class="btn btn-link btn-sm"><i class="material-icons">menu</i></a> -->
-    <a routerLink="/profile" routerLinkActive="active"
-      href="#" name="routing-strategies"
-      class="btn btn-link btn-sm navProfile visible-is-connected">
-        <i class="material-icons">person</i>
-        Mon profil
+    <a
+       href="http://149.202.44.29/site/" name="routing-strategies"
+       class="btn btn-link btn-sm navProfile visible-is-connected">
+      <i class="material-icons">home</i>
+      Accueil
+    </a>
+    <a *ngIf="isAdmin" target="_blank" routerLinkActive="active"
+      href="{{ conf.adminURL }}" name="routing-strategies"
+      class="btn btn-link btn-sm visible-is-connected">
+        Administration
+    </a>
+    <a routerLink="/profile"
+       href="#" name="routing-strategies"
+       class="btn btn-link btn-sm navProfile visible-is-connected">
+      <i class="material-icons">person</i>
+      Mon profil
     </a>
     <button type="button" (click)="logOut()" routerLinkActive="active"
         class="btn btn-link btn-sm nav_profile visible-is-connected">
       <i class="material-icons"></i>
-      se déconnecter
+      Se déconnecter
     </button>
 
     <a routerLink="/register" routerLinkActive="active"
@@ -38,17 +49,25 @@
     </a>
   </nav>
 </header>
-
 <aside class="sidenav">
   <div class="sidenav-inner">
     <ul class="list-unstyled">
       <li>
         <a routerLink="/permit" routerLinkActive="active"
           href="#" name="routing-strategies"
-          class="btn">
+          class="btn btn-primary">
           Votre Autorisation
         </a>
       </li>
+      <ul class="list-unstyled mb-auto">
+        <li>
+          <a routerLink="/dive" routerLinkActive="active"
+             href="#" name="routing-strategies"
+             class="btn btn-primary">
+            Déclarer une plongée
+          </a>
+        </li>
+      </ul>
       <li>
         Vos dernières plongées
       </li>
@@ -62,7 +81,7 @@
         </mat-expansion-panel-header>
         <mat-panel-description *ngFor="let timeElem of diveDisplay.dive.times">
           <span class="label">
-            <span class="d-block text-truncate">{{diveDisplay.dive.dive_site.name}}</span> 
+            <span class="d-block text-truncate">{{diveDisplay.dive.dive_site.name}}</span>
             <span class="d-block">{{timeElem[0] | slice:0:5}}</span>
           </span>
           <a mat-icon-button color="warn" class="btn-remove" (click)="removeDive(diveDisplay.dive)">
@@ -88,15 +107,7 @@
         </div>
       </mat-expansion-panel>
     </mat-accordion>
-    <ul class="list-unstyled mb-auto">
-      <li>
-        <a routerLink="/dive" routerLinkActive="active"
-          href="#" name="routing-strategies"
-          class="btn btn-primary">
-          Déclarer une plongée
-        </a>
-      </li>
-    </ul>
+
 
     <a routerLink="/profile" routerLinkActive="active"
       href="#" name="routing-strategies"
