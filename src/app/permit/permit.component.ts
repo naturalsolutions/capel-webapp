@@ -1,22 +1,16 @@
 import { Component, OnInit, OnDestroy, Input, Inject, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 import {
-  MatSnackBar,
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
-  MatProgressSpinnerModule
+  MAT_DIALOG_DATA
 } from '@angular/material'
-import { Subject } from 'rxjs';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 import * as _ from 'lodash';
 import * as L from 'leaflet';
 
 import { config } from '../settings';
-import { UserService } from '../services/user.service';
 import { NgRedux } from '@angular-redux/store';
 import {DiveService} from '../services/dive.service';
 
@@ -64,6 +58,38 @@ export class PermitComponent implements OnInit {
       }
     }, error => {
       console.log(error);
+    });
+    this.diveService.getDiveHearts().then(data => {
+
+      for (let heart of data) {
+        heart.geom_poly = JSON.parse(heart.geom_poly);
+        let geojsonFeature = {
+          'type': 'Feature',
+          'properties': {
+            'name': 'Coors Field',
+            'amenity': 'Baseball Stadium',
+            'popupContent': heart.name
+          },
+          'geometry': heart.geom_poly
+        };
+        new L.geoJSON(geojsonFeature, {
+          style: function (feature) {
+            return feature.properties.style;
+          },
+          onEachFeature(feature, layer) {
+            var popupContent = '';
+            if (feature.properties && feature.properties.popupContent) {
+              popupContent += "<b>"+feature.properties.popupContent+"</b>";
+              popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
+              popupContent += "<a target='_blank' href='http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations'";
+              popupContent += "mat-raised-button mat-dialog-close color='primary'>";
+              popupContent += "Voir les dispositions réglementaires </a>";
+            }
+            layer.bindPopup(popupContent);
+          }
+        }).addTo(this.map);
+
+      }
     });
   }
 

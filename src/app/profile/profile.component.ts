@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, Inject, NgZone} from '@angular/core';
 import { DiveService } from '../services/dive.service';
 import { NgRedux } from '@angular-redux/store';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -6,6 +6,7 @@ import { UserService } from '../services/user.service';
 import * as _ from 'lodash';
 import * as L from 'leaflet';
 import {countries} from '../app-assets/countries/fr';
+import {DiveHeartDialog} from '../dive/dive.component';
 
 @Component({
   selector: 'app-profile',
@@ -50,7 +51,8 @@ export class ProfileComponent implements OnInit {
     private diveService: DiveService,
     private ngRedux: NgRedux<any>,
     private dialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    private zone:NgZone
   ) {
 
     this.diveService.getDives().then(data => {
@@ -60,15 +62,6 @@ export class ProfileComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-
-    /* const appState = this.ngRedux.getState();
-    //this.user = appState.session.profile;
-    this.ngRedux.select('session')
-      .subscribe((session:SessionModule) => {
-        this.user = session.profile;
-      }, error => {
-
-      }); */
   }
 
   setStatistics(event) {
@@ -181,8 +174,45 @@ export class ProfileComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+    this.diveService.getDiveHearts().then(data => {
+      for (let heart of data) {
+        heart.geom_poly = JSON.parse(heart.geom_poly);
+        let geojsonFeature = {
+          'type': 'Feature',
+          'properties': {
+            'name': 'Coors Field',
+            'amenity': 'Baseball Stadium',
+            'popupContent': heart.name
+          },
+          'geometry': heart.geom_poly
+        };
+        new L.geoJSON(geojsonFeature, {
+          style: function (feature) {
+            return feature.properties.style;
+          },
+          onEachFeature(feature, layer) {
+            var popupContent = '';
+            if (feature.properties && feature.properties.popupContent) {
+              popupContent += "<b>"+feature.properties.popupContent+"</b>";
+              popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
+              popupContent += "<a target='_blank' href='http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations'";
+              popupContent += "mat-raised-button mat-dialog-close color='primary'>";
+              popupContent += "Voir les dispositions réglementaires </a>";
+            }
+            layer.bindPopup(popupContent);
+        }
+        }).addTo(this.map);
+      }
+    });
   }
+  onZoneClick(e) {
 
+      this.zone.run(() => {
+        this.dialog.open(DiveHeartDialog, {
+          width: '600px',
+        });
+      });
+  }
   onMapReady(map: L.Map) {
     this.map = map;
   }
@@ -211,7 +241,23 @@ export class ProfileComponent implements OnInit {
     return nbr;
 
   }
+  checkPoint(e) {
 
+    this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
+      let checker = 0;
+      if ( hearts.length ) {
+        this.zone.run(() => {
+          let dialogRef = this.dialog.open(DiveHeartDialog, {
+            width: '600px',
+            data: {
+              site: e.latlng
+            }
+          });
+
+        });
+      }
+    });
+  }
   getNbrHoursInWaterAndNbrMonth() {
     this.nbrDivesMonths = 0;
     this.nbrHoursInWater = 0;
