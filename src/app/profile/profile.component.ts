@@ -25,8 +25,8 @@ export class ProfileComponent implements OnInit {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
-    zoom: 7,
-    center: L.latLng(43, 6.3833),
+    zoom: 9,
+    center: L.latLng(42.976520698105546, 6.284179687500001),
     dragging: true,
     scrollWheelZoom: false
   };
@@ -215,6 +215,24 @@ export class ProfileComponent implements OnInit {
   }
   onMapReady(map: L.Map) {
     this.map = map;
+    const legend = new (L.Control.extend({
+      options: { position: 'topright' }
+    }));
+
+    const vm = this;
+    legend.onAdd = function (map) {
+      const div = L.DomUtil.create('div', 'legend');
+      const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
+      const grades =["Site de plongée personnel", "Site de plongée public"];
+      div.innerHTML = '<div><b>Legend</b></div>';
+      for (let i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+          (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
+      }
+      div.innerHTML +="<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
+      return div;
+    };
+    legend.addTo(map);
   }
 
   fetch() {

@@ -52,8 +52,7 @@
                 leaflet
                 [leafletOptions]="leafletOptions"
                 (leafletMapReady)="onMapReady($event)"
-
-                [leafletMarkerCluster]="markerClusterData"
+               [leafletMarkerCluster]="markerClusterData"
                 [leafletMarkerClusterOptions]="markerClusterOptions"
                 (leafletMarkerClusterReady)="markerClusterReady($event)">
           </div>
@@ -77,6 +76,7 @@
           <span>TYPE DE PLONGÉE </span>
         </mat-toolbar>
         <div class="row" formArrayName="divetypes">
+          <p class="full-width" style="color: #999999;font-size: 11px;padding-left: 20px;">Se référer au règlement pour savoir combien de plongeurs sont authorisé sur le site.</p>
           <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
             <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
             <mat-form-field *ngIf="typedive.controls.selected.value">

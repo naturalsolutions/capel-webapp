@@ -47,8 +47,8 @@ export class DiveComponent implements OnInit {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '...'})
     ],
-    zoom: 7,
-    center: L.latLng(43, 6.3833),
+    zoom: 9,
+    center: L.latLng(42.976520698105546, 6.284179687500001),
     dragging: true,
     scrollWheelZoom: false
   };
@@ -76,7 +76,7 @@ export class DiveComponent implements OnInit {
   id: number;
   private sub: any;
   dive: any;
-
+  //legend = L.control({position: 'bottomright'});
   constructor(private adapter: DateAdapter<any>,
               private boatService: BoatService,
               private diveService: DiveService,
@@ -119,7 +119,18 @@ export class DiveComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    /*
+     let div = L.DomUtil.create('div', 'info legend');
+     let grades = ["Site de plongée personnel", "Site de plongée public"];
+     let labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML +=
+        grades[i] + (" <img src="+ labels[i] +" height='50' width='50'>") +'<br>';
+    }
+    this.legend.onAdd = div;
+    this.legend.addTo(this.map);
+    */
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
       referenced: new FormControl('notreferenced'),
@@ -272,6 +283,26 @@ export class DiveComponent implements OnInit {
     L.marker([50.6311634, 3.0599573]).addTo(map);
     map.on('click', this.checkPoint.bind(this));
     this.map = map;
+
+      const legend = new (L.Control.extend({
+        options: { position: 'topright' }
+      }));
+
+      const vm = this;
+      legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'legend');
+        const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
+        const grades =["Site de plongée personnel", "Site de plongée public"];
+        div.innerHTML = '<div><b>Legend</b></div>';
+        for (let i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+            (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
+        }
+        div.innerHTML +="<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
+        return div;
+      };
+      legend.addTo(map);
+
   }
 
   checkPoint(e) {
