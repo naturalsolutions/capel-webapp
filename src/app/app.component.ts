@@ -127,7 +127,6 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe(value => {
       if (value) {
         this.diveService.delete(dive).then( data  => {
-          console.log(data);
           this.dives = this.dives.filter(gpDive => {
             return gpDive.id != dive.id;
           });

@@ -52,24 +52,12 @@
                 leaflet
                 [leafletOptions]="leafletOptions"
                 (leafletMapReady)="onMapReady($event)"
-               [leafletMarkerCluster]="markerClusterData"
+                [leafletMarkerCluster]="markerClusterData"
                 [leafletMarkerClusterOptions]="markerClusterOptions"
-                (leafletMarkerClusterReady)="markerClusterReady($event)">
+                (leafletMarkerClusterReady)="markerClusterReady($event)"
+          >
           </div>
         </div>
-        <!-- <div class="row">
-          <div class="col-md-3">
-            <mat-radio-group formControlName="referenced">
-              <mat-radio-button value="referenced" class="ref-radio">Site réferencé</mat-radio-button>
-              <mat-radio-button value="notreferenced" class="ref-radio">Site non réferencé</mat-radio-button>
-            </mat-radio-group>
-          </div>
-          <div class="col-md-6">
-            <input matInput placeholder="coordonnées de plongée (cliquer pour choisir vos coordonnées)" value="" formControlName="latlng">
-          </div>
-        </div> -->
-
-
       </section>
       <section class="typedives">
         <mat-toolbar>
