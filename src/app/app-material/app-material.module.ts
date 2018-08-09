@@ -20,6 +20,7 @@ import {
   MatSnackBarModule,
   MatToolbarModule,
   MatSliderModule,
+  MatTooltipModule,
   MatExpansionModule, MatMenuModule
 } from '@angular/material';
 
@@ -44,7 +45,8 @@ import {
     MatSnackBarModule,
     MatToolbarModule,
     MatExpansionModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -66,7 +68,8 @@ import {
     MatSnackBarModule,
     MatToolbarModule,
     MatExpansionModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   declarations: [],
   providers: [

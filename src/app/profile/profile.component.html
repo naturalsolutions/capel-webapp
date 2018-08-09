@@ -1,34 +1,17 @@
 <section class="user-details">
-  <div class="row">
-    <div class="col-md-12 text-right filter-dv">
-      <ul class="list-inline">
-        <li class="list-inline-item">Filtrée par :</li>
-        <li class="list-inline-item">
-          <mat-form-field>
-            <mat-select placeholder="Site de plongée" (selectionChange)="setStatistics($event)">
-              <mat-option *ngFor="let divesite of userDiveSites" [value]="divesite">
-                {{ divesite.name }}
-              </mat-option>
-              <mat-option  value="tous">Tous</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </li>
-        <li class="list-inline-item">
-          <mat-form-field>
-            <mat-select placeholder="Année" (selectionChange)="setStatisticsByDate($event)">
-              <mat-option  [value]="2017">2017</mat-option>
-              <mat-option  [value]="2018">2018</mat-option>
-              <mat-option  [value]="2019">2019</mat-option>
-              <mat-option  value="tous">Toutes</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </li>
-      </ul>
+  <div class="text-center col-md-12" >
+    <div class="form-group">
+      <div class="inputWrapper">
+        <input type="file" class="fileInput"  #photoInput value="" id="customFileLang" lang="fr" (change)="upload($event)" accept="image/*">
+      </div>
     </div>
-  </div>
+    <img *ngIf="!this.user.photo" matTooltip="Vous pouvez ajouter une photo" (click)="photoInput.click()" src="http://www.assises-orl.fr/wp-content/uploads/2016/06/user-default.png" class="img-profile">
+    <img *ngIf="this.user.photo" matTooltip="Vous pouvez ajouter une photo" [src]="getImageSanitiser(this.user.photo)" (click)="photoInput.click()" class="img-profile">
+</div>
   <div class="row justify-content-center">
+
     <div class="text-center position-relative px-5">
-      <button mat-mini-fab class="position-absolute btn-edit" (click)="openProfileForm()">
+      <button mat-mini-fab class="position-absolute btn-edit"  (click)="openProfileForm()">
         <mat-icon>edit</mat-icon>
       </button>
       <h1>{{ user.firstname}} {{ user.lastname }}</h1>
@@ -44,6 +27,33 @@
         </ul>
         <span class="delta" *ngIf="displayBoats.delta">+{{ displayBoats.delta }}</span>
       </div>
+      <div class="row">
+        <div class="col-md-12 text-right filter-dv">
+          <ul class="list-inline">
+            <li class="list-inline-item">Filtrée par :</li>
+            <li class="list-inline-item">
+              <mat-form-field>
+                <mat-select placeholder="Site de plongée" (selectionChange)="setStatistics($event)">
+                  <mat-option *ngFor="let divesite of userDiveSites" [value]="divesite">
+                    {{ divesite.name }}
+                  </mat-option>
+                  <mat-option  value="tous">Tous</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </li>
+            <li class="list-inline-item">
+              <mat-form-field>
+                <mat-select placeholder="Année" (selectionChange)="setStatisticsByDate($event)">
+                  <mat-option  [value]="2017">2017</mat-option>
+                  <mat-option  [value]="2018">2018</mat-option>
+                  <mat-option  [value]="2019">2019</mat-option>
+                  <mat-option  value="tous">Toutes</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row text-center kpis">
@@ -53,8 +63,12 @@
       <!--<a class="all-site" href="#">tous les sites</a> -->
     </div>
     <div class="col">
-      <h1>{{ roundToInt(nbrHoursInWater) | number}}</h1>
-      <span>Heures sous l'eau</span>
+      <h1>{{ roundToInt(nbrHoursInWater) | number}}
+        <span> heurs  </span>
+        {{ ((nbrHoursInWater)%1) * 60 | number}}
+        <span>minutes </span>
+      </h1>
+      <span>sous l'eau</span>
       <!--<a class="all-site" href="#">tous les sites</a> -->
     </div>
     <div class="col">
@@ -77,7 +91,7 @@
   </div>
 </section>
 <section>
-  <h2>Mes sites de plongées</h2>
+  <h2>Mes sites de plongée</h2>
   <div id="leafletmap" style="height: 400px;"
        leaflet
        [leafletOptions]="leafletOptions"

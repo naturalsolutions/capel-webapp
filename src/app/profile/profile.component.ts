@@ -7,6 +7,8 @@ import * as _ from 'lodash';
 import * as L from 'leaflet';
 import {countries} from '../app-assets/countries/fr';
 import {DiveHeartDialog} from '../dive/dive.component';
+import {SessionActionsService} from '../store/session/session-actions.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -52,7 +54,9 @@ export class ProfileComponent implements OnInit {
     private ngRedux: NgRedux<any>,
     private dialog: MatDialog,
     private userService: UserService,
-    private zone:NgZone
+    private zone:NgZone,
+    private sessionActionsService: SessionActionsService,
+    private sanitizer: DomSanitizer
   ) {
 
     this.diveService.getDives().then(data => {
@@ -90,7 +94,9 @@ export class ProfileComponent implements OnInit {
     }
     this.dumpChar();
   }
-
+  getImageSanitiser(img: any){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(img);
+  }
   dumpChar() {
     this.getExploredSite();
     this.nbrDives = this.dives.length;
@@ -113,7 +119,7 @@ export class ProfileComponent implements OnInit {
         type: 'areaspline'
       },
       title: {
-        text: 'Statistiques du nombre de plongées par mois'
+        text: 'Statistiques du nombre de plongées par mois/an'
       },
       legend: {
         layout: 'vertical',
@@ -197,13 +203,27 @@ export class ProfileComponent implements OnInit {
               popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
               popupContent += "<a target='_blank' href='http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations'";
               popupContent += "mat-raised-button mat-dialog-close color='primary'>";
-              popupContent += "Voir les dispositions réglementaires </a>";
+              popupContent += "Voir les dispositions </a>";
             }
             layer.bindPopup(popupContent);
         }
         }).addTo(this.map);
       }
     });
+  }
+  upload(e) {
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.userService.patchMe({
+        photo: 'data: image/' + file.type + '; base64 ,' + reader.result.split(',')[1],
+        boats: []
+      }).then(data => {
+        this.sessionActionsService.patch(data);
+        this.user = data;
+      });
+    }
   }
   onZoneClick(e) {
 
@@ -218,16 +238,13 @@ export class ProfileComponent implements OnInit {
     const legend = new (L.Control.extend({
       options: { position: 'topright' }
     }));
-
-    const vm = this;
     legend.onAdd = function (map) {
       const div = L.DomUtil.create('div', 'legend');
       const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
       const grades =["Site de plongée personnel", "Site de plongée public"];
-      div.innerHTML = '<div><b>Legend</b></div>';
+      div.innerHTML = '<div><b>Légende</b></div>';
       for (let i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-          (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
+        div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
       div.innerHTML +="<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
       return div;

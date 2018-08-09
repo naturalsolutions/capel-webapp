@@ -128,15 +128,14 @@ export class AppComponent implements OnInit {
       if (value) {
         this.diveService.delete(dive).then( data  => {
           this.dives = this.dives.filter(gpDive => {
-            return gpDive.id != dive.id;
+            return gpDive.id !== dive.id;
           });
           this.groupeDives_optimal();
         }, error => {
           console.log(error);
-        })
+        });
       }
-    })
-
+    });
   }
 }
 @Component({

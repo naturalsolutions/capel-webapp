@@ -83,7 +83,7 @@ export class PermitComponent implements OnInit {
               popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
               popupContent += "<a target='_blank' href='http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations'";
               popupContent += "mat-raised-button mat-dialog-close color='primary'>";
-              popupContent += "Voir les dispositions réglementaires </a>";
+              popupContent += "Voir les dispositions </a>";
             }
             layer.bindPopup(popupContent);
           }
@@ -109,7 +109,7 @@ export class PermitComponent implements OnInit {
       const div = L.DomUtil.create('div', 'legend');
       const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
       const grades =["Site de plongée personnel", "Site de plongée public"];
-      div.innerHTML = '<div><b>Legend</b></div>';
+      div.innerHTML = '<div><b>Légende</b></div>';
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML +=
           (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';

@@ -1,6 +1,59 @@
 <!-- <main class="page container-fluid page-form-dive"> -->
 <mat-card>
-    <form  class="register-form inscription" [formGroup]="diveForm">
+  <span style="font-size: 12px;color: gray"><mat-label class="with-required "></mat-label>: Indique le champ est obligatoire</span>
+  <form  class="register-form inscription" [formGroup]="diveForm">
+      <section class="structure" *ngIf="profile.category != 'structure'">
+        <mat-toolbar>
+          Structure
+        </mat-toolbar>
+        <div [ngClass]="{
+          'form-group': true,
+          'has-error': hasSubmit && diveForm.get('isWithStructure').invalid
+        }">
+          <h5 class="form-group-title with-required">Avez-vous plongé en structure ?</h5>
+          <mat-radio-group formControlName="isWithStructure">
+            <mat-radio-button [value]="true">Oui</mat-radio-button>
+            <mat-radio-button [value]="false">Non</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div *ngIf="isWithStructure.value === true" [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('structure').invalid}">
+          <h5 class="form-group-title with-required">Sélectionner une structure</h5>
+          <mat-form-field class="mat-form-field-lg">
+            <mat-select formControlName="structure">
+              <mat-option *ngFor="let user of users" [value]="user">
+                {{ user.firstname }} {{ user.lastname }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </section>
+      <section class="boats" *ngIf="(isWithStructure.value === false && boatsWS.length) || profile.category == 'structure'">
+        <a routerLink="/profile">Pour ajouter un bateau, veuillez renseigner votre profil au préalable</a>
+        <mat-toolbar>Bateaux</mat-toolbar>
+        <!-- <div *ngIf="boatsChsd.length > 0">
+          <h5>BATEAUX DECLARES</h5>
+          <mat-chip-list>
+            <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
+              <button mat-icon-button>
+                <mat-icon class="material-icons md-18"  color="warn" (click)="deleteBoat(i)">clear</mat-icon>
+              </button>
+            </mat-chip>
+          </mat-chip-list>
+        </div> -->
+        <mat-form-field class="mat-form-field-lg">
+          <mat-select formControlName="boats" placeholder="Sélectionnez les bateaux" multiple [compareWith]="compareBoat">
+            <!-- <mat-select-trigger *ngIf="boats.length > 1">
+              {{diveForm.get('boats').value[0] ? diveForm.get('boats').value[0].name : ''}}
+              <span *ngIf="diveForm.get('boats').value?.length > 1">
+                (+{{diveForm.get('boats').value.length - 1}})
+              </span>
+            </mat-select-trigger> -->
+            <mat-option *ngFor="let boat of boatsWS"  [value]="boat">
+              {{ boat.name }} <small>{{boat.matriculation}}</small>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </section>
       <section class="calendar">
           <mat-toolbar>
             Date et heure
@@ -74,57 +127,6 @@
           </div>
         </div>
       </section>
-      <section class="structure" *ngIf="profile.category != 'structure'">
-        <mat-toolbar>
-          Structure
-        </mat-toolbar>
-        <div [ngClass]="{
-          'form-group': true,
-          'has-error': hasSubmit && diveForm.get('isWithStructure').invalid
-        }">
-          <h5 class="form-group-title with-required">Avez-vous plongé en structure ?</h5>
-          <mat-radio-group formControlName="isWithStructure">
-            <mat-radio-button [value]="true">Oui</mat-radio-button>
-            <mat-radio-button [value]="false">Non</mat-radio-button>
-          </mat-radio-group>
-        </div>
-        <div *ngIf="isWithStructure.value === true" [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('structure').invalid}">
-          <h5 class="form-group-title with-required">Sélectionner une structure</h5>
-          <mat-form-field class="mat-form-field-lg">
-            <mat-select formControlName="structure">
-              <mat-option *ngFor="let user of users" [value]="user">
-                {{ user.firstname }} {{ user.lastname }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </section>
-      <section class="boats" *ngIf="(isWithStructure.value === false && boatsWS.length) || profile.category == 'structure'">
-        <mat-toolbar>Bateaux</mat-toolbar>
-        <!-- <div *ngIf="boatsChsd.length > 0">
-          <h5>BATEAUX DECLARES</h5>
-          <mat-chip-list>
-            <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
-              <button mat-icon-button>
-                <mat-icon class="material-icons md-18"  color="warn" (click)="deleteBoat(i)">clear</mat-icon>
-              </button>
-            </mat-chip>
-          </mat-chip-list>
-        </div> -->
-        <mat-form-field class="mat-form-field-lg">
-          <mat-select formControlName="boats" placeholder="Sélectionnez les bateaux" multiple [compareWith]="compareBoat">
-            <!-- <mat-select-trigger *ngIf="boats.length > 1">
-              {{diveForm.get('boats').value[0] ? diveForm.get('boats').value[0].name : ''}}
-              <span *ngIf="diveForm.get('boats').value?.length > 1">
-                (+{{diveForm.get('boats').value.length - 1}})
-              </span>
-            </mat-select-trigger> -->
-            <mat-option *ngFor="let boat of boatsWS"  [value]="boat">
-              {{ boat.name }} <small>{{boat.matriculation}}</small>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </section>
       <section class="weather">
         <mat-toolbar>
           <span>CONDITIONS CLIMATIQUES </span>
@@ -134,7 +136,7 @@
           <mat-slider
             class="full-width"
             [max]="12"
-            [min]="1"
+            [min]="0"
             [step]="1"
             [thumbLabel]="true"
             formControlName="wind"

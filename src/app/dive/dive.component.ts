@@ -106,7 +106,7 @@ export class DiveComponent implements OnInit {
     });
 
     this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
+      this.id = + params['id']; // (+) converts string 'id' to a number
       if ( this.id )
       this.diveService.get(this.id).then(dive => {
         this.dive = dive;
@@ -119,18 +119,6 @@ export class DiveComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*
-     let div = L.DomUtil.create('div', 'info legend');
-     let grades = ["Site de plongée personnel", "Site de plongée public"];
-     let labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-      div.innerHTML +=
-        grades[i] + (" <img src="+ labels[i] +" height='50' width='50'>") +'<br>';
-    }
-    this.legend.onAdd = div;
-    this.legend.addTo(this.map);
-    */
     this.diveForm = new FormGroup({
       divingDate: new FormControl('', Validators.required),
       referenced: new FormControl('notreferenced'),
@@ -176,7 +164,7 @@ export class DiveComponent implements OnInit {
           radius: 20,
           divesite_id: diveSite.id,
           divesite_name: diveSite.name,
-
+          latlng: {'lat':diveSite.latitude, 'lng':diveSite.longitude}
         });
         marker.bindPopup(diveSite.name).openPopup();
         marker.on('click', this.onClick.bind(this));
@@ -230,6 +218,7 @@ export class DiveComponent implements OnInit {
   }
   onClick(event) {
     divesite_id = event.target.options.divesite_id;
+    this.checkPoint(event.target.options);
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + event.target.options.divesite_name);
   }
 
@@ -287,18 +276,15 @@ export class DiveComponent implements OnInit {
       const legend = new (L.Control.extend({
         options: { position: 'topright' }
       }));
-
-      const vm = this;
       legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'legend');
         const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
         const grades =["Site de plongée personnel", "Site de plongée public"];
-        div.innerHTML = '<div><b>Legend</b></div>';
+        div.innerHTML = '<div><b>Légende</b></div>';
         for (let i = 0; i < grades.length; i++) {
-          div.innerHTML +=
-            (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
+          div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
         }
-        div.innerHTML +="<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
+        div.innerHTML += "<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
         return div;
       };
       legend.addTo(map);
@@ -306,16 +292,16 @@ export class DiveComponent implements OnInit {
   }
 
   checkPoint(e) {
-
-    divesite_id = null;
+    if(!e.title)
+      divesite_id = null;
     this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
-        let checker = 0;
         if ( hearts.length ) {
           this.zone.run(() => {
             let dialogRef = this.dialog.open(DiveHeartDialog, {
               width: '600px',
               data: {
-                site: e.latlng
+                site: e.latlng,
+                title:e.title
               }
             });
             dialogRef.afterClosed().subscribe(value => {
@@ -324,8 +310,8 @@ export class DiveComponent implements OnInit {
             });
           });
         }
-        if( !hearts.length ) {
-            this.createSite(e);
+        if( !hearts.length && !e.title) {
+          this.createSite(e);
         }
     });
     this.diveForm.controls['latlng'].setValue(e.latlng);
@@ -471,9 +457,9 @@ export class DiveSuccessDialog {
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <a href="http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations" target="_blank" mat-raised-button mat-dialog-close color="primary">
-        Voir les dispositions réglementaires
+        Voir les dispositions
       </a>
-      <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
+      <button *ngIf="!data.title" mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
         Créer un site
       </button>
       <button mat-raised-button mat-dialog-close color="primary" (click)="close()">
