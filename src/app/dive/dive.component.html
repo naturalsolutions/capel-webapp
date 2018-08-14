@@ -1,6 +1,6 @@
 <!-- <main class="page container-fluid page-form-dive"> -->
 <mat-card>
-  <span style="font-size: 12px;color: gray"><mat-label class="with-required "></mat-label>: Indique le champ est obligatoire</span>
+  <span style="font-size: 12px;color: gray"><mat-label class="with-required "></mat-label>: le champ est obligatoire</span>
   <form  class="register-form inscription" [formGroup]="diveForm">
       <section class="structure" *ngIf="profile.category != 'structure'">
         <mat-toolbar>
@@ -28,8 +28,8 @@
         </div>
       </section>
       <section class="boats" *ngIf="(isWithStructure.value === false && boatsWS.length) || profile.category == 'structure'">
-        <a routerLink="/profile">Pour ajouter un bateau, veuillez renseigner votre profil au préalable</a>
         <mat-toolbar>Bateaux</mat-toolbar>
+        <a routerLink="/profile" style="display: block;color: grey">Pour ajouter un bateau, veuillez renseigner votre profil au préalable</a>
         <!-- <div *ngIf="boatsChsd.length > 0">
           <h5>BATEAUX DECLARES</h5>
           <mat-chip-list>

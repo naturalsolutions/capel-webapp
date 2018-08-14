@@ -64,8 +64,14 @@ export class DiveComponent implements OnInit {
     iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
     popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
   });
-  iconUser = L.icon({
+  iconUserPublic = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
+    iconSize: [49, 50], // size of the icon
+    iconAnchor: [17, 50],
+    popupAnchor: [0, -50]
+  });
+  iconUserPrivate = L.icon({
+    iconUrl: 'assets/icon-marker-user-private.png',
     iconSize: [49, 50], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
@@ -156,11 +162,15 @@ export class DiveComponent implements OnInit {
 
     this.diveService.getDiveSites().then(data => {
       this.diveSites = data;
+      let icon = this.icon;
       const listMarker: any[] = [];
       for (const diveSite of this.diveSites) {
+        icon = this.icon;
+        if(diveSite.privacy === 'public')  icon = this.iconUserPublic;
+        if(diveSite.privacy === 'private') icon = this.iconUserPrivate;
         const marker = L.marker([diveSite.latitude, diveSite.longitude], {
           title: diveSite.name,
-          icon: diveSite.privacy == 'public' ? this.iconUser : this.icon,
+          icon: icon,
           radius: 20,
           divesite_id: diveSite.id,
           divesite_name: diveSite.name,
@@ -278,8 +288,8 @@ export class DiveComponent implements OnInit {
       }));
       legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'legend');
-        const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
-        const grades =["Site de plongée personnel", "Site de plongée public"];
+        const labels = ['assets/icon-marker-user.png','assets/icon-marker.png', 'assets/icon-marker-user-private.png'];
+        const grades =["Site de plongée personnel", "Site de plongée public", "Site de plongée privé"];
         div.innerHTML = '<div><b>Légende</b></div>';
         for (let i = 0; i < grades.length; i++) {
           div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
@@ -456,7 +466,7 @@ export class DiveSuccessDialog {
       Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <a href="http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations" target="_blank" mat-raised-button mat-dialog-close color="primary">
+      <a href="http://149.202.44.29/site/reglementation.html" target="_blank" mat-raised-button mat-dialog-close color="primary">
         Voir les dispositions
       </a>
       <button *ngIf="!data.title" mat-raised-button mat-dialog-close color="primary" (click)="newDive()">

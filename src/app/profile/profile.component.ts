@@ -32,8 +32,14 @@ export class ProfileComponent implements OnInit {
     dragging: true,
     scrollWheelZoom: false
   };
-  iconUser = L.icon({
+  iconUserPublic = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
+    iconSize: [49, 50], // size of the icon
+    iconAnchor: [17, 50],
+    popupAnchor: [0, -50]
+  });
+  iconUserPrivate = L.icon({
+    iconUrl: 'assets/icon-marker-user-private.png',
     iconSize: [49, 50], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
@@ -172,7 +178,7 @@ export class ProfileComponent implements OnInit {
       for(let userDiveSite of this.userDiveSites){
         const marker = L.marker([userDiveSite.latitude, userDiveSite.longitude], {
         title: userDiveSite.name,
-        icon: this.iconUser,
+        icon: userDiveSite.privacy === 'private'? this.iconUserPrivate: this.iconUserPublic,
         radius: 20
       }).addTo(this.map);
       marker.bindPopup(userDiveSite.name).openPopup();
@@ -201,7 +207,7 @@ export class ProfileComponent implements OnInit {
             if (feature.properties && feature.properties.popupContent) {
               popupContent += "<b>"+feature.properties.popupContent+"</b>";
               popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
-              popupContent += "<a target='_blank' href='http://www.portcros-parcnational.fr/fr/le-parc-national-de-port-cros/se-renseigner-sur-les-reglementations'";
+              popupContent += "<a target='_blank' href='http://149.202.44.29/site/reglementation.html'";
               popupContent += "mat-raised-button mat-dialog-close color='primary'>";
               popupContent += "Voir les dispositions </a>";
             }
@@ -240,13 +246,13 @@ export class ProfileComponent implements OnInit {
     }));
     legend.onAdd = function (map) {
       const div = L.DomUtil.create('div', 'legend');
-      const labels = ['assets/icon-marker-user.png','assets/icon-marker.png'];
-      const grades =["Site de plongée personnel", "Site de plongée public"];
+      const labels = ['assets/icon-marker-user.png','assets/icon-marker.png', 'assets/icon-marker-user-private.png'];
+      const grades =["Site de plongée personnel", "Site de plongée public", "Site de plongée privé"];
       div.innerHTML = '<div><b>Légende</b></div>';
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
-      div.innerHTML +="<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
+      div.innerHTML += "<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
       return div;
     };
     legend.addTo(map);

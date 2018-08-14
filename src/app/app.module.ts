@@ -38,6 +38,7 @@ registerLocaleData(localeFr);
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { NgxEditorModule } from 'ngx-editor';
+import {PermitService} from './services/permit.service';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -99,6 +100,7 @@ export function highchartsFactory() {
     UserService,
     BoatService,
     DiveService,
+    PermitService,
     {
     provide: HighchartsStatic,
     useFactory: highchartsFactory
