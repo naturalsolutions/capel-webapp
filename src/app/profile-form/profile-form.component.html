@@ -1,3 +1,13 @@
+<div class="main-form">
+<div class="text-center col-md-12" >
+  <div class="form-group">
+    <div class="inputWrapper">
+      <input type="file" class="fileInput"  #photoInput value="" id="customFileLang" lang="fr" (change)="upload($event)" accept="image/*">
+    </div>
+  </div>
+  <img *ngIf="!this.user.photo" matTooltip="Vous pouvez ajouter une photo" (click)="photoInput.click()" src="http://www.assises-orl.fr/wp-content/uploads/2016/06/user-default.png" class="img-profile">
+  <img *ngIf="this.user.photo" matTooltip="Vous pouvez ajouter une photo" [src]="getImageSanitiser(this.user.photo)" (click)="photoInput.click()" class="img-profile">
+</div>
 <form class="register-form inscription" [formGroup]="userForm">
   <fieldset>
     <mat-toolbar>VOUS</mat-toolbar>
@@ -111,3 +121,4 @@
     <button type="submit" (click)="save()" class="btn btn-primary btn-validate">{{ method == 'post' ? "S'INSCRIRE" : "VALIDER" }}</button>
   </fieldset>
 </form>
+</div>

@@ -12,11 +12,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  templateUrl: './statistics.component.html',
+  styleUrls: ['./statistics.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProfileComponent implements OnInit {
+export class StatisticsComponent implements OnInit {
   user: any = {};
   displayBoats: any = {
     boats: [],
@@ -100,9 +100,7 @@ export class ProfileComponent implements OnInit {
     }
     this.dumpChar();
   }
-  getImageSanitiser(img: any){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(img);
-  }
+
   dumpChar() {
     this.getExploredSite();
     this.nbrDives = this.dives.length;
@@ -217,20 +215,7 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-  upload(e) {
-    const reader = new FileReader();
-    const file = e.target.files[0];
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.userService.patchMe({
-        photo: 'data: image/' + file.type + '; base64 ,' + reader.result.split(',')[1],
-        boats: []
-      }).then(data => {
-        this.sessionActionsService.patch(data);
-        this.user = data;
-      });
-    }
-  }
+
   onZoneClick(e) {
 
       this.zone.run(() => {

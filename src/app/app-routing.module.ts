@@ -7,7 +7,8 @@ import { InitGuard } from './services/init-guard';
 import {DiveComponent} from './dive/dive.component';
 import {DivesComponent} from './dives/dives.component';
 import {PermitComponent} from './permit/permit.component';
-import {ProfileComponent} from './profile/profile.component';
+import {StatisticsComponent} from './statistics/statistics.component';
+import {ProfileFormComponent} from './profile-form/profile-form.component';
 const routes: Routes = [{
   path: '',
   canActivate: [InitGuard],
@@ -23,9 +24,14 @@ const routes: Routes = [{
     canActivate: [AuthGuard]
   }, {
     path: 'profile',
-    component: ProfileComponent,
+    component: ProfileFormComponent,
     canActivate: [AuthGuard]
-  }, {
+  }
+    , {
+      path: 'statistics',
+      component: StatisticsComponent,
+      canActivate: [AuthGuard]
+    }, {
       path: 'dive',
       component: DiveComponent,
       canActivate: [AuthGuard]

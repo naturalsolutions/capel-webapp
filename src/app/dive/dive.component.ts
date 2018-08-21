@@ -300,7 +300,6 @@ export class DiveComponent implements OnInit {
       legend.addTo(map);
 
   }
-
   checkPoint(e) {
     if(!e.title)
       divesite_id = null;
@@ -335,7 +334,6 @@ export class DiveComponent implements OnInit {
         }
       });
       dialogRefSite.afterClosed().subscribe(value => {
-
         let site = this.diveService.getCurrentSite();
         window.scrollTo(0, 0);
         this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
@@ -358,6 +356,17 @@ export class DiveComponent implements OnInit {
   }
 
   save() {
+    if (this.profile.offenses.length > 0)
+    if (new Date().getTime() >= new Date(this.profile.offenses[0].start_at).getTime()
+          &&
+        new Date().getTime() <= new Date(this.profile.offenses[0].end_at).getTime())
+    {
+      this.snackBar.open('Vous ne pouvez pas déclarer une plongée', 'OK', {
+        duration: 3000
+      });
+      return;
+    }
+
     this.dive = null;
     if (this.diveForm.invalid) {
       this.snackBar.open('Merci de remplir les champs correctement', 'OK', {

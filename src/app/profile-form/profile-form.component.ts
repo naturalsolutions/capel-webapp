@@ -6,6 +6,8 @@ import { UserService } from '../services/user.service';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 import * as _ from "lodash";
 import { countries } from '../app-assets/countries/fr';
+import {DomSanitizer} from '@angular/platform-browser';
+import {SessionActionsService} from '../store/session/session-actions.service';
 @Component({
   selector: 'app-profile-form',
   templateUrl: './profile-form.component.html',
@@ -20,6 +22,7 @@ export class ProfileFormComponent implements OnInit {
   @Output()
   saved = new EventEmitter<any>();
 
+  user: any = {};
   dataToPatch: any;
   userForm: FormGroup;
   boats: FormArray = new FormArray([]);
@@ -34,9 +37,13 @@ export class ProfileFormComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sessionActionsService: SessionActionsService,
+    private sanitizer: DomSanitizer
   ) { }
-
+  getImageSanitiser(img: any){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(img);
+  }
   // component initialisation
   ngOnInit() {
     this.userForm = this.fb.group({
@@ -66,7 +73,20 @@ export class ProfileFormComponent implements OnInit {
     if (this.user)
       this.userForm.patchValue(this.user); */
   }
-
+  upload(e) {
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.userService.patchMe({
+        photo: 'data: image/' + file.type + '; base64 ,' + reader.result.split(',')[1],
+        boats: []
+      }).then(data => {
+        this.sessionActionsService.patch(data);
+        this.user = data;
+      });
+    }
+  }
   fetch() {
     this.userService.getProfile()
       .then(data => {
@@ -77,6 +97,7 @@ export class ProfileFormComponent implements OnInit {
   }
 
   feed(data) {
+    this.user = data;
     this.dataToPatch = data;
     this.userForm.patchValue(data);
     //TODO manage nested

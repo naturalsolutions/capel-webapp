@@ -1,19 +1,11 @@
 <section class="user-details">
-  <div class="text-center col-md-12" >
-    <div class="form-group">
-      <div class="inputWrapper">
-        <input type="file" class="fileInput"  #photoInput value="" id="customFileLang" lang="fr" (change)="upload($event)" accept="image/*">
-      </div>
-    </div>
-    <img *ngIf="!this.user.photo" matTooltip="Vous pouvez ajouter une photo" (click)="photoInput.click()" src="http://www.assises-orl.fr/wp-content/uploads/2016/06/user-default.png" class="img-profile">
-    <img *ngIf="this.user.photo" matTooltip="Vous pouvez ajouter une photo" [src]="getImageSanitiser(this.user.photo)" (click)="photoInput.click()" class="img-profile">
-</div>
   <div class="row justify-content-center">
-
     <div class="text-center position-relative px-5">
+      <!--
       <button mat-mini-fab class="position-absolute btn-edit"  (click)="openProfileForm()">
         <mat-icon>edit</mat-icon>
       </button>
+      -->
       <h1>{{ user.firstname}} {{ user.lastname }}</h1>
       <h5>{{ user.email }}</h5>
       <h5>{{ user.phone }}</h5>
@@ -64,7 +56,7 @@
     </div>
     <div class="col">
       <h1>{{ roundToInt(nbrHoursInWater) | number}}
-        <span> heurs  </span>
+        <span> heures  </span>
         {{ ((nbrHoursInWater)%1) * 60 | number}}
         <span>minutes </span>
       </h1>

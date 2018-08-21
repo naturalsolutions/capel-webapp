@@ -3,8 +3,8 @@ import { Component, OnInit, OnDestroy, Input, Inject, ViewEncapsulation } from '
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material'
+  MAT_DIALOG_DATA, MatSnackBar
+} from '@angular/material';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 import * as _ from 'lodash';
@@ -52,7 +52,8 @@ export class PermitComponent implements OnInit {
     public dialog: MatDialog,
     private diveService: DiveService,
     private permitService: PermitService,
-    private ngRedux: NgRedux<any>
+    private ngRedux: NgRedux<any>,
+    private snackBar: MatSnackBar
   ) {
     this.permitService.get().then(data => {
       console.log(data);
@@ -135,6 +136,17 @@ export class PermitComponent implements OnInit {
   }
 
   showRule() {
+    let profile = this.ngRedux.getState().session.profile
+    if (profile.offenses.length > 0)
+      if (new Date().getTime() >= new Date(profile.offenses[0].start_at).getTime()
+        &&
+        new Date().getTime() <= new Date(profile.offenses[0].end_at).getTime())
+      {
+        this.snackBar.open('Vous ne pouvez pas signer une autorisation', 'OK', {
+          duration: 3000
+        });
+        return;
+      }
     if (this.permit) {
       window.location.href = config.serverURL
       +"/api/users/" + _.get(this.ngRedux.getState().session, 'profile').id + "/permit.pdf";
