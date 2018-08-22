@@ -257,7 +257,9 @@ export class StatisticsComponent implements OnInit {
     this.displayBoats.boats = _.take(data.boats, 2);
     this.displayBoats.delta = data.boats.length - this.displayBoats.boats.length;
   }
-
+  getImageSanitiser(img: any){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(img);
+  }
   getNbrDive(month) {
     let nbr = 0;
     for (const dive of this.dives) {

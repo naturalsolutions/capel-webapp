@@ -99,7 +99,7 @@ export class RegisterComponent implements OnInit {
           }, 500);
         }, error => {
           if (_.get(error, 'error.error.name') == 'invalid_model')
-            this.snackBar.open("Cet email exite déjà", "OK", {
+            this.snackBar.open("Cet email existe déjà", "OK", {
               duration: 5000
             });
           setTimeout(() => {

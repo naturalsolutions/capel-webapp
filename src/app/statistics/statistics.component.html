@@ -1,17 +1,24 @@
 <section class="user-details">
+
   <div class="row justify-content-center">
+    <div class="text-center col-md-12" >
+      <img *ngIf="!this.user.photo" matTooltip="Vous pouvez ajouter une photo" (click)="photoInput.click()" src="http://www.assises-orl.fr/wp-content/uploads/2016/06/user-default.png" class="img-profile">
+      <img *ngIf="this.user.photo" matTooltip="Vous pouvez ajouter une photo" [src]="getImageSanitiser(this.user.photo)" (click)="photoInput.click()" class="img-profile">
+    </div>
     <div class="text-center position-relative px-5">
-      <!--
-      <button mat-mini-fab class="position-absolute btn-edit"  (click)="openProfileForm()">
+
+      <a mat-mini-fab class="position-absolute btn-edit" routerLink="/profile" routerLinkActive="active" >
         <mat-icon>edit</mat-icon>
-      </button>
-      -->
+      </a>
+
       <h1>{{ user.firstname}} {{ user.lastname }}</h1>
+      <!--
       <h5>{{ user.email }}</h5>
       <h5>{{ user.phone }}</h5>
       <h5>{{ user.address }}</h5>
       <h5>{{ user.zip }} {{ user.city }}</h5>
       <h5>{{ countries[user.country] }}</h5>
+
       <div class="boats" *ngIf="displayBoats.boats.length">
         <span class="text-uppercase">Vos bateaux :</span>
         <ul class="list-inline list-boats">
@@ -19,6 +26,7 @@
         </ul>
         <span class="delta" *ngIf="displayBoats.delta">+{{ displayBoats.delta }}</span>
       </div>
+      -->
       <div class="row">
         <div class="col-md-12 text-right filter-dv">
           <ul class="list-inline">

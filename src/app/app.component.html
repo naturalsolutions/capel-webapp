@@ -35,11 +35,6 @@
       <i class="material-icons">person</i>
       Mon profil
     </a>
-    <a routerLink="/statistics"
-       href="#" name="routing-strategies"
-       class="btn btn-link btn-sm navProfile visible-is-connected">
-      Statistique
-    </a>
     <button type="button" (click)="logOut()" routerLinkActive="active"
         class="btn btn-link btn-sm nav_profile visible-is-connected">
       <i class="material-icons"></i>
@@ -61,7 +56,14 @@
         <a routerLink="/permit" routerLinkActive="active"
           href="#" name="routing-strategies"
           class="btn btn-primary">
-          Votre Autorisation
+          Mes autorisations
+        </a>
+      </li>
+      <li>
+        <a routerLink="/statistics" routerLinkActive="active"
+           href="#" name="routing-strategies"
+           class="btn btn-primary">
+          Statistiques
         </a>
       </li>
       <ul class="list-unstyled mb-auto">

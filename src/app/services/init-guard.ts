@@ -42,7 +42,7 @@ export class InitGuard implements CanActivate {
             let appState: AppModel = _.get(this.ngRedux.getState(), 'app');
             let messageName: string = 'email_confirm_success_' + profile.id;
             if (queryParams.flash_message == 'email_confirm_success' && !appState.hasUniqMessage(messageName)) {
-              this.snackBar.open("Vous êtes inscrit !", "OK", {
+              this.snackBar.open("Votre inscription est maintenant validée !", "OK", {
                 duration: 5000,
                 verticalPosition: 'top'
               });
