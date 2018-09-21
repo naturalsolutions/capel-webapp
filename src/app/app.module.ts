@@ -36,7 +36,7 @@ import { ChartModule } from 'angular2-highcharts';
 
 registerLocaleData(localeFr);
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
-import { ProfileFormComponent } from './profile-form/profile-form.component';
+import {CategoryChangeDialog, ProfileFormComponent} from './profile-form/profile-form.component';
 import { NgxEditorModule } from 'ngx-editor';
 import {PermitService} from './services/permit.service';
 
@@ -66,7 +66,8 @@ export function highchartsFactory() {
     StatisticsComponent,
     DiveAddNewSiteDialog,
     ProfileFormComponent,
-    ProfileFormDialogComponent
+    ProfileFormDialogComponent,
+    CategoryChangeDialog
   ],
   imports: [
     BrowserModule,
@@ -92,7 +93,8 @@ export function highchartsFactory() {
     DiveAddNewSiteDialog,
     ProfileFormComponent,
     ProfileFormDialogComponent,
-    DiveHeartDialog
+    DiveHeartDialog,
+    CategoryChangeDialog
   ],
   providers: [
     InitGuard,

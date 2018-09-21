@@ -27,33 +27,6 @@
         <span class="delta" *ngIf="displayBoats.delta">+{{ displayBoats.delta }}</span>
       </div>
       -->
-      <div class="row">
-        <div class="col-md-12 text-right filter-dv">
-          <ul class="list-inline">
-            <li class="list-inline-item">Filtrée par :</li>
-            <li class="list-inline-item">
-              <mat-form-field>
-                <mat-select placeholder="Site de plongée" (selectionChange)="setStatistics($event)">
-                  <mat-option *ngFor="let divesite of userDiveSites" [value]="divesite">
-                    {{ divesite.name }}
-                  </mat-option>
-                  <mat-option  value="tous">Tous</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </li>
-            <li class="list-inline-item">
-              <mat-form-field>
-                <mat-select placeholder="Année" (selectionChange)="setStatisticsByDate($event)">
-                  <mat-option  [value]="2017">2017</mat-option>
-                  <mat-option  [value]="2018">2018</mat-option>
-                  <mat-option  [value]="2019">2019</mat-option>
-                  <mat-option  value="tous">Toutes</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </li>
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
   <div class="row text-center kpis">
@@ -84,6 +57,33 @@
   </div>
 </section>
 <section>
+  <div class="row">
+    <div class="col-md-12 text-center filter-dv">
+      <ul class="list-inline">
+        <li class="list-inline-item">Filtrée par :</li>
+        <li class="list-inline-item">
+          <mat-form-field>
+            <mat-select placeholder="Site de plongée" (selectionChange)="setStatistics($event)">
+              <mat-option *ngFor="let divesite of userDiveSites" [value]="divesite">
+                {{ divesite.name }}
+              </mat-option>
+              <mat-option  value="tous">Tous</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </li>
+        <li class="list-inline-item">
+          <mat-form-field>
+            <mat-select placeholder="Année" (selectionChange)="setStatisticsByDate($event)">
+              <mat-option  [value]="2017">2017</mat-option>
+              <mat-option  [value]="2018">2018</mat-option>
+              <mat-option  [value]="2019">2019</mat-option>
+              <mat-option  value="tous">Toutes</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </li>
+      </ul>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <chart [options]="options"></chart>

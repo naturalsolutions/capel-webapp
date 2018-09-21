@@ -17,9 +17,9 @@
           </mat-radio-group>
         </div>
         <div *ngIf="isWithStructure.value === true" [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('structure').invalid}">
-          <h5 class="form-group-title with-required">Sélectionner une structure</h5>
+          <h5 class="form-group-title with-required">Sélectionnez une structure</h5>
           <mat-form-field class="mat-form-field-lg">
-            <mat-select formControlName="structure">
+            <mat-select formControlName="structure" [compareWith]="compareUser">
               <mat-option *ngFor="let user of users" [value]="user">
                 {{ user.firstname }} {{ user.lastname }}
               </mat-option>
@@ -28,31 +28,15 @@
         </div>
       </section>
       <section class="boats" *ngIf="(isWithStructure.value === false && boatsWS.length) || profile.category == 'structure'">
-        <mat-toolbar>Bateaux</mat-toolbar>
-        <a routerLink="/profile" style="display: block;color: grey">Pour ajouter un bateau, veuillez renseigner votre profil au préalable</a>
-        <!-- <div *ngIf="boatsChsd.length > 0">
-          <h5>BATEAUX DECLARES</h5>
-          <mat-chip-list>
-            <mat-chip *ngFor="let bt of boatsChsd;let i=index">{{bt.boat}}
-              <button mat-icon-button>
-                <mat-icon class="material-icons md-18"  color="warn" (click)="deleteBoat(i)">clear</mat-icon>
-              </button>
-            </mat-chip>
-          </mat-chip-list>
-        </div> -->
+        <h5 class="form-group-title with-required">Sélectionnez un bateau</h5>
         <mat-form-field class="mat-form-field-lg">
-          <mat-select formControlName="boats" placeholder="Sélectionnez les bateaux" multiple [compareWith]="compareBoat">
-            <!-- <mat-select-trigger *ngIf="boats.length > 1">
-              {{diveForm.get('boats').value[0] ? diveForm.get('boats').value[0].name : ''}}
-              <span *ngIf="diveForm.get('boats').value?.length > 1">
-                (+{{diveForm.get('boats').value.length - 1}})
-              </span>
-            </mat-select-trigger> -->
+          <mat-select formControlName="boats"  multiple [compareWith]="compareBoat">
             <mat-option *ngFor="let boat of boatsWS"  [value]="boat">
               {{ boat.name }} <small>{{boat.matriculation}}</small>
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <a routerLink="/profile" style="display: block;color: grey">Pour ajouter un bateau, veuillez renseigner votre profil au préalable</a>
       </section>
       <section class="calendar">
           <mat-toolbar>
@@ -117,7 +101,7 @@
           <span>TYPE DE PLONGÉE </span>
         </mat-toolbar>
         <div class="row" formArrayName="divetypes">
-          <p class="full-width" style="color: #999999;font-size: 11px;padding-left: 20px;">Se référer au règlement pour savoir combien de plongeurs sont authorisé sur le site.</p>
+          <p class="full-width" style="color: #999999;font-size: 11px;padding-left: 20px;">Se référer au règlement pour savoir combien de plongeurs sont autorisés sur le site.</p>
           <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
             <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
             <mat-form-field *ngIf="typedive.controls.selected.value">

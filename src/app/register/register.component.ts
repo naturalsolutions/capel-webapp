@@ -6,7 +6,9 @@ import * as _ from 'lodash';
 import { LoadingDialogComponent } from '../app-dialogs/loading-dialog/loading-dialog.component';
 import { config } from '../settings';
 import { countries } from '../app-assets/countries/fr';
-
+import {Observable} from 'rxjs/index';
+import  commons from '../app-assets/communes/fr.json';
+import {map, startWith} from 'rxjs/operators';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -22,15 +24,25 @@ export class RegisterComponent implements OnInit {
   config = config;
   countries = countries;
   keys = Object.keys(countries);
+  commons: any[] = commons;
+  commonCtrl = new FormControl();
+  filteredCommons: Observable<any[]>;
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private userService: UserService,
     private dialog: MatDialog
   ) {
-
+    this.filteredCommons = this.commonCtrl.valueChanges
+      .pipe(startWith(''),
+        map(common => common ? this._filterCommons(common) : this.commons.slice())
+      );
   }
+  private _filterCommons(value: string): any[] {
+    const filterValue = value.toLowerCase();
 
+    return this.commons.filter(common => common.comm_minus.toLowerCase().indexOf(filterValue) === 0);
+  }
   // component initialisation
   ngOnInit() {
 
@@ -43,7 +55,8 @@ export class RegisterComponent implements OnInit {
       email: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
-      zip: new FormControl('', Validators.required),
+      zip: new FormControl(''),
+      common: new FormControl(''),
       city: new FormControl('', Validators.required),
       country: new FormControl('FR', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -81,6 +94,7 @@ export class RegisterComponent implements OnInit {
       });
     } else {
       const data: any = this.userForm.getRawValue();
+      data.common = this.commonCtrl.value;
       delete data.repeat;
       data.boats = _.filter(data.boats, boat => {
         if (_.get(boat, 'name') && _.get(boat, 'matriculation'))

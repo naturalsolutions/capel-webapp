@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import {AppActionsService} from './store/app/app-actions.service';
 import {UserService} from './services/user.service';
 import {DiveService} from './services/dive.service';
+import {LoadingDialogComponent} from './app-dialogs/loading-dialog/loading-dialog.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -73,12 +74,17 @@ export class AppComponent implements OnInit {
   }
 
   getDives() {
+    let dialog = this.dialog.open(LoadingDialogComponent, {
+      disableClose: true
+    });
     this.diveService.getDives().then(data => {
       this.dives = data;
       const obj: any = {};
-      this.groupeDives_optimal();
+      this.groupeDives_naive();
+      dialog.close();
     }, error => {
       console.log(error);
+      dialog.close();
     });
   }
 
@@ -136,6 +142,69 @@ export class AppComponent implements OnInit {
         });
       }
     });
+  }
+   convertArrayOfObjectsToCSV(args) {
+    var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+    data = args.data || null;
+    if (data == null || !data.length) {
+      return null;
+    }
+
+    columnDelimiter = args.columnDelimiter || ',';
+    lineDelimiter = args.lineDelimiter || '\n';
+
+    keys = Object.keys(data[0]);
+    keys = 'Id,Date de plongee,Site de plongee,Avec structure, Structure,Horaires,Bateaux,Commentaire';
+    result = '';
+    //result += keys.join(columnDelimiter);
+    result += keys;
+    result += lineDelimiter;
+    data.forEach(function(item) {
+      ctr = 0;
+      result += item['id']+columnDelimiter;
+      result += new Date(item['divingDate']).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })+columnDelimiter;
+      result += item['dive_site'].name+columnDelimiter;
+      result += item['shop']?'oui':'non';
+      result += columnDelimiter;
+      result += item['shop']?item['shop'].firstname+ ' '+item['shop'].lastname : '';
+      result += columnDelimiter;
+      result += item['times'][0][0]+'- '+item['times'][0][0]+columnDelimiter;
+      result += item['boats'][0]?item['boats'][0].name:'';
+      result += columnDelimiter;
+      result += item['comment']+columnDelimiter;
+
+      /*
+      keys.forEach(function(key) {
+        if (ctr > 0) result += columnDelimiter;
+
+        result += item[key];
+        ctr++;
+      });
+      */
+      result += lineDelimiter;
+    });
+
+    return result;
+  }
+   downloadCSV() {
+    var data, filename, link;
+    var csv = this.convertArrayOfObjectsToCSV({
+      data: this.dives
+    });
+    if (csv == null) return;
+
+    filename = 'mes_plongee.csv';
+
+    if (!csv.match(/^data:text\/csv/i)) {
+      csv = 'data:text/csv;charset=utf-8,'+"\uFEFF" + csv;
+    }
+    data = encodeURI(csv);
+
+    link = document.createElement('a');
+    link.setAttribute('href', data);
+    link.setAttribute('download', filename);
+    link.click();
   }
 }
 @Component({

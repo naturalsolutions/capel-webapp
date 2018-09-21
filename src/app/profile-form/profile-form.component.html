@@ -1,5 +1,5 @@
 <div class="main-form">
-<div class="text-center col-md-12" >
+  <div class="text-center col-md-12" >
   <div class="form-group">
     <div class="inputWrapper">
       <input type="file" class="fileInput"  #photoInput value="" id="customFileLang" lang="fr" (change)="upload($event)" accept="image/*">
@@ -10,6 +10,8 @@
 </div>
 <form class="register-form inscription" [formGroup]="userForm">
   <fieldset>
+    <span style="font-size: 12px;color: gray"><mat-label class="with-required "></mat-label>: champ obligatoire</span>
+
     <mat-toolbar>VOUS</mat-toolbar>
     <div [ngClass]="{
       'col': true,
@@ -18,8 +20,8 @@
     }">
       <mat-label class="d-block with-required form-group-title">Vous êtes</mat-label>
       <mat-radio-group formControlName="category">
-        <mat-radio-button value="particulier">Je suis un particulier</mat-radio-button>
-        <mat-radio-button value="structure">Je suis une structure</mat-radio-button>
+        <mat-radio-button value="particulier" (change)="categoryChange($event)">Je suis un particulier</mat-radio-button>
+        <mat-radio-button value="structure" (change)="categoryChange($event)">Je suis une structure</mat-radio-button>
       </mat-radio-group>
     </div>
     <div class="col-sm-12" *ngIf="category.value == 'structure'">
@@ -52,21 +54,13 @@
         <input matInput type="text" placeholder="téléphone" formControlName="phone">
       </mat-form-field>
     </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="adresse" formControlName="address">
-      </mat-form-field>
-    </div>
+    <!--
     <div class="col-sm-12">
       <mat-form-field floatLabel="auto" class="full-width">
         <input matInput type="text" placeholder="code postal" formControlName="zip">
       </mat-form-field>
     </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="Ville" formControlName="city">
-      </mat-form-field>
-    </div>
+    -->
     <div class="col-sm-12">
     <mat-form-field floatLabel="auto" class="full-width">
       <mat-select formControlName="country" placeholder="Sélectionner Pays">
@@ -77,14 +71,43 @@
     </mat-form-field>
     </div>
     <div class="col-sm-12">
+      <!--
       <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput placeholder="mot de passe: " [type]="hide ? 'text' : 'password'" formControlName="password">
+        <mat-select formControlName="common" placeholder="Sélectionner Commune">
+          <mat-option *ngFor="let commune of commons" [value]="commune.Code_commune_INSEE">
+            {{commune['Nom_commune']}}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+        -->
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Commune" aria-label="Commune" [matAutocomplete]="auto" [formControl]="commonCtrl">
+          <mat-autocomplete #auto="matAutocomplete" formControlName="common">
+            <mat-option  *ngFor="let commune of filteredCommons | async" [value]="commune.comm_minus">
+              <span> {{commune['comm_minus']}}</span>
+            </mat-option>
+          </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <mat-form-field floatLabel="auto" class="full-width">
+        <input matInput type="text" placeholder="adresse" formControlName="address">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <mat-form-field floatLabel="auto" class="full-width">
+        <input matInput type="text" placeholder="Ville" formControlName="city">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <mat-form-field floatLabel="auto" class="full-width">
+        <input matInput placeholder="mot de passe " [type]="hide ? 'text' : 'password'" formControlName="password">
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
     </div>
     <div class="col-sm-12">
       <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput placeholder="Confirmer le mot de passe :" [type]="hide ? 'text' : 'password'" formControlName="repeat">
+        <input matInput placeholder="Confirmer le mot de passe " [type]="hide ? 'text' : 'password'" formControlName="repeat">
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
     </div>

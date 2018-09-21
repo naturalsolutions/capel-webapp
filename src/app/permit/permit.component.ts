@@ -34,15 +34,21 @@ export class PermitComponent implements OnInit {
     dragging: true,
     scrollWheelZoom: false
   };
+  icon = L.icon({
+    iconUrl: 'assets/icon-marker.png',
+    iconSize: [25, 51], // size of the icon
+    iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
+  });
   iconUserPublic = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
-    iconSize: [49, 50], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
   iconUserPrivate = L.icon({
     iconUrl: 'assets/icon-marker-user-private.png',
-    iconSize: [49, 50], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
@@ -66,10 +72,14 @@ export class PermitComponent implements OnInit {
   ngOnInit() {
     this.diveService.getUserSites().then(data => {
       this.userDiveSites = data;
+      let icon = this.icon;
       for(let userDiveSite of this.userDiveSites){
+        icon = this.icon;
+        if (userDiveSite.privacy === 'public') icon = this.iconUserPublic;
+        if (userDiveSite.privacy === 'private') icon = this.iconUserPrivate;
         const marker = L.marker([userDiveSite.latitude, userDiveSite.longitude], {
           title: userDiveSite.name,
-          icon: userDiveSite.privacy === 'private'? this.iconUserPrivate: this.iconUserPublic,
+          icon: icon,
           radius: 20
         }).addTo(this.map);
         marker.bindPopup(userDiveSite.name).openPopup();
@@ -77,6 +87,7 @@ export class PermitComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+    /*
     this.diveService.getDiveHearts().then(data => {
 
       for (let heart of data) {
@@ -109,27 +120,24 @@ export class PermitComponent implements OnInit {
 
       }
     });
+    */
   }
 
   onMapReady(map: L.Map) {
     L.marker([50.6311634, 3.0599573]).addTo(map);
     this.map = map;
-    /* map.on('click', (e) => {
-      console.log(e.latlng);
-      this.diveForm.controls['latlng'].setValue(e.latlng);
-    }); */
+
     const legend = new (L.Control.extend({
       options: { position: 'topright' }
     }));
     legend.onAdd = function (map) {
       const div = L.DomUtil.create('div', 'legend');
-      const labels = ['assets/icon-marker-user.png','assets/icon-marker.png', 'assets/icon-marker-user-private.png'];
-      const grades =["Site de plongée personnel", "Site de plongée public", "Site de plongée privé"];
+      const labels = ['assets/icon-marker.png', 'assets/icon-marker-user.png', 'assets/icon-marker-user-private.png'];
+      const grades =["Site de plongée référencé", "Site de plongée public", "Site de plongée privé"];
       div.innerHTML = '<div><b>Légende</b></div>';
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
-      div.innerHTML += "<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
       return div;
     };
     legend.addTo(map);
@@ -154,6 +162,12 @@ export class PermitComponent implements OnInit {
       let dialogRef = this.dialog.open(RuleDialog, {
         panelClass: 'rule'
       });
+      dialogRef.afterClosed().subscribe(() => {
+        this.permitService.get().then(data => {
+          console.log(data);
+          this.permit = data;
+        });
+      });
     }
   }
 }
@@ -169,7 +183,7 @@ export class PermitComponent implements OnInit {
       <div class="col">
         <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'a')">Je m'engage à respecter la réglementation marine en coeur de Parc</mat-checkbox>
         <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'b')">Je m'engage à respecter les conditions du règlement de plongée</mat-checkbox>
-        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'c')">je m'engage ainsi à renseigner mes données de plongée</mat-checkbox>
+        <mat-checkbox class="d-block" (change)="onCheckBoxChange($event, 'c')">Je m'engage ainsi à renseigner mes données de plongée</mat-checkbox>
       </div>
       <div>
         <a mat-raised-button mat-dialog-close class="btn btn-secondary" [disabled]="!hasCheckAll" href="{{ config.serverURL }}/api/users/{{ user.id }}/permit.pdf">

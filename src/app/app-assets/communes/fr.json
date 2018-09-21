@@ -1,0 +1,182 @@
+[
+  {
+    "code_comm": "71",
+    "code_insee": "92071",
+    "comm_minus": "Sceaux"
+  },
+  {
+    "code_comm": "72",
+    "code_insee": "92072",
+    "comm_minus": "Sèvres"
+  },
+  {
+    "code_comm": "73",
+    "code_insee": "92073",
+    "comm_minus": "Suresnes"
+  },
+  {
+    "code_comm": "24",
+    "code_insee": "92024",
+    "comm_minus": "Clichy"
+  },
+  {
+    "code_comm": "46",
+    "code_insee": "92046",
+    "comm_minus": "Malakoff"
+  },
+  {
+    "code_comm": "36",
+    "code_insee": "92036",
+    "comm_minus": "Gennevilliers"
+  },
+  {
+    "code_comm": "12",
+    "code_insee": "92012",
+    "comm_minus": "Boulogne-Billancourt"
+  },
+  {
+    "code_comm": "22",
+    "code_insee": "92022",
+    "comm_minus": "Chaville"
+  },
+  {
+    "code_comm": "25",
+    "code_insee": "92025",
+    "comm_minus": "Colombes"
+  },
+  {
+    "code_comm": "33",
+    "code_insee": "92033",
+    "comm_minus": "Garches"
+  },
+  {
+    "code_comm": "60",
+    "code_insee": "92060",
+    "comm_minus": "Le Plessis-Robinson"
+  },
+  {
+    "code_comm": "75",
+    "code_insee": "92075",
+    "comm_minus": "Vanves"
+  },
+  {
+    "code_comm": "20",
+    "code_insee": "92020",
+    "comm_minus": "Châtillon"
+  },
+  {
+    "code_comm": "23",
+    "code_insee": "92023",
+    "comm_minus": "Clamart"
+  },
+  {
+    "code_comm": "32",
+    "code_insee": "92032",
+    "comm_minus": "Fontenay-aux-Roses"
+  },
+  {
+    "code_comm": "48",
+    "code_insee": "92048",
+    "comm_minus": "Meudon"
+  },
+  {
+    "code_comm": "76",
+    "code_insee": "92076",
+    "comm_minus": "Vaucresson"
+  },
+  {
+    "code_comm": "77",
+    "code_insee": "92077",
+    "comm_minus": "Ville-d'Avray"
+  },
+  {
+    "code_comm": "2",
+    "code_insee": "92002",
+    "comm_minus": "Antony"
+  },
+  {
+    "code_comm": "14",
+    "code_insee": "92014",
+    "comm_minus": "Bourg-la-Reine"
+  },
+  {
+    "code_comm": "44",
+    "code_insee": "92044",
+    "comm_minus": "Levallois-Perret"
+  },
+  {
+    "code_comm": "49",
+    "code_insee": "92049",
+    "comm_minus": "Montrouge"
+  },
+  {
+    "code_comm": "50",
+    "code_insee": "92050",
+    "comm_minus": "Nanterre"
+  },
+  {
+    "code_comm": "40",
+    "code_insee": "92040",
+    "comm_minus": "Issy-les-Moulineaux"
+  },
+  {
+    "code_comm": "47",
+    "code_insee": "92047",
+    "comm_minus": "Marnes-la-Coquette"
+  },
+  {
+    "code_comm": "35",
+    "code_insee": "92035",
+    "comm_minus": "La Garenne-Colombes"
+  },
+  {
+    "code_comm": "51",
+    "code_insee": "92051",
+    "comm_minus": "Neuilly-sur-Seine"
+  },
+  {
+    "code_comm": "62",
+    "code_insee": "92062",
+    "comm_minus": "Puteaux"
+  },
+  {
+    "code_comm": "63",
+    "code_insee": "92063",
+    "comm_minus": "Rueil-Malmaison"
+  },
+  {
+    "code_comm": "64",
+    "code_insee": "92064",
+    "comm_minus": "Saint-Cloud"
+  },
+  {
+    "code_comm": "7",
+    "code_insee": "92007",
+    "comm_minus": "Bagneux"
+  },
+  {
+    "code_comm": "78",
+    "code_insee": "92078",
+    "comm_minus": "Villeneuve-la-Garenne"
+  },
+  {
+    "code_comm": "4",
+    "code_insee": "92004",
+    "comm_minus": "Asnières-sur-Seine"
+  },
+  {
+    "code_comm": "9",
+    "code_insee": "92009",
+    "comm_minus": "Bois-Colombes"
+  },
+  {
+    "code_comm": "19",
+    "code_insee": "92019",
+    "comm_minus": "Châtenay-Malabry"
+  },
+  {
+    "code_comm": "26",
+    "code_insee": "92026",
+    "comm_minus": "Courbevoie"
+  }
+]

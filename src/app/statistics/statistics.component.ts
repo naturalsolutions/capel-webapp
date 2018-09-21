@@ -18,6 +18,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class StatisticsComponent implements OnInit {
   user: any = {};
+  grpCaption = 'Statistiques du nombre de plongées par an';
   displayBoats: any = {
     boats: [],
     delta: 0
@@ -32,15 +33,21 @@ export class StatisticsComponent implements OnInit {
     dragging: true,
     scrollWheelZoom: false
   };
+  icon = L.icon({
+    iconUrl: 'assets/icon-marker.png',
+    iconSize: [25, 51], // size of the icon
+    iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
+  });
   iconUserPublic = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
-    iconSize: [49, 50], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
   iconUserPrivate = L.icon({
     iconUrl: 'assets/icon-marker-user-private.png',
-    iconSize: [49, 50], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
@@ -66,6 +73,10 @@ export class StatisticsComponent implements OnInit {
   ) {
 
     this.diveService.getDives().then(data => {
+      data = data.filter( item => {
+       if (!item.shop)
+         return item;
+      })
       this.savedDives = data;
       this.dives = data;
       this.dumpChar();
@@ -76,6 +87,7 @@ export class StatisticsComponent implements OnInit {
 
   setStatistics(event) {
     console.log(event.value);
+    this.grpCaption = 'Statistiques du nombre de plongées pour le site ' + event.value.name
     if (event.value === 'tous') {
       this.dives = this.savedDives;
     } else {
@@ -88,6 +100,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   setStatisticsByDate(event) {
+    this.grpCaption = 'Statistiques du nombre de plongées en ' + event.value
     console.log(event.value);
     if (event.value === 'tous') {
       this.dives = this.savedDives;
@@ -123,7 +136,7 @@ export class StatisticsComponent implements OnInit {
         type: 'areaspline'
       },
       title: {
-        text: 'Statistiques du nombre de plongées par mois/an'
+        text: this.grpCaption + ', Total: '+ this.dives.length
       },
       legend: {
         layout: 'vertical',
@@ -163,7 +176,8 @@ export class StatisticsComponent implements OnInit {
         enabled: false
       },
       series: [{
-        name: 'Plongées par mois',
+        showInLegend: false,
+        name: this.dives.length,
         data: dataChart
       }]
     };
@@ -173,17 +187,22 @@ export class StatisticsComponent implements OnInit {
     this.fetch();
     this.diveService.getUserSites().then(data => {
       this.userDiveSites = data;
+      let icon = this.icon;
       for(let userDiveSite of this.userDiveSites){
+        icon = this.icon;
+        if (userDiveSite.privacy === 'public') icon = this.iconUserPublic;
+        if (userDiveSite.privacy === 'private') icon = this.iconUserPrivate;
         const marker = L.marker([userDiveSite.latitude, userDiveSite.longitude], {
-        title: userDiveSite.name,
-        icon: userDiveSite.privacy === 'private'? this.iconUserPrivate: this.iconUserPublic,
-        radius: 20
-      }).addTo(this.map);
-      marker.bindPopup(userDiveSite.name).openPopup();
+          title: userDiveSite.name,
+          icon: icon,
+          radius: 20
+        }).addTo(this.map);
+        marker.bindPopup(userDiveSite.name).openPopup();
       }
     }, error => {
       console.log(error);
     });
+    /*
     this.diveService.getDiveHearts().then(data => {
       for (let heart of data) {
         heart.geom_poly = JSON.parse(heart.geom_poly);
@@ -214,6 +233,7 @@ export class StatisticsComponent implements OnInit {
         }).addTo(this.map);
       }
     });
+    */
   }
 
   onZoneClick(e) {
@@ -229,15 +249,15 @@ export class StatisticsComponent implements OnInit {
     const legend = new (L.Control.extend({
       options: { position: 'topright' }
     }));
+
     legend.onAdd = function (map) {
       const div = L.DomUtil.create('div', 'legend');
-      const labels = ['assets/icon-marker-user.png','assets/icon-marker.png', 'assets/icon-marker-user-private.png'];
-      const grades =["Site de plongée personnel", "Site de plongée public", "Site de plongée privé"];
+      const labels = ['assets/icon-marker.png', 'assets/icon-marker-user.png', 'assets/icon-marker-user-private.png'];
+      const grades =["Site de plongée référencé", "Site de plongée public", "Site de plongée privé"];
       div.innerHTML = '<div><b>Légende</b></div>';
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
-      div.innerHTML += "<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
       return div;
     };
     legend.addTo(map);
@@ -263,7 +283,7 @@ export class StatisticsComponent implements OnInit {
   getNbrDive(month) {
     let nbr = 0;
     for (const dive of this.dives) {
-      if (new Date(dive.divingDate).getMonth() === month)
+      if ((new Date(dive.divingDate).getMonth() + 1) === month)
         nbr++;
     }
     return nbr;
@@ -297,7 +317,7 @@ export class StatisticsComponent implements OnInit {
         oldDive = dive;
       } else {
 
-        if (new Date(dive.divingDate).getMonth() === new Date(oldDive.divingDate).getMonth()) {
+        if ((new Date(dive.divingDate).getMonth() + 1) === (new Date(oldDive.divingDate).getMonth() + 1)) {
           oldDive = dive;
         } else {
           this.nbrDivesMonths++;

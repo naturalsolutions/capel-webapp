@@ -7,6 +7,11 @@ app-profile {
     h1, h4, h5, span, li{
       color:#fff;
     }
+    .filter-dv {
+      li, span{
+        color:#00b1ca;
+      }
+    }
     h5{
       color: #ddfe00;
       font-size: 14px;
@@ -77,15 +82,15 @@ app-profile {
 .filter-dv{
  /* top: 80px;
   right: 0px;*/
-  color: #fff;
+  color: #00b1ca;
 }
 h5, mat-label, .mat-form-field-appearance-legacy .mat-form-field-label, .mat-select-arrow {
-  color: #fff;
+  color: #00b1ca;
 
 }
 .img-profile{
   max-width:150px;
-  border-radius: 50%;
+  border-radius: 3%;
   margin-bottom: 10px;
   cursor: pointer;
 ;

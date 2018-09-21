@@ -14,7 +14,7 @@ import {LoadingDialogComponent} from '../app-dialogs/loading-dialog/loading-dial
 
 import {NgRedux} from '@angular-redux/store';
 let divesite_id;
-
+import { colors } from '../app-assets/colors';
 @Component({
   selector: 'app-dive',
   templateUrl: './dive.component.html',
@@ -42,6 +42,7 @@ export class DiveComponent implements OnInit {
   initDiveType: any[] = [];
   users: any[] = [];
   diveSites: any[] = [];
+  divehearts: any[] = [];
   map: L.Map;
   leafletOptions = {
     layers: [
@@ -60,19 +61,19 @@ export class DiveComponent implements OnInit {
 
   icon = L.icon({
     iconUrl: 'assets/icon-marker.png',
-    iconSize: [50, 51], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [19, 51], // point of the icon which will correspond to marker's location
     popupAnchor: [0, -51] // point from which the popup should open relative to the iconAnchor
   });
   iconUserPublic = L.icon({
     iconUrl: 'assets/icon-marker-user.png',
-    iconSize: [49, 50], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
   iconUserPrivate = L.icon({
     iconUrl: 'assets/icon-marker-user-private.png',
-    iconSize: [49, 50], // size of the icon
+    iconSize: [25, 51], // size of the icon
     iconAnchor: [17, 50],
     popupAnchor: [0, -50]
   });
@@ -113,13 +114,18 @@ export class DiveComponent implements OnInit {
 
     this.sub = this.route.params.subscribe(params => {
       this.id = + params['id']; // (+) converts string 'id' to a number
-      if ( this.id )
-      this.diveService.get(this.id).then(dive => {
-        this.dive = dive;
-        this.setDiveFrom();
-      }, error => {
-        console.log(error);
-      });
+      if ( this.id ) {
+        let loading = this.dialog.open(LoadingDialogComponent, {
+          disableClose: true
+        });
+        this.diveService.get(this.id).then(dive => {
+          this.dive = dive;
+          this.setDiveFrom();
+          loading.close();
+        }, error => {
+          console.log(error);
+        });
+      }
     });
 
   }
@@ -165,27 +171,29 @@ export class DiveComponent implements OnInit {
       let icon = this.icon;
       const listMarker: any[] = [];
       for (const diveSite of this.diveSites) {
-        icon = this.icon;
-        if(diveSite.privacy === 'public')  icon = this.iconUserPublic;
-        if(diveSite.privacy === 'private') icon = this.iconUserPrivate;
-        const marker = L.marker([diveSite.latitude, diveSite.longitude], {
-          title: diveSite.name,
-          icon: icon,
-          radius: 20,
-          divesite_id: diveSite.id,
-          divesite_name: diveSite.name,
-          latlng: {'lat':diveSite.latitude, 'lng':diveSite.longitude}
-        });
-        marker.bindPopup(diveSite.name).openPopup();
-        marker.on('click', this.onClick.bind(this));
-        listMarker.push(marker);
+        if (diveSite.privacy === 'public' || diveSite.privacy === null || (diveSite.privacy === 'private' && diveSite.user_id == this.profile.id)) {
+          icon = this.icon;
+          if (diveSite.privacy === 'public') icon = this.iconUserPublic;
+          if (diveSite.privacy === 'private') icon = this.iconUserPrivate;
+          const marker = L.marker([diveSite.latitude, diveSite.longitude], {
+            title: diveSite.name,
+            icon: icon,
+            radius: 20,
+            divesite_id: diveSite.id,
+            divesite_name: diveSite.name,
+            latlng: {'lat': diveSite.latitude, 'lng': diveSite.longitude}
+          });
+          marker.bindPopup(diveSite.name).openPopup();
+          marker.on('click', this.onClick.bind(this));
+          listMarker.push(marker);
+        }
       }
       this.markerClusterData = listMarker;
     });
 
     this.diveService.getDiveHearts().then(data => {
-
-      for (let heart of data) {
+      this.divehearts = data;
+      for (const {heart, index} of data.map((heart, index) => ({ heart, index }))) {
         heart.geom_poly = JSON.parse(heart.geom_poly);
         let geojsonFeature = {
           'type': 'Feature',
@@ -197,8 +205,10 @@ export class DiveComponent implements OnInit {
           'geometry': heart.geom_poly
         };
         new L.geoJSON(geojsonFeature, {
-          style: function (feature) {
-            return feature.properties.style;
+          style: {
+            "color": colors[heart.name],
+            "weight": 5,
+            "opacity": 0.65
           }
         }).addTo(this.map);
 
@@ -212,6 +222,7 @@ export class DiveComponent implements OnInit {
     this.addTime(this.dive.times[0][0].substring(0, 5), this.dive.times[0][1].substring(0, 5));
     this.diveForm.controls['divingDate'].setValue(new Date(this.dive.divingDate));
     divesite_id = this.dive.dive_site.id;
+    this.diveForm.controls['isWithStructure'].setValue(this.dive.shop? true : false);
     this.diveForm.controls['boats'].setValue(this.dive.boats);
     this.diveForm.controls['comment'].setValue(this.dive.comment);
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + this.dive.dive_site.name);
@@ -221,10 +232,16 @@ export class DiveComponent implements OnInit {
     this.diveForm.controls['visibility'].setValue( this.dive.weather.visibility ? '' + this.dive.weather.visibility : null);
     this.diveForm.controls['sky'].setValue(this.dive.weather.sky ? this.dive.weather.sky : null);
     this.diveForm.controls['seaState'].setValue(this.dive.weather.seaState ? this.dive.weather.seaState : null);
+    this.diveForm.controls['structure'].setValue(this.dive.shop);
+    console.log(this.dive.shop);
+    this.map.setView({'lat': this.dive.dive_site.latitude, 'lng':this.dive.dive_site.longitude}, 17);
   }
 
   compareBoat(boatN, boatO) {
     return boatN.name === boatO.name;
+  }
+  compareUser(userN, userO) {
+    return userN.id === userO.id;
   }
   onClick(event) {
     divesite_id = event.target.options.divesite_id;
@@ -283,26 +300,29 @@ export class DiveComponent implements OnInit {
     map.on('click', this.checkPoint.bind(this));
     this.map = map;
 
-      const legend = new (L.Control.extend({
-        options: { position: 'topright' }
-      }));
-      legend.onAdd = function (map) {
-        const div = L.DomUtil.create('div', 'legend');
-        const labels = ['assets/icon-marker-user.png','assets/icon-marker.png', 'assets/icon-marker-user-private.png'];
-        const grades =["Site de plongée personnel", "Site de plongée public", "Site de plongée privé"];
-        div.innerHTML = '<div><b>Légende</b></div>';
-        for (let i = 0; i < grades.length; i++) {
-          div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
-        }
-        div.innerHTML += "<div style='width: 20px;height: 20px;background-color: blue;float:left'></div>   Coeur Marin"
-        return div;
-      };
-      legend.addTo(map);
+    const legend = new (L.Control.extend({
+      options: { position: 'topright' }
+    }));
+    legend.onAdd = function (map) {
+      const div = L.DomUtil.create('div', 'legend');
+      const labels = ['assets/icon-marker.png', 'assets/icon-marker-user.png', 'assets/icon-marker-user-private.png'];
+      const grades =["Site de plongée référencé", "Site de plongée public", "Site de plongée privé"];
+      div.innerHTML = '<div><b>Légende</b></div>';
+      for (let i = 0; i < grades.length; i++) {
+        div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
+      }
+      for (var key in colors)
+       div.innerHTML +=  '<i class="legend-icon" style="background-color: '+colors[key]+';"></i>' + key + '<br><br>';
+      return div;
+    };
+    legend.addTo(map);
 
   }
   checkPoint(e) {
     if(!e.title)
       divesite_id = null;
+    else
+      this.map.setView(e.latlng, 17);
     this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
         if ( hearts.length ) {
           this.zone.run(() => {
@@ -310,7 +330,8 @@ export class DiveComponent implements OnInit {
               width: '600px',
               data: {
                 site: e.latlng,
-                title:e.title
+                title: e.title,
+                heart_name: hearts[0].name
               }
             });
             dialogRef.afterClosed().subscribe(value => {
@@ -471,8 +492,11 @@ export class DiveSuccessDialog {
   selector: 'dive-heart-dialog',
   template: `
     <h4>Attention !</h4>
-    <mat-dialog-content>
-      Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement
+    <mat-dialog-content *ngIf="data.title">
+      Site {{data.title}}, vous pouvez signer la Charte de plongée
+    </mat-dialog-content>
+    <mat-dialog-content *ngIf="data.heart_name && !data.title">
+      Cœurs marins du Parc national de {{data.heart_name}}, plongée soumise à la signature d'un règlement
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <a href="http://149.202.44.29/site/reglementation.html" target="_blank" mat-raised-button mat-dialog-close color="primary">
