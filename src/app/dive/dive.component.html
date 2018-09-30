@@ -21,7 +21,7 @@
           <mat-form-field class="mat-form-field-lg">
             <mat-select formControlName="structure" [compareWith]="compareUser">
               <mat-option *ngFor="let user of users" [value]="user">
-                {{ user.firstname }} {{ user.lastname }}
+                {{ user.lastname }} {{ user.firstname }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -82,8 +82,15 @@
         <mat-toolbar>
           <span>SITE DE PLONGÉE </span>
         </mat-toolbar>
+        <section class="example-section">
+          <mat-checkbox class="example-margin" [checked]="mode" (change)="changed($event)">
+            <span *ngIf="mode">Mode ajout d'un site activé</span>
+            <span *ngIf="!mode">Mode ajout d'un site désactivé</span>
+          </mat-checkbox>
+        </section>
         <div [ngClass]="{'form-group': true, 'has-error': hasSubmit && diveForm.get('latlng').invalid}">
           <h5 class="form-group-title with-required">Cliquez sur la carte pour définir votre lieu de plongée.</h5>
+
           <input matInput value=""  formControlName="latlng" />
           <div id="leafletmap" style="height: 400px;"
                 leaflet
@@ -91,7 +98,7 @@
                 (leafletMapReady)="onMapReady($event)"
                 [leafletMarkerCluster]="markerClusterData"
                 [leafletMarkerClusterOptions]="markerClusterOptions"
-                (leafletMarkerClusterReady)="markerClusterReady($event)"
+
           >
           </div>
         </div>
@@ -105,7 +112,7 @@
           <div class="col d-flex flex-column" *ngFor="let typedive of divetypes.controls; let i=index" [formGroupName]="i" >
             <mat-checkbox class="checkbox-btn" formControlName="selected">{{ typedive.controls.name.value }}</mat-checkbox>
             <mat-form-field *ngIf="typedive.controls.selected.value">
-              <input class="text-right" matInput type="number" min="1" formControlName="nbrDivers">
+              <input class="text-right" matInput type="number"  min="1" formControlName="nbrDivers">
               <span matPrefix>nb. de plongeurs</span>
             </mat-form-field>
           </div>

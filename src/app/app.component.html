@@ -83,6 +83,32 @@
       </li>
     </ul>
     <mat-accordion class="dives">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Filtres
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          <mat-form-field>
+            <mat-select placeholder="Année"  [(ngModel)]="fl_year" (selectionChange)="setStatistic($event)">
+              <mat-option  [value]="2018">2018</mat-option>
+              <mat-option  [value]="2019">2019</mat-option>
+              <mat-option  value="tous">Toutes</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-panel-description>
+        <mat-panel-description>
+            <mat-form-field>
+              <mat-select placeholder="Site de plongée" [(ngModel)]="fl_site"  (selectionChange)="setStatistic($event)">
+                <mat-option  value="tous">Tous les sites</mat-option>
+                <mat-option *ngFor="let divesite of sites" [value]="divesite">
+                  {{ divesite.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </mat-panel-description>
+      </mat-expansion-panel>
       <mat-expansion-panel *ngFor="let diveDisplay of groupedDives; let i = index">
         <mat-expansion-panel-header>
           <mat-panel-title>

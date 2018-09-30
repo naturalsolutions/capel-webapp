@@ -9,6 +9,8 @@ import {countries} from '../app-assets/countries/fr';
 import {DiveHeartDialog} from '../dive/dive.component';
 import {SessionActionsService} from '../store/session/session-actions.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import {colors} from '../app-assets/colors';
+import {LoadingDialogComponent} from '../app-dialogs/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class StatisticsComponent implements OnInit {
   user: any = {};
-  grpCaption = 'Statistiques du nombre de plongées par an';
+  grpCaption = 'Statistiques du nombre de plongées';
   displayBoats: any = {
     boats: [],
     delta: 0
@@ -58,10 +60,30 @@ export class StatisticsComponent implements OnInit {
   nbrHoursInWater: any = 0;
   nbrDives: any = 0;
   options: any;
+  optionsHistoSites: any;
+  optionsMoy: any;
   sites: any[] = [];
   userDiveSites: any[] = [];
   countries = countries;
-
+  divehearts;
+  months = [
+    'Janvier',
+    'Fevrier',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Aout',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre',
+  ]
+  fl_heart: any = 'tous';
+  fl_month: any = 'tous';
+  fl_year: any = 'tous';
+  fl_site: any = 'tous';
   constructor(
     private diveService: DiveService,
     private ngRedux: NgRedux<any>,
@@ -71,8 +93,12 @@ export class StatisticsComponent implements OnInit {
     private sessionActionsService: SessionActionsService,
     private sanitizer: DomSanitizer
   ) {
-
+    let dialogm = this.dialog.open(LoadingDialogComponent, {
+      disableClose: true
+    });
     this.diveService.getDives().then(data => {
+      console.log(data);
+      dialogm.close()
       data = data.filter( item => {
        if (!item.shop)
          return item;
@@ -86,21 +112,29 @@ export class StatisticsComponent implements OnInit {
   }
 
   setStatistics(event) {
-    console.log(event.value);
-    this.grpCaption = 'Statistiques du nombre de plongées pour le site ' + event.value.name
-    if (event.value === 'tous') {
-      this.dives = this.savedDives;
-    } else {
+    this.dives = this.savedDives;
+    this.grpCaption = 'Nombre de plongées  pour  ';
+    this.grpCaption += ' Site: '+ (this.fl_site !== 'tous'?this.fl_site.name : 'Tous');
+    this.grpCaption += ', Coeur Marin: '+ (this.fl_heart !== 'tous'?this.fl_heart.name: 'Tous ');
+    this.grpCaption += ', Année: '+ (this.fl_year !== 'tous'?this.fl_year: 'Toutes');
+    this.grpCaption += ', Mois : '+ (this.fl_year !== 'tous'?this.fl_month: 'Tous');
     this.dives =  this.savedDives.filter(dive => {
-      if (dive.dive_site.id == event.value.id)
+      if (
+        (this.fl_site !== 'tous' ? this.fl_site.id === dive.dive_site.id : true)
+        &&
+        (this.fl_heart !== 'tous' ? this.fl_heart.id === dive.dive_site.heart_id : true)
+        &&
+        (this.fl_year !== 'tous' ? new Date(dive.divingDate).getFullYear() === this.fl_year : true)
+        &&
+        (this.fl_month !== 'tous' ? new Date(dive.divingDate).getMonth() === this.fl_month : true)
+      )
         return dive;
     });
-    }
     this.dumpChar();
   }
-
+  /*
   setStatisticsByDate(event) {
-    this.grpCaption = 'Statistiques du nombre de plongées en ' + event.value
+    this.grpCaption = 'Nombre de plongées en ' + event.value
     console.log(event.value);
     if (event.value === 'tous') {
       this.dives = this.savedDives;
@@ -113,6 +147,7 @@ export class StatisticsComponent implements OnInit {
     }
     this.dumpChar();
   }
+  */
 
   dumpChar() {
     this.getExploredSite();
@@ -121,6 +156,7 @@ export class StatisticsComponent implements OnInit {
     let dataChart = [
       this.getNbrDive(0),
       this.getNbrDive(1),
+      this.getNbrDive(2),
       this.getNbrDive(3),
       this.getNbrDive(4),
       this.getNbrDive(5),
@@ -148,20 +184,7 @@ export class StatisticsComponent implements OnInit {
         borderWidth: 1
       },
       xAxis: {
-        categories: [
-          'Janvier',
-          'Fevrier',
-          'Mars',
-          'Avril',
-          'Mai',
-          'Juin',
-          'Juillet',
-          'Aout',
-          'Septembre',
-          'Octobre',
-          'Novembre',
-          'Decembre'
-        ]
+        categories: this.months
       },
       yAxis: {
         title: {
@@ -181,6 +204,80 @@ export class StatisticsComponent implements OnInit {
         data: dataChart
       }]
     };
+    let categories = [];
+    let data = [];
+    for(let site of this.sites){
+      categories.push(site.name);
+      let i = 0;
+      for(let dive of this.dives){
+        if(dive.dive_site.id == site.id){
+          i++;
+        }
+      }
+      data.push(i);
+    }
+    this.optionsHistoSites = {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'histogramme de nombre de plongée par site'
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        categories: categories,
+        crosshair: true
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: ''
+        }
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          borderWidth: 0,
+          groupPadding: 0,
+          shadow: false
+        }
+      },
+      series: [{
+        name: 'Data',
+        data: data
+
+      }]
+    };
+    this.optionsMoy = {
+      title: {
+        text: 'Moyen des plongées'
+      },
+
+      xAxis: {
+      },
+      series: [{
+        type: 'pie',
+        name: 'Plongées',
+        allowPointSelect: true,
+        keys: ['name', 'y', 'selected', 'sliced'],
+        data: [
+          ['Par Site', this.dives.length / this.sites.length],
+          ['Par Année', this.dives.length / 1],
+          ['Par Mois', this.dives.length / this.nbrDivesMonths]
+        ],
+        showInLegend: true
+      }]
+    }
   }
 
   ngOnInit() {
@@ -202,8 +299,8 @@ export class StatisticsComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-    /*
     this.diveService.getDiveHearts().then(data => {
+      this.divehearts = data;
       for (let heart of data) {
         heart.geom_poly = JSON.parse(heart.geom_poly);
         let geojsonFeature = {
@@ -216,24 +313,26 @@ export class StatisticsComponent implements OnInit {
           'geometry': heart.geom_poly
         };
         new L.geoJSON(geojsonFeature, {
-          style: function (feature) {
-            return feature.properties.style;
+          style:  {
+            "color": colors[heart.name],
+            "weight": 5,
+            "opacity": 0.65
           },
           onEachFeature(feature, layer) {
             var popupContent = '';
             if (feature.properties && feature.properties.popupContent) {
               popupContent += "<b>"+feature.properties.popupContent+"</b>";
-              popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
+              popupContent += "</br> Cœurs marins du Parc national de "+heart.name+", plongée soumise à la signature d'un règlement</br>";
               popupContent += "<a target='_blank' href='http://149.202.44.29/site/reglementation.html'";
               popupContent += "mat-raised-button mat-dialog-close color='primary'>";
               popupContent += "Voir les dispositions </a>";
             }
             layer.bindPopup(popupContent);
-        }
+          }
         }).addTo(this.map);
+
       }
     });
-    */
   }
 
   onZoneClick(e) {
@@ -258,6 +357,8 @@ export class StatisticsComponent implements OnInit {
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
+      for (var key in colors)
+        div.innerHTML +=  '<i class="legend-icon" style="background-color: '+colors[key]+';"></i>' + key + '<br><br>';
       return div;
     };
     legend.addTo(map);
@@ -283,7 +384,7 @@ export class StatisticsComponent implements OnInit {
   getNbrDive(month) {
     let nbr = 0;
     for (const dive of this.dives) {
-      if ((new Date(dive.divingDate).getMonth() + 1) === month)
+      if ((new Date(dive.divingDate).getMonth()) === month)
         nbr++;
     }
     return nbr;

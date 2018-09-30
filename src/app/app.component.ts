@@ -27,7 +27,11 @@ export class AppComponent implements OnInit {
   @HostBinding('class.is-admin') isAdmin: boolean;
   groupedDives: any[] = [];
   dives = [];
+  sites = [];
   conf;
+  fl_year: any = 'tous';
+  fl_site: any = 'tous';
+  savedDives = []
   constructor(private ngRedux: NgRedux<any>,
               private router: Router,
               private route: ActivatedRoute,
@@ -72,13 +76,38 @@ export class AppComponent implements OnInit {
       this.showSidenav = false;
     });
   }
+  getExploredSite() {
+    this.sites = []
+    for (const dive of this.dives) {
+      let exists = false;
+      for (let site of this.sites)
+        if (site.id === dive.dive_site.id)
+          exists = true;
+      if (!exists)
+        this.sites.push(dive.dive_site);
+    }
 
+  }
+  setStatistic(event) {
+    this.dives =  this.savedDives.filter(dive => {
+      if (
+        (this.fl_site !== 'tous' ? this.fl_site.id === dive.dive_site.id : true)
+        &&
+        (this.fl_year !== 'tous' ? new Date(dive.divingDate).getFullYear() === this.fl_year : true)
+      )
+        return dive;
+    });
+    this.groupeDives_naive();
+  }
   getDives() {
     let dialog = this.dialog.open(LoadingDialogComponent, {
       disableClose: true
     });
     this.diveService.getDives().then(data => {
       this.dives = data;
+      this.savedDives = data;
+      this.getExploredSite();
+      this.diveService.setLclDives(data);
       const obj: any = {};
       this.groupeDives_naive();
       dialog.close();
@@ -204,7 +233,14 @@ export class AppComponent implements OnInit {
     link = document.createElement('a');
     link.setAttribute('href', data);
     link.setAttribute('download', filename);
-    link.click();
+    document.body.appendChild(link)
+     if (navigator.msSaveBlob) {
+       let blob = new Blob(data, { type: 'application/csv' });
+       return navigator.msSaveBlob(blob, filename);
+     }else {
+       link.click();
+       link.remove();
+     }
   }
 }
 @Component({

@@ -51,13 +51,12 @@ export class ProfileFormComponent implements OnInit {
   ) {
     this.filteredCommons = this.commonCtrl.valueChanges
     .pipe(startWith(''),
-      map(common => common ? this._filterCommons(common) : this.commons.slice())
+      map(common => common ? this._filterCommons(common).slice(0, 5) : this.commons.slice(0, 5))
     );
   }
   private _filterCommons(value: string): any[] {
     const filterValue = value.toLowerCase();
-
-    return this.commons.filter(common => common.comm_minus.toLowerCase().indexOf(filterValue) === 0);
+    return this.commons.filter(common => common["nom_complet"].toLowerCase().indexOf(filterValue) === 0);
   }
   getImageSanitiser(img: any){
     return this.sanitizer.bypassSecurityTrustResourceUrl(img);
@@ -74,8 +73,8 @@ export class ProfileFormComponent implements OnInit {
       email: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
-      zip: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
+      zip: new FormControl(''),
+      city: new FormControl(''),
       country: new FormControl('FR', Validators.required),
       common: new FormControl(''),
       password: new FormControl(''),
@@ -114,7 +113,7 @@ export class ProfileFormComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = () => {
       this.userService.patchMe({
-        photo: 'data: image/' + file.type + '; base64 ,' + reader.result.split(',')[1],
+        photo: 'data: ' + file.type + '; base64 ,' + reader.result.split(',')[1],
         boats: []
       }).then(data => {
         this.sessionActionsService.patch(data);
@@ -235,10 +234,18 @@ export class ProfileFormComponent implements OnInit {
     }
   }
 
-  // User Getters
+  // User getters
+  get email() { return this.userForm.get('email'); }
+  get phone() { return this.userForm.get('phone'); }
   get lastname() { return this.userForm.get('lastname'); }
   get firstname() { return this.userForm.get('firstname'); }
+  get country() { return this.userForm.get('country'); }
+  get common() { return this.userForm.get('common'); }
+  get address() { return this.userForm.get('address'); }
+  get city() { return this.userForm.get('city'); }
+  get company() { return this.userForm.get('company'); }
   get category() { return this.userForm.get('category'); }
+  get website() { return this.userForm.get('website'); }
   get password() { return this.userForm.get('password'); }
   get repeat() { return this.userForm.get('repeat'); }
 

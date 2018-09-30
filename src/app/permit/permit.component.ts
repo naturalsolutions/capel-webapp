@@ -14,6 +14,7 @@ import { config } from '../settings';
 import { NgRedux } from '@angular-redux/store';
 import {DiveService} from '../services/dive.service';
 import {PermitService} from '../services/permit.service';
+import {colors} from '../app-assets/colors';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class PermitComponent implements OnInit {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
-    zoom: 9,
+    zoom: 10,
     center: L.latLng(42.976520698105546, 6.284179687500001),
     dragging: true,
     scrollWheelZoom: false
@@ -87,7 +88,7 @@ export class PermitComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-    /*
+
     this.diveService.getDiveHearts().then(data => {
 
       for (let heart of data) {
@@ -102,14 +103,16 @@ export class PermitComponent implements OnInit {
           'geometry': heart.geom_poly
         };
         new L.geoJSON(geojsonFeature, {
-          style: function (feature) {
-            return feature.properties.style;
+          style:  {
+            "color": colors[heart.name],
+              "weight": 5,
+              "opacity": 0.65
           },
           onEachFeature(feature, layer) {
             var popupContent = '';
             if (feature.properties && feature.properties.popupContent) {
               popupContent += "<b>"+feature.properties.popupContent+"</b>";
-              popupContent += "</br> Vous êtes en cœur de parc, la plongée est soumise à la signature d'un règlement </br>";
+              popupContent += "</br> Cœurs marins du Parc national de "+heart.name+", plongée soumise à la signature d'un règlement</br>";
               popupContent += "<a target='_blank' href='http://149.202.44.29/site/reglementation.html'";
               popupContent += "mat-raised-button mat-dialog-close color='primary'>";
               popupContent += "Voir les dispositions </a>";
@@ -120,11 +123,10 @@ export class PermitComponent implements OnInit {
 
       }
     });
-    */
+
   }
 
   onMapReady(map: L.Map) {
-    L.marker([50.6311634, 3.0599573]).addTo(map);
     this.map = map;
 
     const legend = new (L.Control.extend({
@@ -138,6 +140,8 @@ export class PermitComponent implements OnInit {
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
+      for (var key in colors)
+        div.innerHTML +=  '<i class="legend-icon" style="background-color: '+colors[key]+';"></i>' + key + '<br><br>';
       return div;
     };
     legend.addTo(map);
@@ -156,6 +160,7 @@ export class PermitComponent implements OnInit {
         return;
       }
     if (this.permit) {
+      this.map.setView({'lat': 42.976520698105546, 'lng': 6.284179687500001}, 12);
       window.location.href = config.serverURL
       +"/api/users/" + _.get(this.ngRedux.getState().session, 'profile').id + "/permit.pdf";
     }else {
@@ -166,6 +171,7 @@ export class PermitComponent implements OnInit {
         this.permitService.get().then(data => {
           console.log(data);
           this.permit = data;
+          this.map.setView({'lat': 42.976520698105546, 'lng': 6.284179687500001}, 12);
         });
       });
     }
@@ -175,6 +181,7 @@ export class PermitComponent implements OnInit {
 @Component({
   selector: 'rule-dialog',
   template: `
+    <a class="text-right" href="javascript:void(0);" (click)="close()">x</a>
     <h2 mat-dialog-title class="text-center"><small class="d-block">Réglement 2018 de la plongée sous-marine</small> dans les coeurs marins du parc national de Port-Cros</h2>
     <mat-dialog-content>
       <iframe src="./assets/reglement_pnpc_coeurs_marins_2018.pdf"></iframe>
@@ -226,5 +233,8 @@ export class RuleDialog implements OnInit{
       }
     }
     this.hasCheckAll = true;
+  }
+  close() {
+    this.dialogRef.close();
   }
 }

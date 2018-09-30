@@ -9,7 +9,13 @@ export class DiveService {
 
   added$: BehaviorSubject<any>
   currentSite: any;
-
+  dives = [];
+  setLclDives(data) {
+    this.dives = data;
+  }
+  getLclDives() {
+    return this.dives;
+  }
   setCurrentSite(site:any ) {
     this.currentSite = site;
   }

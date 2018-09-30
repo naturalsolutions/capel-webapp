@@ -21,7 +21,7 @@ import {
   MatToolbarModule,
   MatSliderModule,
   MatTooltipModule,
-  MatExpansionModule, MatMenuModule
+  MatExpansionModule, MatMenuModule, MatDividerModule
 } from '@angular/material';
 
 @NgModule({
@@ -45,6 +45,7 @@ import {
     MatSnackBarModule,
     MatToolbarModule,
     MatExpansionModule,
+    MatDividerModule,
     MatMenuModule,
     MatTooltipModule
   ],
@@ -69,7 +70,8 @@ import {
     MatToolbarModule,
     MatExpansionModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDividerModule
   ],
   declarations: [],
   providers: [

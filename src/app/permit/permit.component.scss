@@ -46,6 +46,9 @@ app-profile {
   #confirm {
     flex: 1 1;
   }
+  .cdk-program-focused{
+    background-color: lightgray;
+  }
 }
 
 .cdk-overlay-pane.rule {
@@ -64,5 +67,10 @@ app-profile {
         height: 100%;
       }
     }
+    .mat-raised-button[disabled][disabled] {
+      opacity: 0.5;
+      color:#fff;
+    }
   }
 }
+

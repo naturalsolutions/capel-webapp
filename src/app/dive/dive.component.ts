@@ -44,6 +44,7 @@ export class DiveComponent implements OnInit {
   diveSites: any[] = [];
   divehearts: any[] = [];
   map: L.Map;
+  mode = true;
   leafletOptions = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '...'})
@@ -54,11 +55,9 @@ export class DiveComponent implements OnInit {
     scrollWheelZoom: false
   };
 
-  // Marker cluster stuff
-  markerClusterGroup: L.MarkerClusterGroup;
+
   markerClusterData: any[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions;
-
   icon = L.icon({
     iconUrl: 'assets/icon-marker.png',
     iconSize: [25, 51], // size of the icon
@@ -110,22 +109,17 @@ export class DiveComponent implements OnInit {
     });
     this.userService.getUsers().then(users => {
       this.users = _.filter(users, {category: 'structure'});
-    });
+      this.users = this.users.sort((n1, n2) => {
+        if (n1.lastname > n2.lastname) {
+          return 1;
+        }
 
-    this.sub = this.route.params.subscribe(params => {
-      this.id = + params['id']; // (+) converts string 'id' to a number
-      if ( this.id ) {
-        let loading = this.dialog.open(LoadingDialogComponent, {
-          disableClose: true
-        });
-        this.diveService.get(this.id).then(dive => {
-          this.dive = dive;
-          this.setDiveFrom();
-          loading.close();
-        }, error => {
-          console.log(error);
-        });
-      }
+        if (n1.lastname < n2.lastname) {
+          return -1;
+        }
+
+        return 0;
+      });
     });
 
   }
@@ -148,9 +142,25 @@ export class DiveComponent implements OnInit {
       isWithStructure: new FormControl(''),
       latlng: new FormControl('')
     });
-
-    this.addTime('00:00', '00:00');
-
+    // Get current dive id from parms and set form
+    this.sub = this.route.params.subscribe(params => {
+      this.id = + params['id']; // (+) converts string 'id' to a number
+      if ( this.id ) {
+        let loading = this.dialog.open(LoadingDialogComponent, {
+          disableClose: true
+        });
+        this.diveService.get(this.id).then(dive => {
+          this.dive = dive;
+          this.setDiveFrom();
+          loading.close();
+        }, error => {
+          console.log(error);
+        });
+      }else{
+        this.dive = null;
+        this.reset();
+      }
+    });
     this.diveService.getDiveTypes().then(data => {
       this.initDiveType = data;
       this.initDiveTypeForm();
@@ -249,10 +259,6 @@ export class DiveComponent implements OnInit {
     this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + event.target.options.divesite_name);
   }
 
-  markerClusterReady(group: L.MarkerClusterGroup) {
-    this.markerClusterGroup = group;
-  }
-
   initDiveTypeForm() {
     this.divetypes = this.diveForm.get('divetypes') as FormArray;
     for (const divetype of this.initDiveType) {
@@ -273,7 +279,7 @@ export class DiveComponent implements OnInit {
         selected: new FormControl(exists != false ? true : false),
         name: new FormControl(divetype.name),
         nameMat: new FormControl(divetype.name),
-        nbrDivers: new FormControl(nbrDivers),
+        nbrDivers: new FormControl({value:nbrDivers, disabled: (this.profile.category=='particulier'?true:false)}),
       }));
     }
   }
@@ -318,13 +324,19 @@ export class DiveComponent implements OnInit {
     legend.addTo(map);
 
   }
+  changed(evt){
+    console.log(this.mode)
+    this.mode = this.mode === true ? false :  true;
+    console.log(this.mode)
+  }
   checkPoint(e) {
-    if(!e.title)
-      divesite_id = null;
-    else
-      this.map.setView(e.latlng, 17);
-    this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
-        if ( hearts.length ) {
+    if(this.mode) {// mode add dive site enabled
+      if (!e.title)
+        divesite_id = null;
+      else
+        this.map.setView(e.latlng, 17);
+      this.diveService.getCheckedPointHearts(e.latlng).then(hearts => {
+        if (hearts.length) {
           this.zone.run(() => {
             let dialogRef = this.dialog.open(DiveHeartDialog, {
               width: '600px',
@@ -335,16 +347,17 @@ export class DiveComponent implements OnInit {
               }
             });
             dialogRef.afterClosed().subscribe(value => {
-              if(value)
-              this.createSite(e);
+              if (value)
+                this.createSite(e);
             });
           });
         }
-        if( !hearts.length && !e.title) {
+        if (!hearts.length && !e.title) {
           this.createSite(e);
         }
-    });
-    this.diveForm.controls['latlng'].setValue(e.latlng);
+      });
+      this.diveForm.controls['latlng'].setValue(e.latlng);
+    }
   }
   createSite(e){
     this.zone.run(() => {
@@ -356,10 +369,23 @@ export class DiveComponent implements OnInit {
       });
       dialogRefSite.afterClosed().subscribe(value => {
         let site = this.diveService.getCurrentSite();
-        window.scrollTo(0, 0);
+        console.log(site);
+        let icon = this.icon;
+        if (site.privacy === 'public') icon = this.iconUserPublic;
+        if (site.privacy === 'private') icon = this.iconUserPrivate;
+        const marker = L.marker([site.latitude, site.longitude], {
+          title: site.name,
+          icon: icon,
+          radius: 20,
+          divesite_id: site.id,
+          divesite_name: site.name,
+          latlng: {'lat': site.latitude, 'lng': site.longitude}
+        });
+        marker.bindPopup(site.name).openPopup();
+        marker.addTo(this.map);
         this.diveForm.controls['latlng'].setValue('Vous avez plongé à : ' + site.name);
         divesite_id = site.id;
-        this.snackBar.open('Votre site ' + site.name + ' est bien crée.', 'OK', {
+        this.snackBar.open('Votre site ' + site.name + ' est bien été créé.', 'OK', {
           duration: 3000
         });
       });
@@ -462,15 +488,14 @@ export class DiveComponent implements OnInit {
   template: `
     <h4>Félicitations !</h4>
     <mat-dialog-content>
-      Votre plongée est bien déclarée.<br/>
-      Que voulez-vous faire maintenant ?
+      Votre plongée est bien déclarée, Que voulez-vous faire maintenant ?
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
         Déclarer une nouvelle plongée
       </button>
       <button mat-raised-button mat-dialog-close color="primary" (click)="logout()">
-        continuer ma navigation
+        C ontinuer ma navigation
       </button>
     </mat-dialog-actions>`
 })
@@ -506,7 +531,7 @@ export class DiveSuccessDialog {
         Créer un site
       </button>
       <button mat-raised-button mat-dialog-close color="primary" (click)="close()">
-        Annuler
+        Ok
       </button>
     </mat-dialog-actions>`
 })
@@ -572,7 +597,7 @@ export class DiveNotAllowedDialog {
         <div class="row">
           <div class="col-sm-12">
             <mat-form-field class="mat-form-field-lg full-width" >
-              <mat-select placeholder="visibilité du site" formControlName="privacy">
+              <mat-select placeholder="visibilité du site" formControlName="privacy" required>
                 <mat-option  value="private">
                   Privé
                 </mat-option>
@@ -584,17 +609,17 @@ export class DiveNotAllowedDialog {
           </div>
           <div class="col-sm-12">
             <mat-form-field class="full-width">
-              <input class="text-right" matInput placeholder="Nom de site" formControlName="name">
+              <input class="text-left" matInput placeholder="Nom de site" formControlName="name" required>
             </mat-form-field>
           </div>
           <div class="col-sm-12">
             <mat-form-field class="full-width">
-              <input class="text-right" matInput placeholder="latitude" disabled type="latitude" formControlName="latitude">
+              <input class="text-left" matInput placeholder="latitude" disabled type="latitude" formControlName="latitude">
             </mat-form-field>
           </div>
           <div class="col-sm-12">
           <mat-form-field class="full-width">
-            <input class="text-right" matInput placeholder="longitude" disabled type="longitude" formControlName="longitude">
+            <input class="text-left" matInput placeholder="longitude" disabled type="longitude" formControlName="longitude">
           </mat-form-field>
           </div>
         </div>  
@@ -604,7 +629,7 @@ export class DiveNotAllowedDialog {
       <button mat-raised-button mat-dialog-close color="primary" (click)="cancel()">
         Annuler
       </button>
-      <button mat-raised-button mat-dialog-close color="primary" (click)="envoyer()">
+      <button mat-raised-button mat-dialog-close [disabled]="!siteForm.valid" color="primary" (click)="envoyer()">
         Envoyer
       </button>
     </mat-dialog-actions>`,

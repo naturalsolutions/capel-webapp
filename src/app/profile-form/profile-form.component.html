@@ -1,147 +1,207 @@
 <div class="main-form">
-  <div class="text-center col-md-12" >
-  <div class="form-group">
-    <div class="inputWrapper">
-      <input type="file" class="fileInput"  #photoInput value="" id="customFileLang" lang="fr" (change)="upload($event)" accept="image/*">
+  <div class="text-center col-md-12">
+    <div class="form-group">
+      <div class="inputWrapper">
+        <input type="file" class="fileInput" #photoInput value="" id="customFileLang" lang="fr"
+               (change)="upload($event)" accept="image/*">
+      </div>
     </div>
+    <img *ngIf="!this.user.photo" matTooltip="Vous pouvez ajouter une photo" (click)="photoInput.click()"
+         src="http://www.assises-orl.fr/wp-content/uploads/2016/06/user-default.png" class="img-profile">
+    <img *ngIf="this.user.photo" matTooltip="Vous pouvez ajouter une photo"  [src]="getImageSanitiser(this.user.photo)" crossOrigin = 'Anonymous'
+         (click)="photoInput.click()" class="img-profile">
   </div>
-  <img *ngIf="!this.user.photo" matTooltip="Vous pouvez ajouter une photo" (click)="photoInput.click()" src="http://www.assises-orl.fr/wp-content/uploads/2016/06/user-default.png" class="img-profile">
-  <img *ngIf="this.user.photo" matTooltip="Vous pouvez ajouter une photo" [src]="getImageSanitiser(this.user.photo)" (click)="photoInput.click()" class="img-profile">
-</div>
-<form class="register-form inscription" [formGroup]="userForm">
-  <fieldset>
-    <span style="font-size: 12px;color: gray"><mat-label class="with-required "></mat-label>: champ obligatoire</span>
+  <form class="register-form inscription" [formGroup]="userForm">
+    <fieldset>
+      <span style="font-size: 12px;color: gray"><mat-label class="with-required "></mat-label>: champ obligatoire</span>
 
-    <mat-toolbar>VOUS</mat-toolbar>
-    <div [ngClass]="{
+      <mat-toolbar>VOUS</mat-toolbar>
+      <div [ngClass]="{
       'col': true,
       'form-group': true,
       'has-error': isSubmit && category.invalid
     }">
-      <mat-label class="d-block with-required form-group-title">Vous êtes</mat-label>
-      <mat-radio-group formControlName="category">
-        <mat-radio-button value="particulier" (change)="categoryChange($event)">Je suis un particulier</mat-radio-button>
-        <mat-radio-button value="structure" (change)="categoryChange($event)">Je suis une structure</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <div class="col-sm-12" *ngIf="category.value == 'structure'">
-      <mat-form-field class="full-width"  floatLabel="auto">
-        <input matInput type="text" placeholder="Raison Sociale" formControlName="company">
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field class="full-width" floatLabel="auto">
-        <input matInput type="text" placeholder="Nom" formControlName="lastname">
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="Prénom" formControlName="firstname">
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12" *ngIf="category.value == 'structure'">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="Site Web" formControlName="website">
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="email" formControlName="email" email>
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="téléphone" formControlName="phone">
-      </mat-form-field>
-    </div>
-    <!--
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="code postal" formControlName="zip">
-      </mat-form-field>
-    </div>
-    -->
-    <div class="col-sm-12">
-    <mat-form-field floatLabel="auto" class="full-width">
-      <mat-select formControlName="country" placeholder="Sélectionner Pays">
-        <mat-option *ngFor="let key of keys" [value]="key">
-          {{countries[key]}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <!--
-      <mat-form-field floatLabel="auto" class="full-width">
-        <mat-select formControlName="common" placeholder="Sélectionner Commune">
-          <mat-option *ngFor="let commune of commons" [value]="commune.Code_commune_INSEE">
-            {{commune['Nom_commune']}}
-          </mat-option>
-        </mat-select>
+        <mat-label class="d-block with-required form-group-title">Vous êtes</mat-label>
+        <mat-radio-group formControlName="category">
+          <mat-radio-button value="particulier" (change)="categoryChange($event)">Je suis un particulier
+          </mat-radio-button>
+          <mat-radio-button value="structure" (change)="categoryChange($event)">Je suis une structure</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="col-sm-12" *ngIf="category.value == 'structure'">
+        <mat-form-field class="full-width" floatLabel="auto">
+          <input matInput type="text" placeholder="Nom de la structure" formControlName="company" required>
         </mat-form-field>
-        -->
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Commune" aria-label="Commune" [matAutocomplete]="auto" [formControl]="commonCtrl">
-          <mat-autocomplete #auto="matAutocomplete" formControlName="common">
-            <mat-option  *ngFor="let commune of filteredCommons | async" [value]="commune.comm_minus">
-              <span> {{commune['comm_minus']}}</span>
-            </mat-option>
-          </mat-autocomplete>
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="adresse" formControlName="address">
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" placeholder="Ville" formControlName="city">
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput placeholder="mot de passe " [type]="hide ? 'text' : 'password'" formControlName="password">
-        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-      </mat-form-field>
-    </div>
-    <div class="col-sm-12">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput placeholder="Confirmer le mot de passe " [type]="hide ? 'text' : 'password'" formControlName="repeat">
-        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-      </mat-form-field>
-    </div>
-  </fieldset>
-  <fieldset class="boats">
-    <mat-toolbar>
-      VOS BATEAUX
-    </mat-toolbar>
-    <div formArrayName="boats">
-      <div class="boat" *ngFor="let boat of boats.controls; let i=index" [formGroupName]="i">
-        <input type="hidden" formControlName="id" />
-        <button mat-icon-button color="warn"
-          class="btn-remove"
-          (click)="removeBoat(i)">
-          <mat-icon>close</mat-icon>
-        </button>
-        <div class="col-sm-12">
-          <mat-form-field floatLabel="auto" class="full-width">
-            <input matInput type="text" placeholder="Nom" formControlName="name" required>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-12">
-          <mat-form-field floatLabel="auto" class="full-width">
-            <input matInput type="text" placeholder="Immatriculation" formControlName="matriculation" required>
-          </mat-form-field>
+        <div *ngIf="company.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="company.errors.required">
+            Le nom de la structure est obligatoire.
+          </div>
         </div>
       </div>
-    </div>
-    <div class="text-center mt-3">
-      <button type="button" class="btn btn-boat" (click)="addBoat()">AJOUTER UN BATEAU</button>
-    </div>
-  </fieldset>
-  <fieldset class="text-center form-actions">
-    <button type="submit" (click)="save()" class="btn btn-primary btn-validate">{{ method == 'post' ? "S'INSCRIRE" : "VALIDER" }}</button>
-  </fieldset>
-</form>
+      <div class="col-sm-12">
+        <mat-form-field class="full-width" floatLabel="auto">
+          <input matInput type="text"
+                 placeholder="{{category.value == 'structure'?'Nom de la personne responsable':'Nom'}}"
+                 formControlName="lastname" required>
+        </mat-form-field>
+        <div *ngIf="lastname.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="lastname.errors.required">
+            Le nom est obligatoire.
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text"
+                 placeholder="{{category.value == 'structure'?'Prénom de la personne responsable':'Prénom'}}"
+                 formControlName="firstname" required>
+        </mat-form-field>
+        <div *ngIf="firstname.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="firstname.errors.required">
+            Le Prénom est obligatoire.
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12" *ngIf="category.value == 'structure'">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text" placeholder="Site Web" formControlName="website" required>
+        </mat-form-field>
+        <div *ngIf="website.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="website.errors.required">
+            Le Site Web est obligatoire.
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text" placeholder="email" formControlName="email" email required>
+        </mat-form-field>
+        <div *ngIf="email.invalid && isSubmit" class="alert alert-danger">
+          Entrer un email valide.
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text" placeholder="téléphone" formControlName="phone" required>
+        </mat-form-field>
+        <div *ngIf="phone.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="phone.errors.required">
+            Le téléphone est obligatoire.
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text" placeholder="code postal" formControlName="zip">
+        </mat-form-field>
+      </div>
+      -->
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <mat-select formControlName="country" placeholder="Sélectionner Pays">
+            <mat-option *ngFor="let key of keys" [value]="key">
+              {{countries[key]}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="country.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="country.errors.required">
+            Le Pays est obligatoire.
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Commune" aria-label="Commune" [matAutocomplete]="auto"
+                 [formControl]="commonCtrl">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let commune of filteredCommons | async" [value]="commune.nom_complet">
+              <span> {{commune['nom_complet']}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text" placeholder="adresse" formControlName="address">
+        </mat-form-field>
+        <div *ngIf="address.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="address.errors.required">
+            L'adresse est obligatoire.
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput type="text" placeholder="Ville" formControlName="city">
+        </mat-form-field>
+        <div *ngIf="city.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="city.errors.required">
+            La Ville est obligatoire.
+          </div>
+        </div>
+      </div>
+      -->
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput placeholder="mot de passe " [type]="hide ? 'text' : 'password'" formControlName="password">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+        </mat-form-field>
+        <div *ngIf="password.invalid && isSubmit" class="alert alert-danger">
+          <div *ngIf="password.errors.required">
+            le mot de passe est obligatoire.
+          </div>
+          <div *ngIf="password.errors.minlength">
+            Le mot de passe doit comporter au moins 6 caractères.
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field floatLabel="auto" class="full-width">
+          <input matInput placeholder="Confirmer le mot de passe " [type]="hide ? 'text' : 'password'"
+                 formControlName="repeat">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+        </mat-form-field>
+        <div class="alert alert-danger"
+             *ngIf="isSubmit && userForm.get('password').value != userForm.get('repeat').value">
+          Le mot de passe ne correspond pas
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="boats">
+      <mat-toolbar>
+        VOS BATEAUX
+      </mat-toolbar>
+      <div formArrayName="boats">
+        <div class="boat" *ngFor="let boat of boats.controls; let i=index" [formGroupName]="i">
+          <input type="hidden" formControlName="id"/>
+          <button mat-icon-button color="warn"
+                  class="btn-remove"
+                  (click)="removeBoat(i)">
+            <mat-icon>close</mat-icon>
+          </button>
+          <div class="col-sm-12">
+            <mat-form-field floatLabel="auto" class="full-width">
+              <input matInput type="text" placeholder="Nom" formControlName="name" required>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12">
+            <mat-form-field floatLabel="auto" class="full-width">
+              <input matInput type="text" placeholder="Immatriculation" formControlName="matriculation" required>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <button type="button" class="btn btn-boat" (click)="addBoat()">AJOUTER UN BATEAU</button>
+      </div>
+    </fieldset>
+    <fieldset class="text-center form-actions">
+      <button type="submit" (click)="save()" class="btn btn-primary btn-validate">{{ method == 'post' ? "S'INSCRIRE" :
+        "VALIDER" }}
+      </button>
+    </fieldset>
+  </form>
 </div>
