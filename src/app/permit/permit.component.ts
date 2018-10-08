@@ -182,7 +182,7 @@ export class PermitComponent implements OnInit {
   selector: 'rule-dialog',
   template: `
     <a class="text-right" href="javascript:void(0);" (click)="close()">x</a>
-    <h2 mat-dialog-title class="text-center"><small class="d-block">Réglement 2018 de la plongée sous-marine</small> dans les coeurs marins du parc national de Port-Cros</h2>
+    <h2 mat-dialog-title class="text-center"><small class="d-block">Règlement 2018 de la plongée sous-marine</small> dans les coeurs marins du parc national de Port-Cros</h2>
     <mat-dialog-content>
       <iframe src="./assets/reglement_pnpc_coeurs_marins_2018.pdf"></iframe>
     </mat-dialog-content>
@@ -194,7 +194,7 @@ export class PermitComponent implements OnInit {
       </div>
       <div>
         <a mat-raised-button mat-dialog-close class="btn btn-secondary" [disabled]="!hasCheckAll" href="{{ config.serverURL }}/api/users/{{ user.id }}/permit.pdf">
-          Télécharger l'autorisation
+          Télécharger le règlement et votre autorisation
         </a>
       </div>
     </mat-dialog-actions>`

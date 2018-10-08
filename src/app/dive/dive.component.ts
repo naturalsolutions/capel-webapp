@@ -490,12 +490,12 @@ export class DiveComponent implements OnInit {
     <mat-dialog-content>
       Votre plongée est bien déclarée, Que voulez-vous faire maintenant ?
     </mat-dialog-content>
-    <mat-dialog-actions>
+    <mat-dialog-actions align="end">
       <button mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
         Déclarer une nouvelle plongée
       </button>
       <button mat-raised-button mat-dialog-close color="primary" (click)="logout()">
-        C ontinuer ma navigation
+        Continuer la navigation
       </button>
     </mat-dialog-actions>`
 })

@@ -64,7 +64,7 @@
         <li class="list-inline-item">
           <mat-form-field>
             <mat-select placeholder="Zone" [(ngModel)]="fl_heart" (selectionChange)="setStatistics($event)">
-              <mat-option  value="tous">Tous les Coeurs</mat-option>
+              <mat-option  value="tous">Partout</mat-option>
               <mat-option *ngFor="let dive_heart of divehearts" [value]="dive_heart">
                 {{ dive_heart.name }}
               </mat-option>

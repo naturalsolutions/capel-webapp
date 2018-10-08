@@ -20,6 +20,11 @@ app-root {
     background: linear-gradient(to right, #ede8e2 0%,#c7baae 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ede8e2', endColorstr='#c7baae',GradientType=1 ); /* IE6-9 */
   }
+  .filter_dives{
+      li, span{
+        color:#00b1ca;
+      }
+  }
   a{
     color: #fff;
     text-decoration: none;
