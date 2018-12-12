@@ -524,7 +524,7 @@ export class DiveSuccessDialog {
       Cœurs marins du Parc national de {{data.heart_name}}, plongée soumise à la signature d'un règlement
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <a href="http://149.202.44.29/site/reglementation.html" target="_blank" mat-raised-button mat-dialog-close color="primary">
+      <a href="/site/reglementation.html" target="_blank" mat-raised-button mat-dialog-close color="primary">
         Voir les dispositions
       </a>
       <button *ngIf="!data.title" mat-raised-button mat-dialog-close color="primary" (click)="newDive()">
@@ -622,7 +622,7 @@ export class DiveNotAllowedDialog {
             <input class="text-left" matInput placeholder="longitude" disabled type="longitude" formControlName="longitude">
           </mat-form-field>
           </div>
-        </div>  
+        </div>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions>

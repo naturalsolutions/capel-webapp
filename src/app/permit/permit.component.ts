@@ -113,7 +113,7 @@ export class PermitComponent implements OnInit {
             if (feature.properties && feature.properties.popupContent) {
               popupContent += "<b>"+feature.properties.popupContent+"</b>";
               popupContent += "</br> Cœurs marins du Parc national de "+heart.name+", plongée soumise à la signature d'un règlement</br>";
-              popupContent += "<a target='_blank' href='http://149.202.44.29/site/reglementation.html'";
+              popupContent += "<a target='_blank' href='/site/reglementation.html'";
               popupContent += "mat-raised-button mat-dialog-close color='primary'>";
               popupContent += "Voir les dispositions </a>";
             }
