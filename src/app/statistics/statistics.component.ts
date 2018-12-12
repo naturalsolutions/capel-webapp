@@ -28,7 +28,7 @@ export class StatisticsComponent implements OnInit {
   map: L.Map;
   leafletOptions = {
     layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+      L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
     zoom: 9,
     center: L.latLng(42.976520698105546, 6.284179687500001),

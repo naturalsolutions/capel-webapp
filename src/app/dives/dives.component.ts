@@ -12,7 +12,7 @@ export class DivesComponent implements OnInit {
   map: L.Map;
   options = {
     layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+      L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     ],
     zoom: 12,
     center: L.latLng(43, 6.3833),
