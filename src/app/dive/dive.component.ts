@@ -15,6 +15,7 @@ import {LoadingDialogComponent} from '../app-dialogs/loading-dialog/loading-dial
 import {NgRedux} from '@angular-redux/store';
 let divesite_id;
 import { colors } from '../app-assets/colors';
+import { lg_colors } from '../app-assets/colors';
 @Component({
   selector: 'app-dive',
   templateUrl: './dive.component.html',
@@ -317,8 +318,8 @@ export class DiveComponent implements OnInit {
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
-      for (var key in colors)
-       div.innerHTML +=  '<i class="legend-icon" style="background-color: '+colors[key]+';"></i>' + key + '<br><br>';
+      for (var key in lg_colors)
+       div.innerHTML +=  '<i class="legend-icon" style="background-color: '+lg_colors[key]+';"></i>' + key + '<br><br>';
       return div;
     };
     legend.addTo(map);

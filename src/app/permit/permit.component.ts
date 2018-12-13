@@ -14,7 +14,7 @@ import { config } from '../settings';
 import { NgRedux } from '@angular-redux/store';
 import {DiveService} from '../services/dive.service';
 import {PermitService} from '../services/permit.service';
-import {colors} from '../app-assets/colors';
+import {colors, lg_colors} from '../app-assets/colors';
 
 
 @Component({
@@ -140,8 +140,8 @@ export class PermitComponent implements OnInit {
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
-      for (var key in colors)
-        div.innerHTML +=  '<i class="legend-icon" style="background-color: '+colors[key]+';"></i>' + key + '<br><br>';
+      for (var key in lg_colors)
+        div.innerHTML +=  '<i class="legend-icon" style="background-color: ' + lg_colors[key] + ';"></i>' + key + '<br><br>';
       return div;
     };
     legend.addTo(map);

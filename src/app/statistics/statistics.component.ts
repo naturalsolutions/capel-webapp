@@ -9,7 +9,7 @@ import {countries} from '../app-assets/countries/fr';
 import {DiveHeartDialog} from '../dive/dive.component';
 import {SessionActionsService} from '../store/session/session-actions.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import {colors} from '../app-assets/colors';
+import { lg_colors, colors} from '../app-assets/colors';
 import {LoadingDialogComponent} from '../app-dialogs/loading-dialog/loading-dialog.component';
 
 @Component({
@@ -63,7 +63,9 @@ export class StatisticsComponent implements OnInit {
   optionsHistoSites: any;
   optionsMoy: any;
   sites: any[] = [];
+  savedSites: any[] = [];
   userDiveSites: any[] = [];
+  savedDiveSites: any[] = [];
   countries = countries;
   divehearts;
   months = [
@@ -130,7 +132,17 @@ export class StatisticsComponent implements OnInit {
       )
         return dive;
     });
+
     this.dumpChar();
+    this.userDiveSites =  this.savedDiveSites;
+    if (this.fl_heart !== 'tous') {
+      console.log(this.fl_heart);
+      this.userDiveSites = this.userDiveSites.filter(site => {
+        if (site.heart_id === this.fl_heart.id) {
+          return site;
+        }
+      });
+    }
   }
   /*
   setStatisticsByDate(event) {
@@ -284,6 +296,7 @@ export class StatisticsComponent implements OnInit {
     this.fetch();
     this.diveService.getUserSites().then(data => {
       this.userDiveSites = data;
+      this.savedDiveSites = data;
       let icon = this.icon;
       for(let userDiveSite of this.userDiveSites){
         icon = this.icon;
@@ -357,8 +370,8 @@ export class StatisticsComponent implements OnInit {
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML += (" <img src="+ labels[i] +" height='30' width='20'>  ") + grades[i] +'<br><br>';
       }
-      for (var key in colors)
-        div.innerHTML +=  '<i class="legend-icon" style="background-color: '+colors[key]+';"></i>' + key + '<br><br>';
+      for (var key in lg_colors)
+        div.innerHTML +=  '<i class="legend-icon" style="background-color: '+lg_colors[key]+';"></i>' + key + '<br><br>';
       return div;
     };
     legend.addTo(map);
@@ -438,7 +451,7 @@ export class StatisticsComponent implements OnInit {
       if (!exists)
         this.sites.push(dive.dive_site);
     }
-
+    this.savedSites = this.sites;
   }
   roundToInt(flr:any){
     return Math.round(flr);
